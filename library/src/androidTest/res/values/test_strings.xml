@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+ * =================================================================================================
+ *                             Copyright (C) 2016 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ * You may use this file only in compliance with the License. More details and copy of this License
+ * you may obtain at
+ *
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * You can redistribute, modify or publish any part of the code written within this file but as it
+ * is described in the License, the software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ *
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+-->
+<resources>
+
+	<!-- ### INTENTS =========================================================================== -->
+
+	<string name="test_intent_dialog_title">Choose from listed options</string>
+	<string name="test_intent_activity_not_found">Requested activity has not been found</string>
+
+	<!-- ## Email intent -->
+	<string name="test_intent_email_to">to@android.com</string>
+	<string name="test_intent_email_cc">cc@android.com</string>
+	<string name="test_intent_email_bcc">bcc@android.com</string>
+	<string name="test_intent_email_subject">Test email intent subject</string>
+	<string name="test_intent_email_message">Test email intent message.</string>
+
+	<!-- ## Dialer intent -->
+	<string name="test_intent_dial_phone_number">005233651235748</string>
+
+	<!-- ## Web intent -->
+	<string name="test_intent_web_url">http://www.android.com</string>
+
+	<!-- ## Map intent -->
+	<string name="test_intent_map_location_query">New York City, NY</string>
+	<string name="test_intent_map_label">Iceland</string>
+
+	<!-- ## Share intent -->
+	<string name="test_intent_share_content">Content ready to be shared.</string>
+	<string name="test_intent_share_title">Share content</string>
+
+	<!-- ## Calendar intent -->
+	<string name="test_intent_calendar_event_title">Event title</string>
+	<string name="test_intent_calendar_event_description">Description of the calendar event.</string>
+	<string name="test_intent_calendar_event_location">New York</string>
+</resources>
