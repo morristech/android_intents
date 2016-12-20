@@ -1,4 +1,4 @@
-Android Utils
+Android Intents
 ===============
 
 ## Download ##
@@ -7,15 +7,16 @@ Download the latest **[release](https://github.com/universum-studios/android_int
 
 ### Gradle ###
 
-> `compile 'universum.studios.android:intents:1.0.0@aar'`
+    `compile 'universum.studios.android:intents:1.0.0@aar'`
 
 ## Compatibility ##
 
-Supported from the **Android [API Level 8](http://developer.android.com/about/versions/android-2.2.html "See API highlights")**.
+Available from the **Android [API Level 14](http://developer.android.com/about/versions/android-4.0.html "See API highlights")**.
 
 ### Dependencies ###
 
 - [`com.android.support:support-annotations`](http://developer.android.com/tools/support-library/features.html#annotations)
+- [`com.android.support:support-v4`](http://developer.android.com/tools/support-library/features.html#v4)
 
 ## License ##
 
