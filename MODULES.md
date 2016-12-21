@@ -45,10 +45,6 @@ _depends on:_
 _depends on:_
 [intents-core](https://github.com/universum-studios/android_intents/tree/master/library/src/main)
 
-**[Mime-Type](https://github.com/universum-studios/android_intents/tree/master/library/src/mime-type)**
-
-    compile 'universum.studios.android:intents-map:1.0.0@aar'
-
 **[Play](https://github.com/universum-studios/android_intents/tree/master/library/src/play)**
 
     compile 'universum.studios.android:intents-play:1.0.0@aar'
@@ -62,3 +58,7 @@ _depends on:_
 
 _depends on:_
 [intents-core](https://github.com/universum-studios/android_intents/tree/master/library/src/main)
+
+**[Mime-Type](https://github.com/universum-studios/android_intents/tree/master/library/src/mime-type)**
+
+    compile 'universum.studios.android:intents-mime-type:1.0.0@aar'

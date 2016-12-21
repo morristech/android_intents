@@ -49,6 +49,10 @@ android {
 /**
  * Library dependencies ============================================================================
  */
+repositories {
+    mavenLocal()
+}
+
 dependencies {
     /*
      * RELEASE DEPENDENCIES ------------------------------------------------------------------------

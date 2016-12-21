@@ -241,10 +241,12 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	}
 
 	/**
-	 * todo:
+	 * Starts na intent specific for this intent builder created via {@link #build(Context)} using
+	 * the given intent <var>starter</var>.
 	 *
-	 * @param starter
-	 * @return
+	 * @param starter The desired starter to be used to start the intent. See {@link IntentStarters}
+	 *                for default available starters.
+	 * @return {@code True} if the intent has been successfully started, {@code false} otherwise.
 	 */
 	public boolean startWith(@NonNull IntentStarter starter) {
 		final Context context = starter.getContext();

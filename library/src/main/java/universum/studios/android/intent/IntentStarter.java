@@ -18,6 +18,7 @@
  */
 package universum.studios.android.intent;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -26,7 +27,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * todo: description
+ * Interface used to hide implementation of a specific context in which is possible to start an {@link Intent}.
  *
  * @author Martin Albedinsky
  */
@@ -41,48 +42,41 @@ public interface IntentStarter {
 	 */
 
 	/**
-	 * todo:
+	 * Returns the context with which is this started associated.
 	 *
-	 * @return
+	 * @return This starter's associated context.
 	 */
 	@NonNull
 	Context getContext();
 
 	/**
-	 * todo:
-	 *
-	 * @param intent
+	 * Same as {@link #startIntent(Intent, Bundle)} without additional options.
 	 */
 	void startIntent(@NonNull Intent intent);
 
 	/**
-	 * todo:
+	 * Starts the given <var>intent</var>.
 	 *
-	 * @param options
+	 * @see Activity#startActivity(Intent, Bundle)
 	 */
 	void startIntent(@NonNull Intent intent, @Nullable Bundle options);
 
 	/**
-	 * todo:
-	 *
-	 * @param intent
-	 * @param requestCode
+	 * Same as {@link #startIntentForResult(Intent, int, Bundle)} without additional options.
 	 */
 	void startIntentForResult(@NonNull Intent intent, int requestCode);
 
 	/**
-	 * todo:
+	 * Starts the given <var>intent</var> to receive result.
 	 *
-	 * @param intent
-	 * @param requestCode
+	 * @see Activity#startActivityForResult(Intent, int, Bundle)
 	 */
 	void startIntentForResult(@NonNull Intent intent, int requestCode, @Nullable Bundle options);
 
 	/**
-	 * todo:
+	 * Overrides window transition of the started intent.
 	 *
-	 * @param enterAnimRes
-	 * @param exitAnimRes
+	 * @see Activity#overridePendingTransition(int, int)
 	 */
 	void overridePendingTransition(@AnimRes int enterAnimRes, @AnimRes int exitAnimRes);
 }
