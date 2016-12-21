@@ -126,7 +126,7 @@ public final class VideoIntentTest extends IntentBaseTest<VideoIntent> {
 
 	@Test
 	public void testInput() {
-		assertThat(mIntent.dataType(), is(not(nullValue())));
+		assertThat(mIntent.dataType(), is(nullValue()));
 		mIntent.input(new File("file.tmp"));
 		assertThat(mIntent.dataType(), is(MimeType.VIDEO));
 	}

@@ -92,7 +92,7 @@ public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.Co
 		final File file = ContentIntent.createContentFile("test-file.tmp", externalFilesDir);
 		assertThat(file, is(not(nullValue())));
 		assertThat(file.exists(), is(true));
-		assertThat(file, hasRelativePath("/Android/data/com.albedinsky.android.intent.test/files/"));
+		assertThat(file, hasRelativePath("/Android/data/universum.studios.android.intent.test/files/"));
 		assertThat(file.delete(), is(true));
 	}
 

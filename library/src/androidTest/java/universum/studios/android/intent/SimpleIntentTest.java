@@ -71,7 +71,7 @@ public final class SimpleIntentTest extends IntentBaseTest<SimpleIntent> {
 
 	@Test
 	public void testDefaultFlags() {
-		assertEquals(-1, mIntent.flags());
+		assertEquals(0, mIntent.flags());
 	}
 
 	@Test

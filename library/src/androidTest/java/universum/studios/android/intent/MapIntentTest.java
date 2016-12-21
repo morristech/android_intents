@@ -127,11 +127,7 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
-				is(Uri.fromParts(
-						"geo",
-						Double.toString(40.7141667) + "," + Double.toString(-74.0063889),
-						null
-				))
+				is(Uri.parse("geo:" + Double.toString(40.7141667) + "," + Double.toString(-74.0063889)))
 		);
 
 		// Latitude + longitude with zoom.
@@ -142,11 +138,7 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
-				is(Uri.fromParts(
-						"geo",
-						Double.toString(40.7141667) + "," + Double.toString(-74.0063889) + "?z=" + Integer.toString(10),
-						null
-				))
+				is(Uri.parse("geo:" + Double.toString(40.7141667) + "," + Double.toString(-74.0063889) + "?z=" + Integer.toString(10)))
 		);
 
 		// Latitude + longitude with location query.
@@ -157,11 +149,7 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
-				is(Uri.fromParts(
-						"geo",
-						Double.toString(40.7141667) + "," + Double.toString(-74.0063889) + "?q=" + Uri.encode("restaurants"),
-						null
-				))
+				is(Uri.parse("geo:" + Double.toString(40.7141667) + "," + Double.toString(-74.0063889) + "?q=" + Uri.encode("restaurants")))
 		);
 
 		// Latitude + longitude with zoom and location query.
@@ -173,11 +161,7 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
-				is(Uri.fromParts(
-						"geo",
-						Double.toString(40.7141667) + "," + Double.toString(-74.0063889) + "?z=" + Integer.toString(10) + "&q=" + Uri.encode("restaurants"),
-						null
-				))
+				is(Uri.parse("geo:" + Double.toString(40.7141667) + "," + Double.toString(-74.0063889) + "?z=" + Integer.toString(10) + "&q=" + Uri.encode("restaurants")))
 		);
 
 		// Latitude + longitude with label.
@@ -188,29 +172,23 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
-				is(Uri.fromParts(
-						"geo",
-						"0,0?q=" + Double.toString(40.7141667) + "," + Double.toString(-74.0063889) + "(" + Uri.encode("New York City") + ")",
-						null
-				))
+				is(Uri.parse("geo:0,0?q=" + Double.toString(40.7141667) + "," + Double.toString(-74.0063889) + "(" + Uri.encode("New York City") + ")"))
 		);
 	}
 
 	@Test
 	public void testBuildWithLocationQuery() {
 		Intent intent;
+
 		// Location query.
 		mIntent.locationQuery("Rome, Italy");
 		intent = mIntent.build(mContext);
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
-				is(Uri.fromParts(
-						"geo",
-						"0,0?q=" + Uri.encode("Rome, Italy"),
-						null
-				))
+				is(Uri.parse("geo:0,0?q=" + Uri.encode("Rome, Italy")))
 		);
+
 		// Location query with label.
 		mIntent = new MapIntent();
 		mIntent.locationQuery("Rome, Italy");
@@ -219,11 +197,7 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
-				is(Uri.fromParts(
-						"geo",
-						"0,0?q=" + Uri.encode("Rome, Italy") + "(" + Uri.encode("Rome") + ")",
-						null
-				))
+				is(Uri.parse("geo:0,0?q=" + Uri.encode("Rome, Italy") + "(" + Uri.encode("Rome") + ")"))
 		);
 	}
 

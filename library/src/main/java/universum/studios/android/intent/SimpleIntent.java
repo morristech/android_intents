@@ -202,7 +202,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @return Intent flags or {@code 0} if no flags has been specified yet.
 	 * @see #flags(int)
 	 */
-	@IntRange(from = -1, to = Integer.MAX_VALUE)
+	@IntRange(from = 0, to = Integer.MAX_VALUE)
 	public int flags() {
 		return mFlags;
 	}
