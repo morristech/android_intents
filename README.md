@@ -15,8 +15,8 @@ Available from the **Android [API Level 14](http://developer.android.com/about/v
 
 ### Dependencies ###
 
-- [`com.android.support:support-annotations`](http://developer.android.com/tools/support-library/features.html#annotations)
-- [`com.android.support:support-v4`](http://developer.android.com/tools/support-library/features.html#v4)
+- [`com.android.support:support-annotations`](https://developer.android.com/topic/libraries/support-library/packages.html#annotations)
+- [`com.android.support:support-v4`](https://developer.android.com/topic/libraries/support-library/packages.html#v4)
 
 ## License ##
 
