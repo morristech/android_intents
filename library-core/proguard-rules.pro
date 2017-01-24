@@ -16,7 +16,4 @@
 # See the License for the specific language governing permissions and limitations under the License.
 # ==================================================================================================
 ##
-# Gradle library properites.
-
-### MAVEN ==========================================================================================
-maven.pom.artifactId=intents
+# No rules are required.
