@@ -1,4 +1,4 @@
-Android Intents
+Intents
 ===============
 
 ## Download ##

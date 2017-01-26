@@ -60,13 +60,13 @@ dependencies {
      */
     compile 'com.android.support:support-annotations:' + supportVersion
     releaseCompile 'universum.studios.android:intents-core:' + project.property('library.version') + '@aar'
-    releaseCompile 'universum.studios.android:intents-mime-type:' + project.property('library.version') + '@aar'
+    releaseCompile 'universum.studios.android:intents-mimetype:' + project.property('library.version') + '@aar'
 
     /*
      * DEBUG DEPENDENCIES --------------------------------------------------------------------------
      */
     debugCompile project(':library-core')
-    debugCompile project(':library-mime-type')
+    debugCompile project(':library-mimetype')
 }
 
 // Apply PUBLISH script.

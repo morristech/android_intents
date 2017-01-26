@@ -9,7 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/library-content/library-content.iml" filepath="$PROJECT_DIR$/library-content/library-content.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-core/library-core.iml" filepath="$PROJECT_DIR$/library-core/library-core.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-map/library-map.iml" filepath="$PROJECT_DIR$/library-map/library-map.iml" />
-      <module fileurl="file://$PROJECT_DIR$/library-mime-type/library-mime-type.iml" filepath="$PROJECT_DIR$/library-mime-type/library-mime-type.iml" />
+      <module fileurl="file://$PROJECT_DIR$/library-mimetype/library-mimetype.iml" filepath="$PROJECT_DIR$/library-mimetype/library-mimetype.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-play/library-play.iml" filepath="$PROJECT_DIR$/library-play/library-play.iml" />
       <module fileurl="file://$PROJECT_DIR$/library-web/library-web.iml" filepath="$PROJECT_DIR$/library-web/library-web.iml" />
       <module fileurl="file://$PROJECT_DIR$/samples/samples.iml" filepath="$PROJECT_DIR$/samples/samples.iml" />

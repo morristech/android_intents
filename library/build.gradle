@@ -49,7 +49,7 @@ android {
                 '../library-map/src/main/java',
                 '../library-play/src/main/java',
                 '../library-web/src/main/java',
-                '../library-mime-type/src/main/java'
+                '../library-mimetype/src/main/java'
         ]
     }
 
