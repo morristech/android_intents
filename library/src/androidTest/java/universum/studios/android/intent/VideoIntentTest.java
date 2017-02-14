@@ -93,20 +93,22 @@ public final class VideoIntentTest extends IntentBaseTest<VideoIntent> {
 	@SuppressWarnings("ConstantConditions")
 	public void testCreateVideoFile() {
 		final File file = VideoIntent.createVideoFile();
-		assertThat(file, is(not(nullValue())));
-		assertThat(file.exists(), is(true));
-		assertThat(file, hasRelativePath("/Movies/"));
-		assertThat(file.delete(), is(true));
+		if (file != null) {
+			assertThat(file.exists(), is(true));
+			assertThat(file, hasRelativePath("/Movies/"));
+			assertThat(file.delete(), is(true));
+		}
 	}
 
 	@Test
 	@SuppressWarnings("ConstantConditions")
 	public void testCreateVideoFileName() {
 		final File file = VideoIntent.createVideoFile("elephant-video");
-		assertThat(file, is(not(nullValue())));
-		assertThat(file.exists(), is(true));
-		assertThat(file, hasPath("/Movies/elephant-video.mp4"));
-		assertThat(file.delete(), is(true));
+		if (file != null) {
+			assertThat(file.exists(), is(true));
+			assertThat(file, hasPath("/Movies/elephant-video.mp4"));
+			assertThat(file.delete(), is(true));
+		}
 	}
 
 	@Test

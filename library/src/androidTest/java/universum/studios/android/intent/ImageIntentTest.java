@@ -85,20 +85,22 @@ public final class ImageIntentTest extends IntentBaseTest<ImageIntent> {
 	@SuppressWarnings("ConstantConditions")
 	public void testCreateImageFile() {
 		final File file = ImageIntent.createImageFile();
-		assertThat(file, is(not(nullValue())));
-		assertThat(file.exists(), is(true));
-		assertThat(file, hasRelativePath("/Pictures/"));
-		file.delete();
+		if (file != null) {
+			assertThat(file.exists(), is(true));
+			assertThat(file, hasRelativePath("/Pictures/"));
+			file.delete();
+		}
 	}
 
 	@Test
 	@SuppressWarnings("ConstantConditions")
 	public void testCreateImageFileName() {
 		final File file = ImageIntent.createImageFile("zebra-image");
-		assertThat(file, is(not(nullValue())));
-		assertThat(file.exists(), is(true));
-		assertThat(file, hasPath("/Pictures/zebra-image.jpg"));
-		file.delete();
+		if (file != null) {
+			assertThat(file.exists(), is(true));
+			assertThat(file, hasPath("/Pictures/zebra-image.jpg"));
+			file.delete();
+		}
 	}
 
 	@Test

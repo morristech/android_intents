@@ -79,21 +79,25 @@ public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.Co
 	@SuppressWarnings("ConstantConditions")
 	public void testCreateContentFileNameInExternalDirectory() {
 		final File file = ContentIntent.createContentFile("test-file.tmp", Environment.DIRECTORY_DOWNLOADS);
-		assertThat(file, is(not(nullValue())));
-		assertThat(file.exists(), is(true));
-		assertThat(file, hasRelativePath("/Download/"));
-		assertThat(file.delete(), is(true));
+		if (file != null) {
+			assertThat(file.exists(), is(true));
+			assertThat(file, hasRelativePath("/Download/"));
+			assertThat(file.delete(), is(true));
+		}
 	}
 
 	@Test
 	@SuppressWarnings("ConstantConditions")
 	public void testCreateContentFileNameInDirectory() {
 		final File externalFilesDir = mContext.getExternalFilesDir(null);
-		final File file = ContentIntent.createContentFile("test-file.tmp", externalFilesDir);
-		assertThat(file, is(not(nullValue())));
-		assertThat(file.exists(), is(true));
-		assertThat(file, hasRelativePath("/Android/data/universum.studios.android.intent.test/files/"));
-		assertThat(file.delete(), is(true));
+		if (externalFilesDir != null) {
+			final File file = ContentIntent.createContentFile("test-file.tmp", externalFilesDir);
+			if (file != null) {
+				assertThat(file.exists(), is(true));
+				assertThat(file, hasRelativePath("/Android/data/universum.studios.android.intent.test/files/"));
+				assertThat(file.delete(), is(true));
+			}
+		}
 	}
 
 	@Test
