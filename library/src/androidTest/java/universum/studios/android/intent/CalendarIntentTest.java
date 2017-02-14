@@ -53,8 +53,8 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 
 	@Override
 	public void beforeTest() throws Exception {
-		super.beforeTest();
 		this.curentTime = System.currentTimeMillis();
+		super.beforeTest();
 	}
 
 	@Test
