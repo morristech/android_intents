@@ -1,17 +1,21 @@
 Intents
 ===============
 
-## Download ##
+[![Build Status](https://travis-ci.org/universum-studios/android_intents.svg?branch=master)](https://travis-ci.org/universum-studios/android_intents)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/682a1d82be024161bebc4b8afae1cf9a)](https://www.codacy.com/app/universum-studios/android_intents?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_intents&amp;utm_campaign=Badge_Grade)
 
-Download the latest **[release](https://github.com/universum-studios/android_intents/releases/tag/1.0.0 "Latest Releases page")** or **add as dependency** in your project via:
+## Download ##
+[![Bintray Badge](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Aintents/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Aintents/_latestVersion)
+
+Download the latest **[release](https://github.com/universum-studios/android_intents/releases "Latest Releases page")** or **add as dependency** in your project via:
 
 ### Gradle ###
 
-    compile 'universum.studios.android:intents:1.0.0@aar'
+    compile 'universum.studios.android:intents:${DESIRED_VERSION}@aar'
 
 ## Compatibility ##
 
-Available from the **Android [API Level 14](http://developer.android.com/about/versions/android-4.0.html "See API highlights")**.
+Supported down to the **Android [API Level 14](http://developer.android.com/about/versions/android-4.0.html "See API highlights")**.
 
 ### Dependencies ###
 

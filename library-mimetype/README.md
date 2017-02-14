@@ -5,4 +5,4 @@ Intents-MimeType
 
 ### Gradle ###
 
-    compile 'universum.studios.android:intents-mimetype:1.0.0@aar'
+    compile "universum.studios.android:intents-mimetype:${DESIRED_VERSION}@aar"

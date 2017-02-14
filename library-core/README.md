@@ -5,4 +5,4 @@ Intents-Core
 
 ### Gradle ###
 
-    compile 'universum.studios.android:intents-core:1.0.0@aar'
+    compile "universum.studios.android:intents-core:${DESIRED_VERSION}@aar"
