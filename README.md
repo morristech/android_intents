@@ -12,7 +12,7 @@ Download the latest **[release](https://github.com/universum-studios/android_int
 
 ### Gradle ###
 
-    compile 'universum.studios.android:intents:${DESIRED_VERSION}@aar'
+    compile "universum.studios.android:intents:${DESIRED_VERSION}@aar"
 
 ## Compatibility ##
 
