@@ -68,6 +68,12 @@ public final class IntentStarters {
 	 */
 
 	/**
+	 */
+	private IntentStarters() {
+		// Creation of instances of this class is not publicly allowed.
+	}
+
+	/**
 	 * Methods =====================================================================================
 	 */
 

@@ -64,6 +64,36 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	public static final String URI_SCHEME = "geo";
 
 	/**
+	 * Minimum allowed value for <b>latitude</b>.
+	 */
+	public static final double LAT_MIN = -90d;
+
+	/**
+	 * Maximum allowed value for <b>latitude</b>.
+	 */
+	public static final double LAT_MAX = 90d;
+
+	/**
+	 * Minimum allowed value for <b>longitude</b>.
+	 */
+	public static final double LNG_MIN = -180d;
+
+	/**
+	 * Maximum allowed value for <b>longitude</b>.
+	 */
+	public static final double LNG_MAX = 180d;
+
+	/**
+	 * Minimum allowed value for <b>zoom level</b>.
+	 */
+	public static final int ZOOM_LEVEL_MIN = 1;
+
+	/**
+	 * Maximum allowed value for <b>zoom level</b>.
+	 */
+	public static final int ZOOM_LEVEL_MAX = 23;
+
+	/**
 	 * Interface ===================================================================================
 	 */
 
@@ -122,9 +152,9 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #lat()
 	 * @see #lng()
 	 */
-	public MapIntent location(@FloatRange(from = -90, to = 90) double lat, @FloatRange(from = -180, to = 180) double lng) {
-		this.mLat = Math.max(-90, Math.min(90, lat));
-		this.mLng = Math.max(-180, Math.min(180, lng));
+	public MapIntent location(@FloatRange(from = LAT_MIN, to = LAT_MAX) double lat, @FloatRange(from = LNG_MIN, to = LNG_MAX) double lng) {
+		this.mLat = Math.max(LAT_MIN, Math.min(LAT_MAX, lat));
+		this.mLng = Math.max(LNG_MIN, Math.min(LNG_MAX, lng));
 		this.mLatLngSet = true;
 		return this;
 	}
@@ -136,7 +166,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #location(double, double)
 	 * @see #lng()
 	 */
-	@FloatRange(from = -90, to = 90)
+	@FloatRange(from = LAT_MIN, to = LAT_MAX)
 	public double lat() {
 		return mLat;
 	}
@@ -148,7 +178,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #location(double, double)
 	 * @see #lat()
 	 */
-	@FloatRange(from = -180, to = 180)
+	@FloatRange(from = LNG_MIN, to = LNG_MAX)
 	public double lng() {
 		return mLng;
 	}
@@ -185,8 +215,8 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #zoomLevel()
 	 */
-	public MapIntent zoomLevel(@IntRange(from = 1, to = 23) int level) {
-		this.mZoomLevel = Math.max(1, Math.min(23, level));
+	public MapIntent zoomLevel(@IntRange(from = ZOOM_LEVEL_MIN, to = ZOOM_LEVEL_MAX) int level) {
+		this.mZoomLevel = Math.max(ZOOM_LEVEL_MIN, Math.min(ZOOM_LEVEL_MAX, level));
 		return this;
 	}
 
@@ -196,7 +226,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @return Zoom level from the range {@code [1, 23]} or {@code 0} by default.
 	 * @see #zoomLevel(int)
 	 */
-	@IntRange(from = 0, to = 23)
+	@IntRange(from = 0, to = ZOOM_LEVEL_MAX)
 	public int zoomLevel() {
 		return mZoomLevel;
 	}

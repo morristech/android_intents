@@ -272,6 +272,8 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * should be thrown. The default exception may be created via {@link #cannotBuildIntentException(String)}.
 	 */
 	protected void ensureCanBuildOrThrow() {
+		// Inheritance hierarchies should perform here checks whether an Intent from the current
+		// data may be built or not. If Intent cannot be properly built, an exception should be thrown.
 	}
 
 	/**

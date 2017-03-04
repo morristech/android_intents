@@ -62,7 +62,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * @author Martin Albedinsky
  */
-public class MimeType {
+public abstract class MimeType {
 
 	/**
 	 */
@@ -143,5 +143,14 @@ public class MimeType {
 	})
 	@Retention(RetentionPolicy.SOURCE)
 	public @interface Value {
+	}
+
+	/**
+	 * Creates a new empty instance of MimeType. Inheritance hierarchies should declare theirs
+	 * constructors private in order to became a standard utility classes.
+	 */
+	protected MimeType() {
+		// We allow to override this class only so it may be used as container for other application
+		// specific/needed mime types.
 	}
 }

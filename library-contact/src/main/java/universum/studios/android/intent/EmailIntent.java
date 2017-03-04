@@ -432,7 +432,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param addresses Addresses to append.
 	 */
 	private static void appendEmailAddresses(List<String> list, List<String> addresses) {
-		if (addresses.size() > 0) for (final String address : addresses) appendEmailAddress(list, address);
+		if (!addresses.isEmpty()) for (final String address : addresses) appendEmailAddress(list, address);
 	}
 
 	/**

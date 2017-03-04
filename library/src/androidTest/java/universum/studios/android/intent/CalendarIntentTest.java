@@ -69,12 +69,6 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	}
 
 	@Test
-	public void testInvalidType() {
-		mIntent.type(12);
-		assertThat(mIntent.type(), is(CalendarIntent.TYPE_INSERT_EVENT));
-	}
-
-	@Test
 	public void testDefaultEventId() {
 		assertThat(mIntent.eventId(), is(-1L));
 	}

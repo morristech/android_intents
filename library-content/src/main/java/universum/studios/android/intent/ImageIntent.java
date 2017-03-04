@@ -240,8 +240,10 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 				} catch (Exception e) {
 					Log.e(TAG, "Failed to retrieve captured image.", e);
 				}
+				return null;
+			default:
+				return null;
 		}
-		return null;
 	}
 
 	/**

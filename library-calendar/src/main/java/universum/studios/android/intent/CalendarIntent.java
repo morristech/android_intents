@@ -221,14 +221,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @see #type()
 	 */
 	public CalendarIntent type(@Type int type) {
-		switch (type) {
-			case TYPE_VIEW:
-			case TYPE_INSERT_EVENT:
-			case TYPE_EDIT_EVENT:
-			case TYPE_VIEW_EVENT:
-				this.mType = type;
-				break;
-		}
+		this.mType = type;
 		return this;
 	}
 
