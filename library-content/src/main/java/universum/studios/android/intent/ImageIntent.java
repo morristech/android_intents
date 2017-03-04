@@ -231,16 +231,11 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 				return galleryImage;
 			case REQUEST_CODE_CAMERA:
 				final Bundle extras = data.getExtras();
-				try {
-					final Bitmap cameraImage = extras == null ? null : (Bitmap) extras.get("data");
-					if (cameraImage != null && options != null) {
-						return Bitmap.createScaledBitmap(cameraImage, options.width, options.height, false);
-					}
-					return cameraImage;
-				} catch (Exception e) {
-					Log.e(TAG, "Failed to retrieve captured image.", e);
+				final Bitmap cameraImage = extras == null ? null : (Bitmap) extras.get("data");
+				if (cameraImage != null && options != null) {
+					return Bitmap.createScaledBitmap(cameraImage, options.width, options.height, false);
 				}
-				return null;
+				return cameraImage;
 			default:
 				return null;
 		}

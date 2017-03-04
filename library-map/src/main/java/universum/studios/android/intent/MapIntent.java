@@ -280,7 +280,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 					uriBuilder.append(mZoomLevel);
 				}
 				if (!TextUtils.isEmpty(mLocationQuery)) {
-					uriBuilder.append(mZoomLevel != 0 ? "&" : "?");
+					uriBuilder.append(mZoomLevel == 0 ? "?" : "&");
 					this.appendLocationQuery(uriBuilder);
 				}
 			} else {

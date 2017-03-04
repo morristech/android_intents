@@ -74,7 +74,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	/**
 	 * Resolved type of the intent depends on the received parameters.
 	 */
-	private int mType = 0;
+	private int mType;
 
 	/**
 	 * Intent action.
@@ -237,14 +237,15 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 				if (mActivityClass == null) {
 					throw cannotBuildIntentException("No activity class specified.");
 				}
-				return;
+				break;
 			case TYPE_ACTION:
 				if (mAction == null) {
 					throw cannotBuildIntentException("No action specified.");
 				}
-				return;
+				break;
+			default:
+				throw cannotBuildIntentException("No activity class or action specified.");
 		}
-		throw cannotBuildIntentException("No activity class or action specified.");
 	}
 
 	/**
