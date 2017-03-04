@@ -46,10 +46,6 @@ import java.util.regex.Matcher;
 public class EmailIntent extends BaseIntent<EmailIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -64,6 +60,10 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * Constant value: <b>mailto</b>
 	 */
 	public static final String URI_SCHEME = "mailto";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -110,16 +110,6 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 */
 
 	/**
-	 * Creates a new instance of EmailIntent.
-	 *
-	 * @see #to(String)
-	 * @see #cc(String)
-	 * @see #bcc(String)
-	 */
-	public EmailIntent() {
-	}
-
-	/**
 	 * Methods =====================================================================================
 	 */
 
@@ -161,13 +151,13 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @see #addresses()
 	 */
 	public EmailIntent to(@Nullable List<String> addresses) {
-		if (addresses != null) {
+		if (addresses == null) {
+			this.mAddresses = null;
+		} else {
 			if (mAddresses == null) {
 				this.mAddresses = new ArrayList<>(addresses.size());
 			}
 			appendEmailAddresses(mAddresses, addresses);
-		} else {
-			this.mAddresses = null;
 		}
 		return this;
 	}
@@ -184,7 +174,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	@NonNull
 	@SuppressWarnings("unchecked")
 	public List<String> addresses() {
-		return mAddresses != null ? new ArrayList<>(mAddresses) : Collections.EMPTY_LIST;
+		return mAddresses == null ? Collections.EMPTY_LIST : new ArrayList<>(mAddresses);
 	}
 
 	/**
@@ -227,13 +217,13 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @see #ccAddresses()
 	 */
 	public EmailIntent cc(@Nullable List<String> addresses) {
-		if (addresses != null) {
+		if (addresses == null) {
+			this.mCcAddresses = null;
+		} else {
 			if (mCcAddresses == null) {
 				this.mCcAddresses = new ArrayList<>(addresses.size());
 			}
 			appendEmailAddresses(mCcAddresses, addresses);
-		} else {
-			this.mCcAddresses = null;
 		}
 		return this;
 	}
@@ -250,7 +240,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	@NonNull
 	@SuppressWarnings("unchecked")
 	public List<String> ccAddresses() {
-		return mCcAddresses != null ? new ArrayList<>(mCcAddresses) : Collections.EMPTY_LIST;
+		return mCcAddresses == null ? Collections.EMPTY_LIST : new ArrayList<>(mCcAddresses);
 	}
 
 	/**
@@ -293,13 +283,13 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @see #bccAddresses()
 	 */
 	public EmailIntent bcc(@Nullable List<String> addresses) {
-		if (addresses != null) {
+		if (addresses == null) {
+			this.mBccAddresses = null;
+		} else {
 			if (mBccAddresses == null) {
 				this.mBccAddresses = new ArrayList<>(addresses.size());
 			}
 			appendEmailAddresses(mBccAddresses, addresses);
-		} else {
-			this.mBccAddresses = null;
 		}
 		return this;
 	}
@@ -316,7 +306,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	@NonNull
 	@SuppressWarnings("unchecked")
 	public List<String> bccAddresses() {
-		return mBccAddresses != null ? new ArrayList<>(mBccAddresses) : Collections.EMPTY_LIST;
+		return mBccAddresses == null ? Collections.EMPTY_LIST : new ArrayList<>(mBccAddresses);
 	}
 
 	/**
@@ -339,7 +329,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 */
 	@NonNull
 	public CharSequence subject() {
-		return mSubject != null ? mSubject : "";
+		return mSubject == null ? "" : mSubject;
 	}
 
 	/**
@@ -362,7 +352,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 */
 	@NonNull
 	public CharSequence message() {
-		return mMessage != null ? mMessage : "";
+		return mMessage == null ? "" : mMessage;
 	}
 
 	/**
@@ -403,7 +393,9 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	@Nullable
 	public static Uri createUri(@NonNull List<String> addresses) {
 		final int n = addresses.size();
-		if (n == 0) return null;
+		if (n == 0) {
+			return null;
+		}
 		final StringBuilder data = new StringBuilder(n * 15);
 		for (int i = 0; i < n; i++) {
 			data.append(addresses.get(i));
@@ -440,7 +432,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param addresses Addresses to append.
 	 */
 	private static void appendEmailAddresses(List<String> list, List<String> addresses) {
-		if (addresses.size() > 0) for (String address : addresses) appendEmailAddress(list, address);
+		if (addresses.size() > 0) for (final String address : addresses) appendEmailAddress(list, address);
 	}
 
 	/**
@@ -451,11 +443,11 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param address Address to append.
 	 */
 	private static void appendEmailAddress(List<String> list, String address) {
-		if (!EMAIL_MATCHER.reset(address).matches()) {
-			Log.e(TAG, "Invalid e-mail address('" + address + "') specified.");
+		if (EMAIL_MATCHER.reset(address).matches()) {
+			list.add(address);
 			return;
 		}
-		list.add(address);
+		Log.e(TAG, "Invalid e-mail address('" + address + "') specified.");
 	}
 
 	/**

@@ -20,6 +20,7 @@ package universum.studios.android.intent;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -36,7 +37,6 @@ import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * A {@link ContentIntent} implementation providing API for building and starting of intents to obtain
@@ -45,10 +45,6 @@ import java.io.InputStream;
  * @author Martin Albedinsky
  */
 public class ImageIntent extends ContentIntent<ImageIntent> {
-
-	/**
-	 * Interface ===================================================================================
-	 */
 
 	/**
 	 * Constants ===================================================================================
@@ -77,6 +73,10 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	public static final String IMAGE_FILE_NAME_FORMAT = "IMAGE_%s";
 
 	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
 	 * Static members ==============================================================================
 	 */
 
@@ -92,12 +92,6 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	/**
 	 * Constructors ================================================================================
 	 */
-
-	/**
-	 * Creates a new instance of ImageIntent.
-	 */
-	public ImageIntent() {
-	}
 
 	/**
 	 * Methods =====================================================================================
@@ -132,7 +126,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 */
 	@NonNull
 	public static Intent createCameraIntent(@Nullable File outputFile) {
-		return createCameraIntent(outputFile != null ? Uri.fromFile(outputFile) : null);
+		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));
 	}
 
 	/**
@@ -208,51 +202,37 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 		switch (requestCode) {
 			case REQUEST_CODE_GALLERY:
 				final Uri imageUri = data.getData();
+				if (imageUri == null) {
+					return null;
+				}
 				Bitmap galleryImage = null;
-
-				if (imageUri != null) {
-					InputStream stream = null;
-					try {
-						stream = context.getContentResolver().openInputStream(imageUri);
-					} catch (Exception e) {
-						Log.e(TAG, "Unable to open image content at uri(" + imageUri + ").", e);
-					} finally {
-						if (stream != null) {
-							if (options != null) {
-								// Get the dimensions of the returned bitmap.
-								final BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-								bmOptions.inJustDecodeBounds = true;
-								// fixme: below call will deplete the stream so next call to decode it
-								// fixme: again will not work
-								BitmapFactory.decodeStream(stream, null, bmOptions);
-								final int bmWidth = bmOptions.outWidth;
-								final int bmHeight = bmOptions.outHeight;
-
-								// Compute how much to scale the bitmap.
-								final int scaleFactor = Math.min(bmWidth / options.width, bmHeight / options.height);
-
-								// Decode scaled bitmap.
-								bmOptions.inJustDecodeBounds = false;
-								bmOptions.inSampleSize = scaleFactor;
-								bmOptions.inPurgeable = true;
-								galleryImage = BitmapFactory.decodeStream(stream, null, bmOptions);
-							} else {
-								galleryImage = BitmapFactory.decodeStream(stream);
-							}
-
-							try {
-								stream.close();
-							} catch (IOException e) {
-								Log.e(TAG, "Unable to close image content at uri(" + imageUri + ").", e);
-							}
-						}
+				final ContentResolver contentResolver = context.getContentResolver();
+				try {
+					if (options == null) {
+						galleryImage = BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri));
+					} else {
+						// Get the dimensions of the returned bitmap.
+						final BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+						bmOptions.inJustDecodeBounds = true;
+						BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri), null, bmOptions);
+						final int bmWidth = bmOptions.outWidth;
+						final int bmHeight = bmOptions.outHeight;
+						// Compute how much to scale the bitmap.
+						final int scaleFactor = Math.min(bmWidth / options.width, bmHeight / options.height);
+						// Decode scaled bitmap.
+						bmOptions.inJustDecodeBounds = false;
+						bmOptions.inSampleSize = scaleFactor;
+						bmOptions.inPurgeable = true;
+						galleryImage = BitmapFactory.decodeStream(contentResolver.openInputStream(imageUri), null, bmOptions);
 					}
+				} catch (IOException e) {
+					Log.e(TAG, "Unable to open stream to image content at uri(" + imageUri + ").", e);
 				}
 				return galleryImage;
 			case REQUEST_CODE_CAMERA:
 				final Bundle extras = data.getExtras();
 				try {
-					final Bitmap cameraImage = (extras != null) ? (Bitmap) extras.get("data") : null;
+					final Bitmap cameraImage = extras == null ? null : (Bitmap) extras.get("data");
 					if (cameraImage != null && options != null) {
 						return Bitmap.createScaledBitmap(cameraImage, options.width, options.height, false);
 					}
@@ -275,10 +255,10 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 				onCreateGalleryHandler(context.getResources()),
 				mCameraHandler = onCreateCameraHandler(context.getResources())
 		);
-		if (mUri != null) {
-			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-		} else {
+		if (mUri == null) {
 			mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);
+		} else {
+			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 		}
 		return this;
 	}
@@ -346,10 +326,10 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	public ImageIntent output(@Nullable Uri uri) {
 		super.output(uri);
 		if (mCameraHandler != null) {
-			if (mUri != null) {
-				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-			} else {
+			if (mUri == null) {
 				mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);
+			} else {
+				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 			}
 		}
 		return this;

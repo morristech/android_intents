@@ -43,10 +43,6 @@ import android.support.annotation.Nullable;
 public final class IntentStarters {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -54,6 +50,10 @@ public final class IntentStarters {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "IntentStarters";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================

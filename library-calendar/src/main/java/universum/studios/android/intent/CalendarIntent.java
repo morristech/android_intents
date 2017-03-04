@@ -76,10 +76,6 @@ import java.lang.annotation.RetentionPolicy;
 public class CalendarIntent extends BaseIntent<CalendarIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -87,14 +83,6 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "CalendarIntent";
-
-	/**
-	 * Defines an annotation for determining set of allowed flags for {@link #type(int)} method.
-	 */
-	@Retention(RetentionPolicy.SOURCE)
-	@IntDef({TYPE_VIEW, TYPE_INSERT_EVENT, TYPE_EDIT_EVENT, TYPE_VIEW_EVENT})
-	public @interface Type {
-	}
 
 	/**
 	 * Flag to identify CalendarIntent as intent to open calendar. Can be passed only to {@link #type(int)}.
@@ -120,11 +108,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	public static final int TYPE_VIEW_EVENT = 0x04;
 
 	/**
-	 * Defines an annotation for determining set of allowed flags for {@link #availability(int)} method.
+	 * Defines an annotation for determining set of allowed flags for {@link #type(int)} method.
 	 */
 	@Retention(RetentionPolicy.SOURCE)
-	@IntDef({AVAILABILITY_BUSY, AVAILABILITY_FREE, AVAILABILITY_TENTATIVE})
-	public @interface Availability {
+	@IntDef({TYPE_VIEW, TYPE_INSERT_EVENT, TYPE_EDIT_EVENT, TYPE_VIEW_EVENT})
+	public @interface Type {
 	}
 
 	/**
@@ -144,6 +132,18 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * See {@link CalendarContract.Events#AVAILABILITY_TENTATIVE} for additional info.
 	 */
 	public static final int AVAILABILITY_TENTATIVE = 0x02;
+
+	/**
+	 * Defines an annotation for determining set of allowed flags for {@link #availability(int)} method.
+	 */
+	@Retention(RetentionPolicy.SOURCE)
+	@IntDef({AVAILABILITY_BUSY, AVAILABILITY_FREE, AVAILABILITY_TENTATIVE})
+	public @interface Availability {
+	}
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -201,6 +201,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @see #endTime(long)
 	 */
 	public CalendarIntent() {
+		super();
 		this.mBeginTime = System.currentTimeMillis();
 		this.mEndTime = mBeginTime + 1;
 	}
@@ -373,7 +374,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 */
 	@NonNull
 	public CharSequence title() {
-		return mTitle != null ? mTitle : "";
+		return mTitle == null ? "" : mTitle;
 	}
 
 	/**
@@ -397,7 +398,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 */
 	@NonNull
 	public CharSequence description() {
-		return mDescription != null ? mDescription : "";
+		return mDescription == null ? "" : mDescription;
 	}
 
 	/**
@@ -421,7 +422,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 */
 	@NonNull
 	public CharSequence location() {
-		return mLocation != null ? mLocation : "";
+		return mLocation == null ? "" : mLocation;
 	}
 
 	/**
@@ -435,12 +436,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @see #availability()
 	 */
 	public CalendarIntent availability(@Availability int availability) {
-		switch (availability) {
-			case AVAILABILITY_BUSY:
-			case AVAILABILITY_FREE:
-			case AVAILABILITY_TENTATIVE:
-				this.mAvailability = availability;
-		}
+		this.mAvailability = availability;
 		return this;
 	}
 
@@ -468,7 +464,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 				if (mBeginTime < 0) {
 					throw cannotBuildIntentException(
 							"Specified invalid time(" + mBeginTime + ") where to open calendar for view. " +
-							"Must be none-negative time value."
+									"Must be none-negative time value."
 					);
 				}
 				break;
@@ -494,6 +490,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 				break;
 			case TYPE_EDIT_EVENT:
 			case TYPE_VIEW_EVENT:
+			default:
 				if (mEventId <= 0) {
 					throw cannotBuildIntentException("Specified invalid event id(" + mEventId + ").");
 				}

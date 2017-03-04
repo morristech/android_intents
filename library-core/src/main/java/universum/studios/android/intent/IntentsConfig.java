@@ -25,7 +25,7 @@ import android.util.Log;
  *
  * @author Martin Albedinsky
  */
-public class IntentsConfig {
+public final class IntentsConfig {
 
 	/**
 	 * Flag indicating whether the <b>verbose</b> output for the Intents library trough log-cat is
@@ -42,4 +42,10 @@ public class IntentsConfig {
 	 * @see Log#d(String, String)
 	 */
 	public static boolean DEBUG_LOG_ENABLED = false;
+
+	/**
+	 */
+	private IntentsConfig() {
+		// Creation of instances of this class is not publicly allowed.
+	}
 }

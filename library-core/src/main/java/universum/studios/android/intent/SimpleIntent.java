@@ -38,10 +38,6 @@ import android.support.annotation.Nullable;
 public class SimpleIntent extends BaseIntent<SimpleIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -64,6 +60,10 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	private static final int TYPE_ACTION = 0x02;
 
 	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
 	 * Static members ==============================================================================
 	 */
 
@@ -79,12 +79,12 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	/**
 	 * Intent action.
 	 */
-	private String mAction = null;
+	private String mAction;
 
 	/**
 	 * Class of activity to launch from intent.
 	 */
-	private Class<? extends Activity> mActivityClass = null;
+	private Class<? extends Activity> mActivityClass;
 
 	/**
 	 * Set of intent flags.
@@ -99,17 +99,11 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	/**
 	 * Flag indicating whether this intent should be started for result or not.
 	 */
-	private boolean mForResult = false;
+	private boolean mForResult;
 
 	/**
 	 * Constructors ================================================================================
 	 */
-
-	/**
-	 * Creates a new instance of SimpleIntent.
-	 */
-	public SimpleIntent() {
-	}
 
 	/**
 	 * Methods =====================================================================================
@@ -166,7 +160,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 */
 	@NonNull
 	public String action() {
-		return mAction != null ? mAction : "";
+		return mAction == null ? "" : mAction;
 	}
 
 	/**

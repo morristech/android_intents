@@ -56,10 +56,6 @@ import java.util.Locale;
 public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseIntent<I> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -74,6 +70,10 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * Constant Value: <b>yyyyMMdd_HHmmss</b>
 	 */
 	public static final String CONTENT_FILE_TIME_STAMP_FORMAT = "yyyyMMdd_HHmmss";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -107,12 +107,6 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	/**
 	 * Constructors ================================================================================
 	 */
-
-	/**
-	 * Creates a new instance of ContentIntent.
-	 */
-	public ContentIntent() {
-	}
 
 	/**
 	 * Methods =====================================================================================
@@ -206,13 +200,13 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 */
 	@SuppressWarnings("unchecked")
 	public I withHandlers(@Nullable List<ContentHandler> handlers) {
-		if (handlers != null) {
+		if (handlers == null) {
+			this.mHandlers = null;
+		} else {
 			if (mHandlers == null) {
 				this.mHandlers = new ArrayList<>(handlers.size());
 			}
 			mHandlers.addAll(handlers);
-		} else {
-			this.mHandlers = null;
 		}
 		return (I) this;
 	}
@@ -249,7 +243,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	@NonNull
 	@SuppressWarnings("unchecked")
 	public List<ContentHandler> handlers() {
-		return mHandlers != null ? new ArrayList<>(mHandlers) : Collections.EMPTY_LIST;
+		return mHandlers == null ? Collections.EMPTY_LIST : new ArrayList<>(mHandlers);
 	}
 
 	/**
@@ -261,8 +255,8 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 */
 	@SuppressWarnings("unchecked")
 	public I input(@Nullable File file) {
-		if (file != null) input(Uri.fromFile(file));
-		else input((Uri) null);
+		if (file == null) input((Uri) null);
+		else input(Uri.fromFile(file));
 		return (I) this;
 	}
 
@@ -298,8 +292,8 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 */
 	@SuppressWarnings("unchecked")
 	public I output(@Nullable File file) {
-		if (file != null) output(Uri.fromFile(file));
-		else output((Uri) null);
+		if (file == null) output((Uri) null);
+		else output(Uri.fromFile(file));
 		return (I) this;
 	}
 
@@ -421,11 +415,12 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	@Override
 	protected void ensureCanBuildOrThrow() {
 		super.ensureCanBuildOrThrow();
-		if (!mHasInputUri) {
+		if (mHasInputUri) {
+			if (TextUtils.isEmpty(mDataType)) {
+				throw cannotBuildIntentException("No MIME type specified for input Uri.");
+			}
+		} else {
 			throw cannotBuildIntentException("No input Uri specified.");
-		}
-		if (TextUtils.isEmpty(mDataType)) {
-			throw cannotBuildIntentException("No MIME type specified for input Uri.");
 		}
 	}
 

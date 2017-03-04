@@ -169,12 +169,6 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	}
 
 	@Test
-	public void testUnsupportedAvailability() {
-		mIntent.availability(15);
-		assertThat(mIntent.availability(), is(CalendarIntent.AVAILABILITY_BUSY));
-	}
-
-	@Test
 	public void testBuildTypeOfView() {
 		mIntent.type(CalendarIntent.TYPE_VIEW);
 		final long time = curentTime - 1000 * 60 * 60 * 24;

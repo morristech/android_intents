@@ -37,10 +37,6 @@ import android.text.TextUtils;
 public final class SmsIntent extends BaseIntent {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -48,6 +44,10 @@ public final class SmsIntent extends BaseIntent {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "SmsIntent";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -79,15 +79,6 @@ public final class SmsIntent extends BaseIntent {
 	 */
 
 	/**
-	 * Creates a new instance of SmsIntent.
-	 *
-	 * @see #phoneNumber(String)
-	 * @see #body(CharSequence)
-	 */
-	public SmsIntent() {
-	}
-
-	/**
 	 * Methods =====================================================================================
 	 */
 
@@ -111,7 +102,7 @@ public final class SmsIntent extends BaseIntent {
 	 */
 	@NonNull
 	public String phoneNumber() {
-		return mPhoneNumber != null ? mPhoneNumber : "";
+		return mPhoneNumber == null ? "" : mPhoneNumber;
 	}
 
 	/**
@@ -134,7 +125,7 @@ public final class SmsIntent extends BaseIntent {
 	 */
 	@NonNull
 	public CharSequence body() {
-		return mBody != null ? mBody : "";
+		return mBody == null ? "" : mBody;
 	}
 
 	/**

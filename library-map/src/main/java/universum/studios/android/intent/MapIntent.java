@@ -48,10 +48,6 @@ import android.util.Log;
 public class MapIntent extends BaseIntent<MapIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -66,6 +62,10 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * Constant value: <b>geo</b>
 	 */
 	public static final String URI_SCHEME = "geo";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -110,12 +110,6 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 
 	/**
-	 * Creates a new instance of MapIntent.
-	 */
-	public MapIntent() {
-	}
-
-	/**
 	 * Methods =====================================================================================
 	 */
 
@@ -129,8 +123,8 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #lng()
 	 */
 	public MapIntent location(@FloatRange(from = -90, to = 90) double lat, @FloatRange(from = -180, to = 180) double lng) {
-		this.mLat = lat >= -90 && lat <= 90 ? lat : 0;
-		this.mLng = lng >= -180 && lng <= 180 ? lng : 0;
+		this.mLat = Math.max(-90, Math.min(90, lat));
+		this.mLng = Math.max(-180, Math.min(180, lng));
 		this.mLatLngSet = true;
 		return this;
 	}
@@ -180,7 +174,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 	@NonNull
 	public String locationQuery() {
-		return mLocationQuery != null ? mLocationQuery : "";
+		return mLocationQuery == null ? "" : mLocationQuery;
 	}
 
 	/**
@@ -192,7 +186,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #zoomLevel()
 	 */
 	public MapIntent zoomLevel(@IntRange(from = 1, to = 23) int level) {
-		this.mZoomLevel = level >= 1 && level <= 23 ? level : 0;
+		this.mZoomLevel = Math.max(1, Math.min(23, level));
 		return this;
 	}
 
@@ -227,7 +221,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 	@NonNull
 	public String label() {
-		return mLabel != null ? mLabel : "";
+		return mLabel == null ? "" : mLabel;
 	}
 
 	/**
@@ -247,26 +241,24 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	protected Intent onBuild(@NonNull Context context) {
 		final StringBuilder uriBuilder = new StringBuilder(64);
 		if (mLatLngSet) {
-			if (!TextUtils.isEmpty(mLabel)) {
+			if (TextUtils.isEmpty(mLabel)) {
+				uriBuilder.append(mLat);
+				uriBuilder.append(",");
+				uriBuilder.append(mLng);
+				if (mZoomLevel != 0) {
+					uriBuilder.append("?z=");
+					uriBuilder.append(mZoomLevel);
+				}
+				if (!TextUtils.isEmpty(mLocationQuery)) {
+					uriBuilder.append(mZoomLevel != 0 ? "&" : "?");
+					this.appendLocationQuery(uriBuilder);
+				}
+			} else {
 				uriBuilder.append("0,0?q=");
 				uriBuilder.append(mLat);
 				uriBuilder.append(",");
 				uriBuilder.append(mLng);
 				this.appendLabel(uriBuilder);
-			} else {
-				uriBuilder.append(mLat);
-				uriBuilder.append(",");
-				uriBuilder.append(mLng);
-
-				if (mZoomLevel != 0) {
-					uriBuilder.append("?z=");
-					uriBuilder.append(mZoomLevel);
-				}
-
-				if (!TextUtils.isEmpty(mLocationQuery)) {
-					uriBuilder.append(mZoomLevel != 0 ? "&" : "?");
-					this.appendLocationQuery(uriBuilder);
-				}
 			}
 		} else {
 			uriBuilder.append("0,0?");

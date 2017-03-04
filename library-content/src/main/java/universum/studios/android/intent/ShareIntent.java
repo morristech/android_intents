@@ -46,10 +46,6 @@ import java.util.List;
 public class ShareIntent extends BaseIntent<ShareIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -57,6 +53,10 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "ShareIntent";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -96,16 +96,6 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 */
 
 	/**
-	 * Creates a new instance of ShareIntent.
-	 *
-	 * @see #content(CharSequence)
-	 * @see #mimeType(String)
-	 * @see #uri(Uri)
-	 */
-	public ShareIntent() {
-	}
-
-	/**
 	 * Methods =====================================================================================
 	 */
 
@@ -129,7 +119,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 */
 	@NonNull
 	public CharSequence content() {
-		return mContent != null ? mContent : "";
+		return mContent == null ? "" : mContent;
 	}
 
 	/**
@@ -189,7 +179,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	@NonNull
 	@SuppressWarnings("unchecked")
 	public List<Uri> uris() {
-		return mUris != null ? new ArrayList<>(mUris) : Collections.EMPTY_LIST;
+		return mUris == null ? Collections.EMPTY_LIST : new ArrayList<>(mUris);
 	}
 
 	/**
@@ -239,7 +229,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 */
 	@NonNull
 	public CharSequence title() {
-		return mTitle != null ? mTitle : "";
+		return mTitle == null ? "" : mTitle;
 	}
 
 	/**

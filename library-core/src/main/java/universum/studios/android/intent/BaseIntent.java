@@ -25,7 +25,6 @@ import android.support.annotation.AnimRes;
 import android.support.annotation.CheckResult;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.AndroidRuntimeException;
 import android.widget.Toast;
 
 /**
@@ -63,10 +62,6 @@ import android.widget.Toast;
 public abstract class BaseIntent<I extends BaseIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -74,6 +69,10 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "BaseIntent";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -108,12 +107,6 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 */
 
 	/**
-	 * Creates a new instance of BaseIntent.
-	 */
-	public BaseIntent() {
-	}
-
-	/**
 	 * Methods =====================================================================================
 	 */
 
@@ -139,7 +132,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 */
 	@NonNull
 	public CharSequence dialogTitle() {
-		return mDialogTitle != null ? mDialogTitle : "";
+		return mDialogTitle == null ? "" : mDialogTitle;
 	}
 
 	/**
@@ -165,7 +158,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 */
 	@NonNull
 	public CharSequence activityNotFoundMessage() {
-		return mActivityNotFoundMessage != null ? mActivityNotFoundMessage : "";
+		return mActivityNotFoundMessage == null ? "" : mActivityNotFoundMessage;
 	}
 
 	/**
@@ -263,8 +256,8 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *
 	 * @param context Context obtained from the {@link IntentStarter}.
 	 * @return An instance of Intent specific for this intent builder.
-	 * @throws AndroidRuntimeException If this builder does not have all required data to build the
-	 *                                 requested intent.
+	 * @throws IllegalArgumentException If this builder does not have all required data to build the
+	 *                                  requested intent.
 	 */
 	@NonNull
 	public Intent build(@NonNull Context context) {
@@ -308,13 +301,13 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	}
 
 	/**
-	 * Creates an instance of {@link AndroidRuntimeException} indicating that one of required parameters
+	 * Creates an instance of {@link IllegalArgumentException} indicating that one of required parameters
 	 * for this intent builder has not been specified, but {@link #build(Context)} has been invoked.
 	 *
 	 * @param message Message to be included into exception.
 	 */
-	protected final AndroidRuntimeException cannotBuildIntentException(@NonNull String message) {
-		return new AndroidRuntimeException("Cannot build " + getClass().getSimpleName() + ". " + message);
+	protected final IllegalArgumentException cannotBuildIntentException(@NonNull String message) {
+		return new IllegalArgumentException("Cannot build " + getClass().getSimpleName() + ". " + message);
 	}
 
 	/**
