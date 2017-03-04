@@ -48,10 +48,6 @@ import android.util.Log;
 public class MapIntent extends BaseIntent<MapIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -66,6 +62,40 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * Constant value: <b>geo</b>
 	 */
 	public static final String URI_SCHEME = "geo";
+
+	/**
+	 * Minimum allowed value for <b>latitude</b>.
+	 */
+	public static final double LAT_MIN = -90d;
+
+	/**
+	 * Maximum allowed value for <b>latitude</b>.
+	 */
+	public static final double LAT_MAX = 90d;
+
+	/**
+	 * Minimum allowed value for <b>longitude</b>.
+	 */
+	public static final double LNG_MIN = -180d;
+
+	/**
+	 * Maximum allowed value for <b>longitude</b>.
+	 */
+	public static final double LNG_MAX = 180d;
+
+	/**
+	 * Minimum allowed value for <b>zoom level</b>.
+	 */
+	public static final int ZOOM_LEVEL_MIN = 1;
+
+	/**
+	 * Maximum allowed value for <b>zoom level</b>.
+	 */
+	public static final int ZOOM_LEVEL_MAX = 23;
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -110,12 +140,6 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 
 	/**
-	 * Creates a new instance of MapIntent.
-	 */
-	public MapIntent() {
-	}
-
-	/**
 	 * Methods =====================================================================================
 	 */
 
@@ -128,9 +152,9 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #lat()
 	 * @see #lng()
 	 */
-	public MapIntent location(@FloatRange(from = -90, to = 90) double lat, @FloatRange(from = -180, to = 180) double lng) {
-		this.mLat = lat >= -90 && lat <= 90 ? lat : 0;
-		this.mLng = lng >= -180 && lng <= 180 ? lng : 0;
+	public MapIntent location(@FloatRange(from = LAT_MIN, to = LAT_MAX) double lat, @FloatRange(from = LNG_MIN, to = LNG_MAX) double lng) {
+		this.mLat = Math.max(LAT_MIN, Math.min(LAT_MAX, lat));
+		this.mLng = Math.max(LNG_MIN, Math.min(LNG_MAX, lng));
 		this.mLatLngSet = true;
 		return this;
 	}
@@ -142,7 +166,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #location(double, double)
 	 * @see #lng()
 	 */
-	@FloatRange(from = -90, to = 90)
+	@FloatRange(from = LAT_MIN, to = LAT_MAX)
 	public double lat() {
 		return mLat;
 	}
@@ -154,7 +178,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #location(double, double)
 	 * @see #lat()
 	 */
-	@FloatRange(from = -180, to = 180)
+	@FloatRange(from = LNG_MIN, to = LNG_MAX)
 	public double lng() {
 		return mLng;
 	}
@@ -180,7 +204,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 	@NonNull
 	public String locationQuery() {
-		return mLocationQuery != null ? mLocationQuery : "";
+		return mLocationQuery == null ? "" : mLocationQuery;
 	}
 
 	/**
@@ -191,8 +215,8 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #zoomLevel()
 	 */
-	public MapIntent zoomLevel(@IntRange(from = 1, to = 23) int level) {
-		this.mZoomLevel = level >= 1 && level <= 23 ? level : 0;
+	public MapIntent zoomLevel(@IntRange(from = ZOOM_LEVEL_MIN, to = ZOOM_LEVEL_MAX) int level) {
+		this.mZoomLevel = Math.max(ZOOM_LEVEL_MIN, Math.min(ZOOM_LEVEL_MAX, level));
 		return this;
 	}
 
@@ -202,7 +226,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @return Zoom level from the range {@code [1, 23]} or {@code 0} by default.
 	 * @see #zoomLevel(int)
 	 */
-	@IntRange(from = 0, to = 23)
+	@IntRange(from = 0, to = ZOOM_LEVEL_MAX)
 	public int zoomLevel() {
 		return mZoomLevel;
 	}
@@ -227,7 +251,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 	@NonNull
 	public String label() {
-		return mLabel != null ? mLabel : "";
+		return mLabel == null ? "" : mLabel;
 	}
 
 	/**
@@ -247,26 +271,24 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	protected Intent onBuild(@NonNull Context context) {
 		final StringBuilder uriBuilder = new StringBuilder(64);
 		if (mLatLngSet) {
-			if (!TextUtils.isEmpty(mLabel)) {
+			if (TextUtils.isEmpty(mLabel)) {
+				uriBuilder.append(mLat);
+				uriBuilder.append(",");
+				uriBuilder.append(mLng);
+				if (mZoomLevel != 0) {
+					uriBuilder.append("?z=");
+					uriBuilder.append(mZoomLevel);
+				}
+				if (!TextUtils.isEmpty(mLocationQuery)) {
+					uriBuilder.append(mZoomLevel == 0 ? "?" : "&");
+					this.appendLocationQuery(uriBuilder);
+				}
+			} else {
 				uriBuilder.append("0,0?q=");
 				uriBuilder.append(mLat);
 				uriBuilder.append(",");
 				uriBuilder.append(mLng);
 				this.appendLabel(uriBuilder);
-			} else {
-				uriBuilder.append(mLat);
-				uriBuilder.append(",");
-				uriBuilder.append(mLng);
-
-				if (mZoomLevel != 0) {
-					uriBuilder.append("?z=");
-					uriBuilder.append(mZoomLevel);
-				}
-
-				if (!TextUtils.isEmpty(mLocationQuery)) {
-					uriBuilder.append(mZoomLevel != 0 ? "&" : "?");
-					this.appendLocationQuery(uriBuilder);
-				}
 			}
 		} else {
 			uriBuilder.append("0,0?");

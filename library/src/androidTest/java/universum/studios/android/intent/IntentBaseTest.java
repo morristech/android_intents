@@ -72,7 +72,7 @@ abstract class IntentBaseTest<I extends BaseIntent> extends ContextBaseTest {
 	void assertThatBuildThrowsExceptionWithCause(BaseIntent intent, String cause) {
 		try {
 			intent.build(mContext);
-		} catch (AndroidRuntimeException e) {
+		} catch (IllegalArgumentException e) {
 			final String message = "Cannot build " + intent.getClass().getSimpleName() + ". " + cause;
 			final String eMessage = e.getMessage();
 			if (!message.contentEquals(eMessage)) {

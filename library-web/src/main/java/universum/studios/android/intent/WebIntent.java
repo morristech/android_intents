@@ -42,10 +42,6 @@ import java.util.regex.Pattern;
 public class WebIntent extends BaseIntent<WebIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -53,6 +49,10 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 * Log TAG.
 	 */
 	// private static final String TAG = "WebIntent";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -90,14 +90,6 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 */
 
 	/**
-	 * Creates a new instance of WebIntent.
-	 *
-	 * @see #url(String)
-	 */
-	public WebIntent() {
-	}
-
-	/**
 	 * Methods =====================================================================================
 	 */
 
@@ -114,10 +106,10 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 */
 	public WebIntent url(@NonNull String url) {
 		if (WEB_URL_MATCHER.reset(url).matches()) {
-			if (!HTTP_FORMAT_MATCHER.reset(url).matches()) {
-				this.mUrl = HTTP_PREFIX + url;
-			} else {
+			if (HTTP_FORMAT_MATCHER.reset(url).matches()) {
 				this.mUrl = url;
+			} else {
+				this.mUrl = HTTP_PREFIX + url;
 			}
 		}
 		return this;
@@ -131,7 +123,7 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 */
 	@NonNull
 	public String url() {
-		return mUrl != null ? mUrl : "";
+		return mUrl == null ? "" : mUrl;
 	}
 
 	/**

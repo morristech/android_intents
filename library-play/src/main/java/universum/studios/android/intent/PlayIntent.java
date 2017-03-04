@@ -39,10 +39,6 @@ import android.text.TextUtils;
 public final class PlayIntent extends BaseIntent<PlayIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -56,6 +52,10 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 */
 	@VisibleForTesting
 	static final String VIEW_URL_BASE = "https://play.google.com/store/apps/details?id=";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -73,14 +73,6 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	/**
 	 * Constructors ================================================================================
 	 */
-
-	/**
-	 * Creates a new instance of PlayIntent.
-	 *
-	 * @see #packageName(String)
-	 */
-	public PlayIntent() {
-	}
 
 	/**
 	 * Methods =====================================================================================
@@ -107,7 +99,7 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 */
 	@NonNull
 	public String packageName() {
-		return mPackageName != null ? mPackageName : "";
+		return mPackageName == null ? "" : mPackageName;
 	}
 
 	/**

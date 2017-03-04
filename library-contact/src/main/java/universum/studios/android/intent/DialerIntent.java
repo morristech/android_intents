@@ -37,10 +37,6 @@ import android.text.TextUtils;
 public class DialerIntent extends BaseIntent<DialerIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -55,6 +51,10 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	 * Constant value: <b>tel</b>
 	 */
 	public static final String URI_SCHEME = "tel";
+
+	/**
+	 * Interface ===================================================================================
+	 */
 
 	/**
 	 * Static members ==============================================================================
@@ -72,14 +72,6 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	/**
 	 * Constructors ================================================================================
 	 */
-
-	/**
-	 * Creates a new instance of DialerIntent.
-	 *
-	 * @see #phoneNumber(String)
-	 */
-	public DialerIntent() {
-	}
 
 	/**
 	 * Methods =====================================================================================
@@ -105,7 +97,7 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	 */
 	@NonNull
 	public String phoneNumber() {
-		return mPhoneNumber != null ? mPhoneNumber : "";
+		return mPhoneNumber == null ? "" : mPhoneNumber;
 	}
 
 	/**

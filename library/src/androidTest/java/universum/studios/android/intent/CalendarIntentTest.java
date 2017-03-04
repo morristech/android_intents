@@ -69,12 +69,6 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	}
 
 	@Test
-	public void testInvalidType() {
-		mIntent.type(12);
-		assertThat(mIntent.type(), is(CalendarIntent.TYPE_INSERT_EVENT));
-	}
-
-	@Test
 	public void testDefaultEventId() {
 		assertThat(mIntent.eventId(), is(-1L));
 	}
@@ -166,12 +160,6 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	public void testAvailability() {
 		mIntent.availability(CalendarIntent.AVAILABILITY_FREE);
 		assertThat(mIntent.availability(), is(CalendarIntent.AVAILABILITY_FREE));
-	}
-
-	@Test
-	public void testUnsupportedAvailability() {
-		mIntent.availability(15);
-		assertThat(mIntent.availability(), is(CalendarIntent.AVAILABILITY_BUSY));
 	}
 
 	@Test

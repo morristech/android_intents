@@ -39,10 +39,6 @@ import java.io.File;
 public class VideoIntent extends ContentIntent<VideoIntent> {
 
 	/**
-	 * Interface ===================================================================================
-	 */
-
-	/**
 	 * Constants ===================================================================================
 	 */
 
@@ -69,6 +65,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	public static final String VIDEO_FILE_NAME_FORMAT = "VIDEO_%s";
 
 	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
 	 * Static members ==============================================================================
 	 */
 
@@ -84,12 +84,6 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	/**
 	 * Constructors ================================================================================
 	 */
-
-	/**
-	 * Creates a new instance of VideoIntent.
-	 */
-	public VideoIntent() {
-	}
 
 	/**
 	 * Methods =====================================================================================
@@ -125,7 +119,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 */
 	@NonNull
 	public static Intent createCameraIntent(@Nullable File outputFile) {
-		return createCameraIntent(outputFile != null ? Uri.fromFile(outputFile) : null);
+		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));
 	}
 
 	/**
@@ -181,10 +175,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 				onCreateGalleryHandler(context.getResources()),
 				mCameraHandler = onCreateCameraHandler(context.getResources())
 		);
-		if (mUri != null) {
-			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-		} else {
+		if (mUri == null) {
 			mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);
+		} else {
+			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 		}
 		return this;
 	}
@@ -251,10 +245,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	public VideoIntent output(@Nullable Uri uri) {
 		super.output(uri);
 		if (mCameraHandler != null) {
-			if (mUri != null) {
-				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
-			} else {
+			if (mUri == null) {
 				mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);
+			} else {
+				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
 			}
 		}
 		return this;

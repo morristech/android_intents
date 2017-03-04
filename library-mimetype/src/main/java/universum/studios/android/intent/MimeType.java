@@ -62,20 +62,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * @author Martin Albedinsky
  */
-public class MimeType {
-
-	/**
-	 * Defines an annotation for determining set of available mime-type values specified in {@link MimeType}.
-	 */
-	@StringDef({
-			TEXT, TEXT_PLAIN, TEXT_HTML,
-			IMAGE, IMAGE_JPEG, IMAGE_PNG, IMAGE_BITMAP,
-			AUDIO, AUDIO_MPEG, AUDIO_MP3, AUDIO_MP4,
-			VIDEO, VIDEO_JPEG, VIDEO_MPEG, VIDEO_MP4, VIDEO_3GP, VIDEO_3GP2
-	})
-	@Retention(RetentionPolicy.SOURCE)
-	public @interface Value {
-	}
+public abstract class MimeType {
 
 	/**
 	 */
@@ -144,4 +131,26 @@ public class MimeType {
 	/**
 	 */
 	public static final String VIDEO_3GP2 = "video/3gpp2";
+
+	/**
+	 * Defines an annotation for determining set of available mime-type values specified in {@link MimeType}.
+	 */
+	@StringDef({
+			TEXT, TEXT_PLAIN, TEXT_HTML,
+			IMAGE, IMAGE_JPEG, IMAGE_PNG, IMAGE_BITMAP,
+			AUDIO, AUDIO_MPEG, AUDIO_MP3, AUDIO_MP4,
+			VIDEO, VIDEO_JPEG, VIDEO_MPEG, VIDEO_MP4, VIDEO_3GP, VIDEO_3GP2
+	})
+	@Retention(RetentionPolicy.SOURCE)
+	public @interface Value {
+	}
+
+	/**
+	 * Creates a new empty instance of MimeType. Inheritance hierarchies should declare theirs
+	 * constructors private in order to became a standard utility classes.
+	 */
+	protected MimeType() {
+		// We allow to override this class only so it may be used as container for other application
+		// specific/needed mime types.
+	}
 }

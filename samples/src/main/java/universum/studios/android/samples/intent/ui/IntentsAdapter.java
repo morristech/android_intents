@@ -24,12 +24,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 
-import universum.studios.android.samples.ui.widget.SamplesRecyclerAdapter;
+import universum.studios.android.widget.adapter.SimpleRecyclerAdapter;
 
 /**
  * @author Martin Albedinsky
  */
-public final class IntentsAdapter extends SamplesRecyclerAdapter<IntentSample, IntentsAdapter.ItemHolder> {
+public final class IntentsAdapter extends SimpleRecyclerAdapter<IntentSample, IntentsAdapter.ItemHolder> {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "IntentsAdapter";

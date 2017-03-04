@@ -69,11 +69,11 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 	@Test
 	public void testLocationOutOfRange() {
 		mIntent.location(91.07d, 194.77d);
-		assertThat(mIntent.lat(), is(0d));
-		assertThat(mIntent.lng(), is(0d));
-		mIntent.location(-91.07d, -194.77d);
-		assertThat(mIntent.lat(), is(0d));
-		assertThat(mIntent.lng(), is(0d));
+		assertThat(mIntent.lat(), is(MapIntent.LAT_MAX));
+		assertThat(mIntent.lng(), is(MapIntent.LNG_MAX));
+		mIntent.location(-90.07d, -194.77d);
+		assertThat(mIntent.lat(), is(MapIntent.LAT_MIN));
+		assertThat(mIntent.lng(), is(MapIntent.LNG_MIN));
 	}
 
 	@Test
@@ -101,9 +101,9 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 	@Test
 	public void testZoomLevelOutOfRange() {
 		mIntent.zoomLevel(-3);
-		assertThat(mIntent.zoomLevel(), is(0));
+		assertThat(mIntent.zoomLevel(), is(MapIntent.ZOOM_LEVEL_MIN));
 		mIntent.zoomLevel(50);
-		assertThat(mIntent.zoomLevel(), is(0));
+		assertThat(mIntent.zoomLevel(), is(MapIntent.ZOOM_LEVEL_MAX));
 	}
 
 	@Test

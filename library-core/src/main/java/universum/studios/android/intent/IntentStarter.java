@@ -34,14 +34,6 @@ import android.support.annotation.Nullable;
 public interface IntentStarter {
 
 	/**
-	 * Constants ===================================================================================
-	 */
-
-	/**
-	 * Methods =====================================================================================
-	 */
-
-	/**
 	 * Returns the context with which is this started associated.
 	 *
 	 * @return This starter's associated context.
