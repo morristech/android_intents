@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>MapIntent.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.intent</a> &gt; <span class="el_source">MapIntent.java</span></div><h1>MapIntent.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2016 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License 
+ * you may obtain at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * You can redistribute, modify or publish any part of the code written within this file but as it 
+ * is described in the License, the software distributed under the License is distributed on an 
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * 
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.intent;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+import android.util.Log;
+
+/**
+ * A {@link BaseIntent} builder implementation providing API for building and starting of intents
+ * targeting a &lt;b&gt;maps&lt;/b&gt; related applications.
+ *
+ * &lt;h3&gt;Location via latitude + longitude&lt;/h3&gt;
+ * Simple intent to show map at a specific location can be created by specifying just latitude and
+ * longitude via {@link #location(double, double)}. You can also specify either label for the requested
+ * location via {@link #label(String)} or zoom level via {@link #zoomLevel(int)}.
+ *
+ * &lt;h3&gt;Location via query&lt;/h3&gt;
+ * In case when you want to show map at a specific location, but you do not know its exact location
+ * (lat + lng), you can specify location query via {@link #locationQuery(String)}, which can contain
+ * name of place (town/city) and state that you want to show on map. In this case you can also
+ * specify the location label via {@link #label(String)} as for lat + lng based map intent.
+ *
+ * @author Martin Albedinsky
+ */
+<span class="fc" id="L48">public class MapIntent extends BaseIntent&lt;MapIntent&gt; {</span>
+
+	/**
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	private static final String TAG = &quot;MapIntent&quot;;
+
+	/**
+	 * Uri scheme for &lt;b&gt;map&lt;/b&gt; targeting intents.
+	 * &lt;p&gt;
+	 * Constant value: &lt;b&gt;geo&lt;/b&gt;
+	 */
+	public static final String URI_SCHEME = &quot;geo&quot;;
+
+	/**
+	 * Minimum allowed value for &lt;b&gt;latitude&lt;/b&gt;.
+	 */
+	public static final double LAT_MIN = -90d;
+
+	/**
+	 * Maximum allowed value for &lt;b&gt;latitude&lt;/b&gt;.
+	 */
+	public static final double LAT_MAX = 90d;
+
+	/**
+	 * Minimum allowed value for &lt;b&gt;longitude&lt;/b&gt;.
+	 */
+	public static final double LNG_MIN = -180d;
+
+	/**
+	 * Maximum allowed value for &lt;b&gt;longitude&lt;/b&gt;.
+	 */
+	public static final double LNG_MAX = 180d;
+
+	/**
+	 * Minimum allowed value for &lt;b&gt;zoom level&lt;/b&gt;.
+	 */
+	public static final int ZOOM_LEVEL_MIN = 1;
+
+	/**
+	 * Maximum allowed value for &lt;b&gt;zoom level&lt;/b&gt;.
+	 */
+	public static final int ZOOM_LEVEL_MAX = 23;
+
+	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
+	 * Static members ==============================================================================
+	 */
+
+	/**
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Longitude value for map location query.
+	 */
+	private double mLng;
+
+	/**
+	 * Latitude value for map location query.
+	 */
+	private double mLat;
+
+	/**
+	 * Zoom level for map camera.
+	 */
+	private int mZoomLevel;
+
+	/**
+	 * Label for map location query.
+	 */
+	private String mLabel;
+
+	/**
+	 * Location query for map data.
+	 */
+	private String mLocationQuery;
+
+	/**
+	 * Flag indicating whether there was latitude + longitude set or not.
+	 */
+	private boolean mLatLngSet;
+
+	/**
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 * Sets latitude and longitude of a location to show on a map.
+	 *
+	 * @param lat The desired location's latitude position in the range {@code [-90, 90]}.
+	 * @param lng The desired location's longitude position in the range {@code [-180, 180]}.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #lat()
+	 * @see #lng()
+	 */
+	public MapIntent location(@FloatRange(from = LAT_MIN, to = LAT_MAX) double lat, @FloatRange(from = LNG_MIN, to = LNG_MAX) double lng) {
+<span class="fc" id="L156">		this.mLat = Math.max(LAT_MIN, Math.min(LAT_MAX, lat));</span>
+<span class="fc" id="L157">		this.mLng = Math.max(LNG_MIN, Math.min(LNG_MAX, lng));</span>
+<span class="fc" id="L158">		this.mLatLngSet = true;</span>
+<span class="fc" id="L159">		return this;</span>
+	}
+
+	/**
+	 * Returns the latitude position of a location to show on map.
+	 *
+	 * @return Latitude position on a map from the range {@code [-90, 90]}, {@code 0} by default.
+	 * @see #location(double, double)
+	 * @see #lng()
+	 */
+	@FloatRange(from = LAT_MIN, to = LAT_MAX)
+	public double lat() {
+<span class="fc" id="L171">		return mLat;</span>
+	}
+
+	/**
+	 * Returns the longitude position of a location to show on map.
+	 *
+	 * @return Longitude position on a map from the range {@code [-180, 180]}, {@code 0} by default.
+	 * @see #location(double, double)
+	 * @see #lat()
+	 */
+	@FloatRange(from = LNG_MIN, to = LNG_MAX)
+	public double lng() {
+<span class="fc" id="L183">		return mLng;</span>
+	}
+
+	/**
+	 * Sets a location query that will be used to target a desired location on a map.
+	 *
+	 * @param query The desired location query. Can be for example name of a desired town with street
+	 *              address and address number to show on a map.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #locationQuery()
+	 */
+	public MapIntent locationQuery(@Nullable String query) {
+<span class="fc" id="L195">		this.mLocationQuery = query;</span>
+<span class="fc" id="L196">		return this;</span>
+	}
+
+	/**
+	 * Returns the location query targeting a specific location on a map.
+	 *
+	 * @return Location query or empty string in not specified yet.
+	 * @see #locationQuery(String)
+	 */
+	@NonNull
+	public String locationQuery() {
+<span class="fc bfc" id="L207" title="All 2 branches covered.">		return mLocationQuery == null ? &quot;&quot; : mLocationQuery;</span>
+	}
+
+	/**
+	 * Sets a zoom level at which should be a desired location on a map displayed to a user.
+	 *
+	 * @param level The desired zoom level in the range {@code [1, 23]}. The highest level, the closest
+	 *              to map.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #zoomLevel()
+	 */
+	public MapIntent zoomLevel(@IntRange(from = ZOOM_LEVEL_MIN, to = ZOOM_LEVEL_MAX) int level) {
+<span class="fc" id="L219">		this.mZoomLevel = Math.max(ZOOM_LEVEL_MIN, Math.min(ZOOM_LEVEL_MAX, level));</span>
+<span class="fc" id="L220">		return this;</span>
+	}
+
+	/**
+	 * Returns the zoom level at which will be map displayed.
+	 *
+	 * @return Zoom level from the range {@code [1, 23]} or {@code 0} by default.
+	 * @see #zoomLevel(int)
+	 */
+	@IntRange(from = 0, to = ZOOM_LEVEL_MAX)
+	public int zoomLevel() {
+<span class="fc" id="L231">		return mZoomLevel;</span>
+	}
+
+	/**
+	 * Sets a text by which should be labeled the requested location on map.
+	 *
+	 * @param label The desired label text.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #label()
+	 */
+	public MapIntent label(@Nullable String label) {
+<span class="fc" id="L242">		this.mLabel = label;</span>
+<span class="fc" id="L243">		return this;</span>
+	}
+
+	/**
+	 * Returns the label text for the requested map location.
+	 *
+	 * @return Label text.
+	 * @see #label(String)
+	 */
+	@NonNull
+	public String label() {
+<span class="fc bfc" id="L254" title="All 2 branches covered.">		return mLabel == null ? &quot;&quot; : mLabel;</span>
+	}
+
+	/**
+	 */
+	@Override
+	protected void ensureCanBuildOrThrow() {
+<span class="fc" id="L261">		super.ensureCanBuildOrThrow();</span>
+<span class="fc bfc" id="L262" title="All 4 branches covered.">		if (!mLatLngSet &amp;&amp; TextUtils.isEmpty(mLocationQuery)) {</span>
+<span class="fc" id="L263">			throw cannotBuildIntentException(&quot;No latitude and longitude nor location query specified.&quot;);</span>
+		}
+<span class="fc" id="L265">	}</span>
+
+	/**
+	 */
+	@NonNull
+	@Override
+	protected Intent onBuild(@NonNull Context context) {
+<span class="fc" id="L272">		final StringBuilder uriBuilder = new StringBuilder(64);</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">		if (mLatLngSet) {</span>
+<span class="fc bfc" id="L274" title="All 2 branches covered.">			if (TextUtils.isEmpty(mLabel)) {</span>
+<span class="fc" id="L275">				uriBuilder.append(mLat);</span>
+<span class="fc" id="L276">				uriBuilder.append(&quot;,&quot;);</span>
+<span class="fc" id="L277">				uriBuilder.append(mLng);</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">				if (mZoomLevel != 0) {</span>
+<span class="fc" id="L279">					uriBuilder.append(&quot;?z=&quot;);</span>
+<span class="fc" id="L280">					uriBuilder.append(mZoomLevel);</span>
+				}
+<span class="fc bfc" id="L282" title="All 2 branches covered.">				if (!TextUtils.isEmpty(mLocationQuery)) {</span>
+<span class="fc bfc" id="L283" title="All 2 branches covered.">					uriBuilder.append(mZoomLevel == 0 ? &quot;?&quot; : &quot;&amp;&quot;);</span>
+<span class="fc" id="L284">					this.appendLocationQuery(uriBuilder);</span>
+				}
+			} else {
+<span class="fc" id="L287">				uriBuilder.append(&quot;0,0?q=&quot;);</span>
+<span class="fc" id="L288">				uriBuilder.append(mLat);</span>
+<span class="fc" id="L289">				uriBuilder.append(&quot;,&quot;);</span>
+<span class="fc" id="L290">				uriBuilder.append(mLng);</span>
+<span class="fc" id="L291">				this.appendLabel(uriBuilder);</span>
+			}
+		} else {
+<span class="fc" id="L294">			uriBuilder.append(&quot;0,0?&quot;);</span>
+<span class="fc" id="L295">			this.appendLocationQuery(uriBuilder);</span>
+<span class="fc bfc" id="L296" title="All 2 branches covered.">			if (!TextUtils.isEmpty(mLabel)) {</span>
+<span class="fc" id="L297">				this.appendLabel(uriBuilder);</span>
+			}
+		}
+<span class="fc" id="L300">		final Uri locationUri = Uri.parse(URI_SCHEME + &quot;:&quot; + uriBuilder.toString());</span>
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (IntentsConfig.DEBUG_LOG_ENABLED) {</span>
+<span class="nc" id="L302">			Log.v(TAG, &quot;Building intent with uri('&quot; + locationUri.toString() + &quot;').&quot;);</span>
+		}
+<span class="fc" id="L304">		return new Intent(Intent.ACTION_VIEW, locationUri);</span>
+	}
+
+	/**
+	 * Appends {@link #mLocationQuery} to the specified &lt;var&gt;uriBuilder&lt;/var&gt;.
+	 * &lt;p&gt;
+	 * &lt;b&gt;Note&lt;/b&gt;, that before adding value of the location query there will be added also
+	 * {@code q=} query parameter. Also location query will be encoded via {@link Uri#encode(String)}.
+	 *
+	 * @param uriBuilder The builder where to append the location query value.
+	 */
+	private void appendLocationQuery(StringBuilder uriBuilder) {
+<span class="fc" id="L316">		uriBuilder.append(&quot;q=&quot;).append(Uri.encode(mLocationQuery));</span>
+<span class="fc" id="L317">	}</span>
+
+	/**
+	 * Appends {@link #mLabel} to the specified &lt;var&gt;uriBuilder&lt;/var&gt;.
+	 * &lt;p&gt;
+	 * &lt;b&gt;Note&lt;/b&gt;, that label will be enclosed in &quot;()&quot; bracekts.
+	 *
+	 * @param uriBuilder The builder where to append the label value.
+	 */
+	private void appendLabel(StringBuilder uriBuilder) {
+<span class="fc" id="L327">		uriBuilder.append(&quot;(&quot;).append(Uri.encode(mLabel)).append(&quot;)&quot;);</span>
+<span class="fc" id="L328">	}</span>
+
+	/**
+	 * Inner classes ===============================================================================
+	 */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>

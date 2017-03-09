@@ -1,0 +1,281 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ShareIntent.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.intent</a> &gt; <span class="el_source">ShareIntent.java</span></div><h1>ShareIntent.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2016 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License
+ * you may obtain at
+ *
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * You can redistribute, modify or publish any part of the code written within this file but as it
+ * is described in the License, the software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ *
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.intent;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+/**
+ * A {@link BaseIntent} builder implementation providing API for building and starting of intents
+ * targeting a &lt;b&gt;content sharing&lt;/b&gt; related applications.
+ * &lt;p&gt;
+ * This intent builder requires a mime type of the sharing content to be specified via {@link #mimeType(String)}.
+ * You may use one of predefined mime types from {@link MimeType} class. The content to be shared
+ * may be specified as string based content via {@link #content(CharSequence)} or if there is to be
+ * shared a content that is represented by an Uri, such Uri may be specified via {@link #uri(Uri)}
+ * or {@link #uris(List)}.
+ *
+ * @author Martin Albedinsky
+ */
+<span class="fc" id="L46">public class ShareIntent extends BaseIntent&lt;ShareIntent&gt; {</span>
+
+	/**
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	// private static final String TAG = &quot;ShareIntent&quot;;
+
+	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
+	 * Static members ==============================================================================
+	 */
+
+	/**
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Mime type of content to share.
+	 */
+<span class="fc" id="L72">	private String mDataType = MimeType.TEXT;</span>
+
+	/**
+	 * Title for share message.
+	 */
+	private CharSequence mTitle;
+
+	/**
+	 * Text for share message.
+	 */
+	private CharSequence mContent;
+
+	/**
+	 * Uri to content to share.
+	 */
+	private Uri mUri;
+
+	/**
+	 * List of Uris to content to share.
+	 */
+	private List&lt;Uri&gt; mUris;
+
+	/**
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 * Sets a content for the sharing intent.
+	 *
+	 * @param text The desired content text. May be {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #content()
+	 */
+	public ShareIntent content(@Nullable CharSequence text) {
+<span class="fc" id="L110">		this.mContent = text;</span>
+<span class="fc" id="L111">		return this;</span>
+	}
+
+	/**
+	 * Returns the text that will be used as content for the sharing intent.
+	 *
+	 * @return Content for sharing intent or empty string if not specified yet.
+	 * @see #content(CharSequence)
+	 */
+	@NonNull
+	public CharSequence content() {
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		return mContent == null ? &quot;&quot; : mContent;</span>
+	}
+
+	/**
+	 * Sets an Uri to content that should be shared.
+	 *
+	 * @param uri The desired content Uri. May be {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #uri()
+	 */
+	public ShareIntent uri(@Nullable Uri uri) {
+<span class="fc" id="L133">		this.mUri = uri;</span>
+<span class="fc" id="L134">		return this;</span>
+	}
+
+	/**
+	 * Returns the Uri to content to be shared.
+	 *
+	 * @return Content Uri to share or {@code null} if not specified yet.
+	 * @see #uri(Uri)
+	 */
+	@Nullable
+	public Uri uri() {
+<span class="fc" id="L145">		return mUri;</span>
+	}
+
+	/**
+	 * Same as {@link #uris(List)} for variable array of Uris.
+	 *
+	 * @param uris The desired array of content uris.
+	 * @see #uris()
+	 */
+	public ShareIntent uris(@NonNull Uri... uris) {
+<span class="fc" id="L155">		return uris(Arrays.asList(uris));</span>
+	}
+
+	/**
+	 * Sets a list of Uris to content that should be shared.
+	 *
+	 * @param uris The desired list of content uris. May be {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #uris(Uri...)
+	 * @see #uris()
+	 */
+	public ShareIntent uris(@Nullable List&lt;Uri&gt; uris) {
+<span class="fc" id="L167">		this.mUris = uris;</span>
+<span class="fc" id="L168">		return this;</span>
+	}
+
+	/**
+	 * Returns the list of Uris to content to be shared.
+	 *
+	 * @return Content Uris to share or {@link Collections#EMPTY_LIST} if there were no Uris specified
+	 * yet.
+	 * @see #uris(Uri...)
+	 * @see #uris(List)
+	 */
+	@NonNull
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public List&lt;Uri&gt; uris() {
+<span class="fc bfc" id="L182" title="All 2 branches covered.">		return mUris == null ? Collections.EMPTY_LIST : new ArrayList&lt;&gt;(mUris);</span>
+	}
+
+	/**
+	 * Sets a MIME type of the content passed via {@link #content(CharSequence)} or {@link #uri(Uri)}
+	 * or {@link #uris(List)}.
+	 * &lt;p&gt;
+	 * Default value: &lt;b&gt;{@link MimeType#TEXT}&lt;/b&gt;
+	 *
+	 * @param type The desired content MIME type.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #mimeType()
+	 */
+	public ShareIntent mimeType(@NonNull @MimeType.Value String type) {
+<span class="fc" id="L196">		this.mDataType = type;</span>
+<span class="fc" id="L197">		return this;</span>
+	}
+
+	/**
+	 * Returns the MIME type of the content to be shared.
+	 *
+	 * @return One of mime types specified in {@link MimeType} class.
+	 * @see #mimeType(String)
+	 */
+	@NonNull
+	@MimeType.Value
+	public String mimeType() {
+<span class="fc" id="L209">		return mDataType;</span>
+	}
+
+	/**
+	 * Sets a title for sharing intent.
+	 *
+	 * @param title The desired title text. May be {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #title()
+	 */
+	public ShareIntent title(@Nullable CharSequence title) {
+<span class="fc" id="L220">		this.mTitle = title;</span>
+<span class="fc" id="L221">		return this;</span>
+	}
+
+	/**
+	 * Returns the title text that will be used as title for sharing intent.
+	 *
+	 * @return Title for sharing intent or empty string if not specified yet.
+	 * @see #title(CharSequence)
+	 */
+	@NonNull
+	public CharSequence title() {
+<span class="fc bfc" id="L232" title="All 2 branches covered.">		return mTitle == null ? &quot;&quot; : mTitle;</span>
+	}
+
+	/**
+	 */
+	@Override
+	protected void ensureCanBuildOrThrow() {
+<span class="fc" id="L239">		super.ensureCanBuildOrThrow();</span>
+<span class="fc bfc" id="L240" title="All 6 branches covered.">		if (TextUtils.isEmpty(mContent) &amp;&amp; mUri == null &amp;&amp; mUris == null) {</span>
+<span class="fc" id="L241">			throw cannotBuildIntentException(&quot;No content to share specified.&quot;);</span>
+		}
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">		if (TextUtils.isEmpty(mDataType)) {</span>
+<span class="nc" id="L244">			throw cannotBuildIntentException(&quot;No content's MIME type specified.&quot;);</span>
+		}
+<span class="fc" id="L246">	}</span>
+
+	/**
+	 */
+	@NonNull
+	@Override
+	protected Intent onBuild(@NonNull Context context) {
+<span class="fc" id="L253">		final Intent intent = new Intent(Intent.ACTION_SEND);</span>
+<span class="fc" id="L254">		intent.setType(mDataType);</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		if (!TextUtils.isEmpty(mTitle)) {</span>
+<span class="fc" id="L256">			intent.putExtra(Intent.EXTRA_TITLE, mTitle);</span>
+		}
+<span class="fc bfc" id="L258" title="All 2 branches covered.">		if (!TextUtils.isEmpty(mContent)) {</span>
+<span class="fc" id="L259">			intent.putExtra(Intent.EXTRA_TEXT, mContent);</span>
+		}
+<span class="fc bfc" id="L261" title="All 2 branches covered.">		if (mUri != null) {</span>
+<span class="fc" id="L262">			intent.putExtra(Intent.EXTRA_STREAM, mUri);</span>
+<span class="fc bfc" id="L263" title="All 2 branches covered.">		} else if (mUris != null) {</span>
+<span class="fc" id="L264">			intent.setAction(Intent.ACTION_SEND_MULTIPLE);</span>
+<span class="fc" id="L265">			intent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, new ArrayList&lt;Parcelable&gt;(mUris));</span>
+		}
+<span class="fc" id="L267">		return intent;</span>
+	}
+
+	/**
+	 */
+	@Override
+	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
+<span class="nc" id="L274">		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));</span>
+	}
+
+	/**
+	 * Inner classes ===============================================================================
+	 */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>

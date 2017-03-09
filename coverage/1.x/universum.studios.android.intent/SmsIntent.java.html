@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>SmsIntent.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.intent</a> &gt; <span class="el_source">SmsIntent.java</span></div><h1>SmsIntent.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2016 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License
+ * you may obtain at
+ *
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * You can redistribute, modify or publish any part of the code written within this file but as it
+ * is described in the License, the software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ *
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.intent;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
+/**
+ * A {@link BaseIntent} builder implementation providing API for building and starting of intents
+ * targeting an &lt;b&gt;SMS sending&lt;/b&gt; related applications.
+ * &lt;p&gt;
+ * This intent builder requires only a phone number to be specified via {@link #phoneNumber(String)}.
+ *
+ * @author Martin Albedinsky
+ * @see DialerIntent
+ */
+<span class="nc" id="L37">public final class SmsIntent extends BaseIntent {</span>
+
+	/**
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	// private static final String TAG = &quot;SmsIntent&quot;;
+
+	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
+	 * Static members ==============================================================================
+	 */
+
+	/**
+	 * Uri scheme for &lt;b&gt;SMS message&lt;/b&gt; targeting intents.
+	 * &lt;p&gt;
+	 * Constant value: &lt;b&gt;sms&lt;/b&gt;
+	 */
+	public static final String URI_SCHEME = &quot;sms&quot;;
+
+	/**
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Phone number to send SMS to.
+	 */
+	private String mPhoneNumber;
+
+	/**
+	 * Body of an SMS to send.
+	 */
+	private CharSequence mBody;
+
+	/**
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 * Sets a phone number that should be passed to the SMS application.
+	 *
+	 * @param number The desired phone number. May be {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #phoneNumber()
+	 */
+	public SmsIntent phoneNumber(@Nullable String number) {
+<span class="nc" id="L93">		this.mPhoneNumber = number;</span>
+<span class="nc" id="L94">		return this;</span>
+	}
+
+	/**
+	 * Returns the phone number that will be passed to the SMS application.
+	 *
+	 * @return Phone number or empty string if not specified yet.
+	 * @see #phoneNumber(String)
+	 */
+	@NonNull
+	public String phoneNumber() {
+<span class="nc bnc" id="L105" title="All 2 branches missed.">		return mPhoneNumber == null ? &quot;&quot; : mPhoneNumber;</span>
+	}
+
+	/**
+	 * Sets a body for SMS to send.
+	 *
+	 * @param body The desired body text. May be {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #body()
+	 */
+	public SmsIntent body(@NonNull CharSequence body) {
+<span class="nc" id="L116">		this.mBody = body;</span>
+<span class="nc" id="L117">		return this;</span>
+	}
+
+	/**
+	 * Returns the body for SMS to send.
+	 *
+	 * @return Message of SMS or empty text if not specified yet.
+	 * @see #body(CharSequence)
+	 */
+	@NonNull
+	public CharSequence body() {
+<span class="nc bnc" id="L128" title="All 2 branches missed.">		return mBody == null ? &quot;&quot; : mBody;</span>
+	}
+
+	/**
+	 */
+	@Override
+	protected void ensureCanBuildOrThrow() {
+<span class="nc" id="L135">		super.ensureCanBuildOrThrow();</span>
+<span class="nc bnc" id="L136" title="All 2 branches missed.">		if (TextUtils.isEmpty(mPhoneNumber)) {</span>
+<span class="nc" id="L137">			throw cannotBuildIntentException(&quot;No phone number specified.&quot;);</span>
+		}
+<span class="nc" id="L139">	}</span>
+
+	/**
+	 */
+	@NonNull
+	@Override
+	protected Intent onBuild(@NonNull Context context) {
+<span class="nc" id="L146">		final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromParts(URI_SCHEME, mPhoneNumber, null));</span>
+<span class="nc bnc" id="L147" title="All 2 branches missed.">		if (!TextUtils.isEmpty(mBody)) {</span>
+<span class="nc" id="L148">			intent.putExtra(&quot;sms_body&quot;, mBody);</span>
+		}
+<span class="nc" id="L150">		return intent;</span>
+	}
+
+	/**
+	 * Inner classes ===============================================================================
+	 */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>

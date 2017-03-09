@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>PlayIntent.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.intent</a> &gt; <span class="el_source">PlayIntent.java</span></div><h1>PlayIntent.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2016 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License 
+ * you may obtain at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * You can redistribute, modify or publish any part of the code written within this file but as it 
+ * is described in the License, the software distributed under the License is distributed on an 
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * 
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.intent;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
+import android.text.TextUtils;
+
+/**
+ * A {@link BaseIntent} builder implementation providing API for building and starting of intents
+ * targeting the &lt;b&gt;Android Play Store&lt;/b&gt; application.
+ * &lt;p&gt;
+ * This intent builder does not require any of its parameters to be set. Package name of the
+ * application component that starts this intent will be used by default. If this intent is to be
+ * started for a specific application, package name of that application may be specified via
+ * {@link #packageName(String)}.
+ *
+ * @author Martin Albedinsky
+ */
+<span class="fc" id="L39">public final class PlayIntent extends BaseIntent&lt;PlayIntent&gt; {</span>
+
+	/**
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	// private static final String TAG = &quot;PlayIntent&quot;;
+
+	/**
+	 * Base for the url to view a particular application within Play Store.
+	 */
+	@VisibleForTesting
+	static final String VIEW_URL_BASE = &quot;https://play.google.com/store/apps/details?id=&quot;;
+
+	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
+	 * Static members ==============================================================================
+	 */
+
+	/**
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Package name of an Android application to view in Play Store.
+	 */
+	private String mPackageName;
+
+	/**
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 * Sets a package name of an Android application to be viewed in Play Store.
+	 *
+	 * @param packageName Package name of the desired application to view in store. May be {@code null}
+	 *                    to use the current application's package.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #packageName()
+	 */
+	public PlayIntent packageName(@NonNull String packageName) {
+<span class="fc" id="L90">		this.mPackageName = packageName;</span>
+<span class="fc" id="L91">		return this;</span>
+	}
+
+	/**
+	 * Returns the package name of an Android application to be viewed in Play Store.
+	 *
+	 * @return Package name or empty string if not specified yet.
+	 * @see #packageName(String)
+	 */
+	@NonNull
+	public String packageName() {
+<span class="pc bpc" id="L102" title="1 of 2 branches missed.">		return mPackageName == null ? &quot;&quot; : mPackageName;</span>
+	}
+
+	/**
+	 */
+	@NonNull
+	@Override
+	protected Intent onBuild(@NonNull Context context) {
+<span class="fc" id="L110">		return new Intent(Intent.ACTION_VIEW).setData(Uri.parse(VIEW_URL_BASE + (</span>
+<span class="pc bpc" id="L111" title="1 of 2 branches missed.">				TextUtils.isEmpty(mPackageName) ?</span>
+<span class="pc" id="L112">						context.getPackageName() :</span>
+						mPackageName
+		)));
+	}
+
+	/**
+	 * Inner classes ===============================================================================
+	 */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>

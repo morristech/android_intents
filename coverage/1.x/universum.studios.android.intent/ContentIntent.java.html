@@ -1,0 +1,537 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>ContentIntent.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.intent</a> &gt; <span class="el_source">ContentIntent.java</span></div><h1>ContentIntent.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2016 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License
+ * you may obtain at
+ *
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * You can redistribute, modify or publish any part of the code written within this file but as it
+ * is described in the License, the software distributed under the License is distributed on an
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ *
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.intent;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Fragment;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+/**
+ * A {@link BaseIntent} builder implementation providing base API for building and starting of intents
+ * targeting a &lt;b&gt;content previewing/editing/obtaining&lt;/b&gt; related applications.
+ * &lt;p&gt;
+ * The content intent may be intent to obtain or preview specific type of content, like &lt;b&gt;image,
+ * audio, video, ...&lt;/b&gt;. To decide which type of intent (obtain/preview) should be started, the
+ * current set of {@link ContentHandler} is checked, if it isn't empty an &lt;b&gt;OBTAIN&lt;/b&gt; intent will
+ * be started, so &lt;b&gt;chooser&lt;/b&gt; dialog will be showed with a list items specific for each of current
+ * providers. If there are no providers assigned to this intent builder and there was specified valid
+ * {@link Uri} to {@link #input(Uri)}, a &lt;b&gt;PREVIEW&lt;/b&gt; intent will be started.
+ *
+ * @author Martin Albedinsky
+ */
+<span class="fc" id="L56">public abstract class ContentIntent&lt;I extends ContentIntent&lt;I&gt;&gt; extends BaseIntent&lt;I&gt; {</span>
+
+	/**
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	// private static final String TAG = &quot;ContentIntent&quot;;
+
+	/**
+	 * Name format for files created by this type of intent.
+	 * &lt;p&gt;
+	 * Constant Value: &lt;b&gt;yyyyMMdd_HHmmss&lt;/b&gt;
+	 */
+	public static final String CONTENT_FILE_TIME_STAMP_FORMAT = &quot;yyyyMMdd_HHmmss&quot;;
+
+	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
+	 * Static members ==============================================================================
+	 */
+
+	/**
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Uri to content.
+	 */
+	Uri mUri;
+
+	/**
+	 * Data type of content pointed by {@link #mUri}.
+	 */
+	String mDataType;
+
+	/**
+	 * Flag indicating whether {@link #mUri} has been specified as input uri via {@link #input(Uri)}
+	 * or not.
+	 */
+	private boolean mHasInputUri;
+
+	/**
+	 * Set of content handlers that will be used to create a chooser dialog (if there are any).
+	 */
+	private List&lt;ContentHandler&gt; mHandlers;
+
+	/**
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 * Creates a time stamp in the {@link #CONTENT_FILE_TIME_STAMP_FORMAT} format for the current
+	 * {@link Date} that may be used as name for a content file.
+	 *
+	 * @return String representation of the current time stamp.
+	 */
+	@NonNull
+	public static String createContentFileTimeStamp() {
+<span class="fc" id="L123">		return new SimpleDateFormat(CONTENT_FILE_TIME_STAMP_FORMAT, Locale.getDefault()).format(new Date());</span>
+	}
+
+	/**
+	 * Same as {@link #createContentFile(String, File)} with &lt;b&gt;directory&lt;/b&gt; obtained via
+	 * {@link Environment#getExternalStoragePublicDirectory(String)} with the specified
+	 * &lt;var&gt;externalDirectoryType&lt;/var&gt; as &lt;var&gt;type&lt;/var&gt;.
+	 *
+	 * @param fileName              The desired name for the requested file.
+	 * @param externalDirectoryType One of {@link Environment#DIRECTORY_PICTURES}, {@link Environment#DIRECTORY_MOVIES},
+	 *                              ..., external directory types.
+	 */
+	@Nullable
+	public static File createContentFile(@NonNull String fileName, @NonNull String externalDirectoryType) {
+<span class="fc" id="L137">		return createContentFile(fileName, Environment.getExternalStoragePublicDirectory(externalDirectoryType));</span>
+	}
+
+	/**
+	 * Creates a new file with the given parameters within the specified &lt;var&gt;directory&lt;/var&gt;.
+	 *
+	 * @param fileName  The desired name for the requested file. Must also contain a suffix for the
+	 *                  file.
+	 * @param directory The directory within which should be the requested file created.
+	 * @return New instance of the desired file or {@code null} if some IO error occurs during its
+	 * creation process.
+	 * @see #createContentFile(String, String)
+	 */
+	@Nullable
+	public static File createContentFile(@NonNull String fileName, @NonNull File directory) {
+		try {
+<span class="fc" id="L153">			final File file = new File(directory.getPath() + File.separator + fileName);</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">			return file.createNewFile() ? file : null;</span>
+<span class="nc" id="L155">		} catch (IOException e) {</span>
+<span class="nc" id="L156">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L158">		return null;</span>
+	}
+
+	/**
+	 * Appends the specified &lt;var&gt;suffix&lt;/var&gt; to the specified &lt;var&gt;fileName&lt;/var&gt; if there is not
+	 * presented any yet.
+	 * &lt;p&gt;
+	 * &lt;b&gt;Note&lt;/b&gt;, that this will append the given suffix only in case that the specified file name
+	 * does not contain any &quot;.&quot; char.
+	 *
+	 * @param fileName      The file name where to append the suffix.
+	 * @param defaultSuffix The suffix to append if necessary.
+	 * @return The given file name with the appended suffix if necessary.
+	 */
+	static String appendDefaultFileSuffixIfNotPresented(String fileName, String defaultSuffix) {
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		return fileName.contains(&quot;.&quot;) ? fileName : fileName + defaultSuffix;</span>
+	}
+
+	/**
+	 * Attaches default content handlers to this intent.
+	 * &lt;p&gt;
+	 * Type and count of default handlers may differ depending on a specific ContentIntent implementation.
+	 *
+	 * @return This intent builder to allow methods chaining.
+	 */
+	public abstract ContentIntent withDefaultHandlers(@NonNull Context context);
+
+	/**
+	 * Same as {@link #withHandlers(List)} for variable array of ContentHandlers.
+	 *
+	 * @param handlers The desired array of handlers to add.
+	 */
+	public I withHandlers(@NonNull ContentHandler... handlers) {
+<span class="fc" id="L191">		return withHandlers(Arrays.asList(handlers));</span>
+	}
+
+	/**
+	 * Same as {@link #withHandler(ContentHandler)} for list of handler items.
+	 *
+	 * @param handlers The desired list of handlers items to add. May be {@code null} to clear the
+	 *                 current one.
+	 * @return This intent builder to allow methods chaining.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public I withHandlers(@Nullable List&lt;ContentHandler&gt; handlers) {
+<span class="pc bpc" id="L203" title="1 of 2 branches missed.">		if (handlers == null) {</span>
+<span class="nc" id="L204">			this.mHandlers = null;</span>
+		} else {
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">			if (mHandlers == null) {</span>
+<span class="fc" id="L207">				this.mHandlers = new ArrayList&lt;&gt;(handlers.size());</span>
+			}
+<span class="fc" id="L209">			mHandlers.addAll(handlers);</span>
+		}
+<span class="fc" id="L211">		return (I) this;</span>
+	}
+
+	/**
+	 * Adds the specified content &lt;var&gt;handler&lt;/var&gt; item into the list of handlers. These handler
+	 * items will be used to build a chooser dialog with list of these items (if any) so a user may
+	 * choose one of them to handle a specific content intent. Such dialog is created and showed whenever
+	 * content intent is started via {@link #startWith(IntentStarter)} and there is at least one
+	 * handler item.
+	 *
+	 * @param handler The desired handler item to add.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #withHandlers(ContentHandler...)
+	 * @see #withDefaultHandlers(Context)
+	 * @see #handlers()
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public I withHandler(@NonNull ContentHandler handler) {
+<span class="pc bpc" id="L229" title="1 of 2 branches missed.">		if (mHandlers == null) this.mHandlers = new ArrayList&lt;&gt;(1);</span>
+<span class="fc" id="L230">		mHandlers.add(handler);</span>
+<span class="fc" id="L231">		return (I) this;</span>
+	}
+
+	/**
+	 * Returns the list of content handlers to be displayed in a chooser dialog.
+	 *
+	 * @return List of handlers or {@link Collections#EMPTY_LIST} if no content handlers has been
+	 * added yet.
+	 * @see #withHandler(ContentHandler)
+	 * @see #withHandlers(List)
+	 * @see #withDefaultHandlers(Context)
+	 */
+	@NonNull
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public List&lt;ContentHandler&gt; handlers() {
+<span class="fc bfc" id="L246" title="All 2 branches covered.">		return mHandlers == null ? Collections.EMPTY_LIST : new ArrayList&lt;&gt;(mHandlers);</span>
+	}
+
+	/**
+	 * Same as {@link #input(Uri)} with &lt;var&gt;uri&lt;/var&gt; created from the given &lt;var&gt;file&lt;/var&gt; if not
+	 * {@code null}.
+	 *
+	 * @param file The desired file to be used to crate input Uri. May be {@code null} to clear
+	 *             the current input uri.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public I input(@Nullable File file) {
+<span class="fc bfc" id="L258" title="All 2 branches covered.">		if (file == null) input((Uri) null);</span>
+<span class="fc" id="L259">		else input(Uri.fromFile(file));</span>
+<span class="fc" id="L260">		return (I) this;</span>
+	}
+
+	/**
+	 * Sets an Uri to a content that should be previewed by an activity that can handle/preview the
+	 * content of the data type specified via {@link #dataType(String)}. The specified Uri will be
+	 * attached to an intent build via {@link #build(Context)} if there are no content handlers
+	 * attached to this intent builder.
+	 * &lt;p&gt;
+	 * &lt;b&gt;Note&lt;/b&gt;, that the current &lt;b&gt;data type&lt;/b&gt; will be set to {@code null}, so {@link #dataType(String)}
+	 * should be called immediately after a new Uri is set. A specific implementations of this
+	 * ContentIntent builder may here specify a default data type.
+	 *
+	 * @param uri The desired uri, which should be delivered to the handling activity. May be
+	 *            {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #uri()
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public I input(@Nullable Uri uri) {
+<span class="fc" id="L280">		this.mUri = uri;</span>
+<span class="fc" id="L281">		this.mDataType = null;</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">		this.mHasInputUri = uri != null;</span>
+<span class="fc" id="L283">		return (I) this;</span>
+	}
+
+	/**
+	 * Same as {@link #output(Uri)} with &lt;var&gt;uri&lt;/var&gt; created from the given &lt;var&gt;file&lt;/var&gt; if not
+	 * {@code null}.
+	 *
+	 * @param file The desired file to be used to crate Uri. May be {@code null} to clear the current
+	 *             output uri.
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public I output(@Nullable File file) {
+<span class="fc bfc" id="L295" title="All 2 branches covered.">		if (file == null) output((Uri) null);</span>
+<span class="fc" id="L296">		else output(Uri.fromFile(file));</span>
+<span class="fc" id="L297">		return (I) this;</span>
+	}
+
+	/**
+	 * Sets an Uri where should be stored a content provided by an activity that can handle/provide
+	 * the content of the data type specified via {@link #dataType(String)}. The specified Uri will
+	 * be attached to an intent of one of content handlers attached to this intent builder.
+	 *
+	 * @param uri The desired uri. May be {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #uri()
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public I output(@Nullable Uri uri) {
+<span class="fc" id="L311">		this.mUri = uri;</span>
+<span class="fc" id="L312">		this.mDataType = null;</span>
+<span class="fc" id="L313">		this.mHasInputUri = false;</span>
+<span class="fc" id="L314">		return (I) this;</span>
+	}
+
+	/**
+	 * Returns the uri passed either via {@link #input(Uri)} or via {@link #output(Uri)}.
+	 *
+	 * @return Current uri or {@code null} if there was no uri specified yet.
+	 */
+	@Nullable
+	public Uri uri() {
+<span class="fc" id="L324">		return mUri;</span>
+	}
+
+	/**
+	 * Sets a data (MIME) type for the content uri.
+	 *
+	 * @param type The desired MIME type for the uri specified via {@link #input(Uri)}.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #dataType()
+	 */
+	@SuppressWarnings(&quot;unchecked&quot;)
+	public I dataType(@NonNull @MimeType.Value String type) {
+<span class="fc" id="L336">		this.mDataType = type;</span>
+<span class="fc" id="L337">		return (I) this;</span>
+	}
+
+	/**
+	 * Returns the content's data (MIME) type.
+	 *
+	 * @return MIME type for the uri specified via {@link #input(Uri)} or {@code null} if no data
+	 * type has been specified yet.
+	 * @see #dataType(String)
+	 */
+	@Nullable
+	@MimeType.Value
+	public String dataType() {
+<span class="fc" id="L350">		return mDataType;</span>
+	}
+
+	/**
+	 */
+	@Override
+	public boolean startWith(@NonNull IntentStarter starter) {
+<span class="nc" id="L357">		final Context context = starter.getContext();</span>
+<span class="nc bnc" id="L358" title="All 4 branches missed.">		if (mHandlers != null &amp;&amp; !mHandlers.isEmpty()) {</span>
+<span class="nc" id="L359">			onShowChooserDialog(starter);</span>
+<span class="nc" id="L360">			return true;</span>
+		}
+<span class="nc" id="L362">		final Intent intent = build(context);</span>
+<span class="nc bnc" id="L363" title="All 2 branches missed.">		if (isActivityForIntentAvailable(context, intent)) {</span>
+<span class="nc" id="L364">			return onStartWith(starter, intent);</span>
+		}
+<span class="nc" id="L366">		notifyActivityNotFound(context);</span>
+<span class="nc" id="L367">		return false;</span>
+	}
+
+	/**
+	 * Invoked from {@link #startWith(IntentStarter)} to show a chooser dialog if there is at least
+	 * one {@link ContentHandler} attached.
+	 *
+	 * @param starter The intent starter that may be used to access context and also to start intent
+	 *                for a selected content handler from the chooser dialog.
+	 */
+	protected void onShowChooserDialog(@NonNull final IntentStarter starter) {
+<span class="nc" id="L378">		final int n = mHandlers.size();</span>
+<span class="nc" id="L379">		final CharSequence[] providerNames = new CharSequence[n];</span>
+<span class="nc bnc" id="L380" title="All 2 branches missed.">		for (int i = 0; i &lt; n; i++) {</span>
+<span class="nc" id="L381">			providerNames[i] = mHandlers.get(i).name;</span>
+		}
+<span class="nc" id="L383">		final AlertDialog.Builder builder = new AlertDialog.Builder(starter.getContext());</span>
+<span class="nc" id="L384">		builder.setTitle(mDialogTitle);</span>
+<span class="nc" id="L385">		builder.setItems(providerNames,</span>
+<span class="nc" id="L386">				new DialogInterface.OnClickListener() {</span>
+
+					/**
+					 */
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+<span class="nc" id="L392">						final ContentHandler handler = mHandlers.get(which);</span>
+<span class="nc bnc" id="L393" title="All 2 branches missed.">						if (handler.requestCode &lt; 0) starter.startIntent(handler.intent);</span>
+<span class="nc" id="L394">						else starter.startIntentForResult(handler.intent, handler.requestCode);</span>
+<span class="nc" id="L395">					}</span>
+				}
+		);
+<span class="nc" id="L398">		builder.show();</span>
+<span class="nc" id="L399">	}</span>
+
+	/**
+	 * @throws IllegalStateException If there is at least one {@link ContentHandler} attached.
+	 */
+	@NonNull
+	@Override
+	public Intent build(@NonNull Context context) {
+<span class="pc bpc" id="L407" title="3 of 4 branches missed.">		if (mHandlers != null &amp;&amp; !mHandlers.isEmpty()) {</span>
+<span class="nc" id="L408">			throw new IllegalStateException(&quot;Cannot build intent for set of ContentHandlers.&quot;);</span>
+		}
+<span class="fc" id="L410">		return super.build(context);</span>
+	}
+
+	/**
+	 */
+	@Override
+	protected void ensureCanBuildOrThrow() {
+<span class="fc" id="L417">		super.ensureCanBuildOrThrow();</span>
+<span class="fc bfc" id="L418" title="All 2 branches covered.">		if (mHasInputUri) {</span>
+<span class="fc bfc" id="L419" title="All 2 branches covered.">			if (TextUtils.isEmpty(mDataType)) {</span>
+<span class="fc" id="L420">				throw cannotBuildIntentException(&quot;No MIME type specified for input Uri.&quot;);</span>
+			}
+		} else {
+<span class="fc" id="L423">			throw cannotBuildIntentException(&quot;No input Uri specified.&quot;);</span>
+		}
+<span class="fc" id="L425">	}</span>
+
+	/**
+	 * Will be invoked only if there are no content handlers assigned to this intent builder.
+	 */
+	@NonNull
+	@Override
+	protected Intent onBuild(@NonNull Context context) {
+<span class="fc" id="L433">		return new Intent(Intent.ACTION_VIEW).setDataAndType(mUri, mDataType);</span>
+	}
+
+	/**
+	 */
+	@Override
+	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
+<span class="nc" id="L440">		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));</span>
+	}
+
+	/**
+	 * Inner classes ===============================================================================
+	 */
+
+	/**
+	 * A ContentHandler is a simple class that may be used to add one item into {@link ContentIntent}
+	 * builder. Such an item will be than displayed in a chooser dialog with all added handler items.
+	 * Each ContentHandler must have its name specified that will be displayed in a list item's view.
+	 * There must be also specified an intent that will be started whenever an item of a particular
+	 * handler is clicked.
+	 *
+	 * @author Martin Albedinsky
+	 * @see ContentHandler#ContentHandler(CharSequence, Intent)
+	 */
+<span class="fc" id="L457">	public static class ContentHandler {</span>
+
+		/**
+		 * Name of this &quot;content handler&quot; to be displayed within chooser dialog list.
+		 */
+		final CharSequence name;
+
+		/**
+		 * Intent to be started when an item addressed to this handler has been clicked.
+		 */
+		final Intent intent;
+
+		/**
+		 * Request code used for {@link IntentStarter#startIntentForResult(Intent, int)}.
+		 */
+<span class="fc" id="L472">		int requestCode = -1;</span>
+
+		/**
+		 * Creates a new instance of ContentHandler with the specified &lt;var&gt;name&lt;/var&gt; and &lt;var&gt;intent&lt;/var&gt;.
+		 * &lt;p&gt;
+		 * &lt;b&gt;Note&lt;/b&gt;, that the given &lt;var&gt;intent&lt;/var&gt; will be started via
+		 * {@link IntentStarter#startIntent(Intent)} or via {@link IntentStarter#startIntentForResult(Intent, int)}
+		 * if the request code specified via {@link #requestCode(int)} is {@code none-negative} number.
+		 *
+		 * @param name   Name of the new &quot;content handler&quot; to be displayed within &lt;b&gt;chooser dialog&lt;/b&gt;
+		 *               list.
+		 * @param intent Intent to be started when an item associated with this handler within
+		 *               &lt;b&gt;chooser dialog&lt;/b&gt; is clicked.
+		 */
+<span class="fc" id="L486">		public ContentHandler(@NonNull CharSequence name, @NonNull Intent intent) {</span>
+<span class="fc" id="L487">			this.name = name;</span>
+<span class="fc" id="L488">			this.intent = intent;</span>
+<span class="fc" id="L489">		}</span>
+
+		/**
+		 * Returns the name of this handler.
+		 *
+		 * @return This handlers's name.
+		 */
+		@NonNull
+		public CharSequence name() {
+<span class="fc" id="L498">			return name;</span>
+		}
+
+		/**
+		 * Returns the intent specified for this handler.
+		 *
+		 * @return This handler's intent.
+		 */
+		@NonNull
+		public Intent intent() {
+<span class="fc" id="L508">			return intent;</span>
+		}
+
+		/**
+		 * Sets a request code used when starting the intent specified during initialization.
+		 *
+		 * @param code The desired request code. This code should be used to identify result from
+		 *             started intent in {@link Activity#onActivityResult(int, int, Intent)} or
+		 *             {@link Fragment#onActivityResult(int, int, Intent)}, depends on from within
+		 *             which context has been {@link ContentIntent} started.
+		 * @return This handler to allow methods chaining.
+		 * @see #requestCode()
+		 */
+		public ContentHandler requestCode(int code) {
+<span class="fc" id="L522">			this.requestCode = code;</span>
+<span class="fc" id="L523">			return this;</span>
+		}
+
+		/**
+		 * Returns the request code specified for this handler.
+		 *
+		 * @return This handler's request code.
+		 * @see #requestCode(int)
+		 */
+		public int requestCode() {
+<span class="fc" id="L533">			return requestCode;</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>

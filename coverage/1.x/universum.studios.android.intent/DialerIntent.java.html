@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>DialerIntent.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=0;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">debugAndroidTest</a> &gt; <a href="index.source.html" class="el_package">universum.studios.android.intent</a> &gt; <span class="el_source">DialerIntent.java</span></div><h1>DialerIntent.java</h1><pre class="source lang-java linenums">/*
+ * =================================================================================================
+ *                             Copyright (C) 2016 Universum Studios
+ * =================================================================================================
+ *         Licensed under the Apache License, Version 2.0 or later (further &quot;License&quot; only).
+ * -------------------------------------------------------------------------------------------------
+ * You may use this file only in compliance with the License. More details and copy of this License 
+ * you may obtain at
+ * 
+ * 		http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * You can redistribute, modify or publish any part of the code written within this file but as it 
+ * is described in the License, the software distributed under the License is distributed on an 
+ * &quot;AS IS&quot; BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * 
+ * See the License for the specific language governing permissions and limitations under the License.
+ * =================================================================================================
+ */
+package universum.studios.android.intent;
+
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.text.TextUtils;
+
+/**
+ * A {@link BaseIntent} builder implementation providing API for building and starting of intents
+ * targeting a &lt;b&gt;dialer&lt;/b&gt; related applications.
+ * &lt;p&gt;
+ * This intent builder requires only a phone number to be specified via {@link #phoneNumber(String)}.
+ *
+ * @author Martin Albedinsky
+ * @see SmsIntent
+ */
+<span class="fc" id="L37">public class DialerIntent extends BaseIntent&lt;DialerIntent&gt; {</span>
+
+	/**
+	 * Constants ===================================================================================
+	 */
+
+	/**
+	 * Log TAG.
+	 */
+	// private static final String TAG = &quot;DialerIntent&quot;;
+
+	/**
+	 * Uri scheme for &lt;b&gt;phone dialer&lt;/b&gt; targeting intents.
+	 * &lt;p&gt;
+	 * Constant value: &lt;b&gt;tel&lt;/b&gt;
+	 */
+	public static final String URI_SCHEME = &quot;tel&quot;;
+
+	/**
+	 * Interface ===================================================================================
+	 */
+
+	/**
+	 * Static members ==============================================================================
+	 */
+
+	/**
+	 * Members =====================================================================================
+	 */
+
+	/**
+	 * Phone number to dial via dialer.
+	 */
+	private String mPhoneNumber;
+
+	/**
+	 * Constructors ================================================================================
+	 */
+
+	/**
+	 * Methods =====================================================================================
+	 */
+
+	/**
+	 * Sets a phone number that should be passed to the dialer application.
+	 *
+	 * @param number The desired phone number. May be {@code null} to clear the current one.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #phoneNumber()
+	 */
+	public DialerIntent phoneNumber(@Nullable String number) {
+<span class="fc" id="L88">		this.mPhoneNumber = number;</span>
+<span class="fc" id="L89">		return this;</span>
+	}
+
+	/**
+	 * Returns the phone number that will be passed to the dialer application.
+	 *
+	 * @return Phone number or empty string if not specified yet.
+	 * @see #phoneNumber(String)
+	 */
+	@NonNull
+	public String phoneNumber() {
+<span class="fc bfc" id="L100" title="All 2 branches covered.">		return mPhoneNumber == null ? &quot;&quot; : mPhoneNumber;</span>
+	}
+
+	/**
+	 */
+	@Override
+	protected void ensureCanBuildOrThrow() {
+<span class="fc" id="L107">		super.ensureCanBuildOrThrow();</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">		if (TextUtils.isEmpty(mPhoneNumber)) {</span>
+<span class="fc" id="L109">			throw cannotBuildIntentException(&quot;No phone number specified.&quot;);</span>
+		}
+<span class="fc" id="L111">	}</span>
+
+	/**
+	 */
+	@NonNull
+	@Override
+	protected Intent onBuild(@NonNull Context context) {
+<span class="fc" id="L118">		return new Intent(Intent.ACTION_DIAL, Uri.fromParts(URI_SCHEME, mPhoneNumber, null));</span>
+	}
+
+	/**
+	 * Inner classes ===============================================================================
+	 */
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
