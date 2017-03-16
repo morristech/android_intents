@@ -21,7 +21,7 @@ package universum.studios.android.samples.intent.ui;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 
-import universum.studios.android.samples.ui.SamplesNavigationActivity;
+import universum.studios.android.support.samples.ui.SamplesNavigationActivity;
 
 /**
  * @author Martin Albedinsky
@@ -32,7 +32,7 @@ public final class MainActivity extends SamplesNavigationActivity {
 	private static final String TAG = "MainActivity";
 
 	@Override
-	public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-		return true;
+	protected boolean onHandleNavigationItemSelected(@NonNull MenuItem item) {
+		return super.onHandleNavigationItemSelected(item);
 	}
 }

@@ -20,7 +20,6 @@ package universum.studios.android.intent;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
-import android.util.AndroidRuntimeException;
 
 import universum.studios.android.intent.inner.ContextBaseTest;
 
@@ -75,7 +74,7 @@ abstract class IntentBaseTest<I extends BaseIntent> extends ContextBaseTest {
 		} catch (IllegalArgumentException e) {
 			final String message = "Cannot build " + intent.getClass().getSimpleName() + ". " + cause;
 			final String eMessage = e.getMessage();
-			if (!message.contentEquals(eMessage)) {
+			if (!eMessage.contentEquals(message)) {
 				throw new AssertionError(
 						"Expected exception with message <" + message + "> but message was <" + eMessage + ">"
 				);
