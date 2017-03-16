@@ -1,7 +1,8 @@
 Intents-Contact
 ===============
 
-This module contains ...
+This module contains group of builders that may be used to build and start an intents that target 
+**contact**, like **Sms**, **Dialer**, ..., related applications.
 
 ## Download ##
 [![Bintray Badge](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Aintents/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Aintents/_latestVersion)

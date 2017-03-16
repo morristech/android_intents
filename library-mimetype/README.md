@@ -1,7 +1,8 @@
 Intents-MimeType
 ===============
 
-This module contains ...
+This module contains definitions of common **Mime types** that may be used in order to specify type 
+of a content passed in a desired `Intent`.
 
 ## Download ##
 [![Bintray Badge](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Aintents/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Aintents/_latestVersion)
