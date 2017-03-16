@@ -24,6 +24,9 @@
 	<!-- ### APPLICATION ======================================================================= -->
 
 	<string name="app_name">Intents</string>
+	<string name="app_intro">
+		Welcome to the Intents sample App.
+	</string>
 
 	<!-- ### NAVIGATION ======================================================================== -->
 

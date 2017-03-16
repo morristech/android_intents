@@ -224,12 +224,21 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 
 	@Test
 	public void testBuildTypeOfInsertEventWithInvalidEndVsBeginTime() {
-		final long beginTime = currentTime;
 		mIntent.endTime(0);
-		assertThatBuildThrowsExceptionWithCause(
-				mIntent,
-				"Specified end time(0) is before/at begin time(" + beginTime + "). Must be greater than the begin time."
-		);
+		try {
+			mIntent.build(mContext);
+		} catch (IllegalArgumentException e) {
+			final String message = "Cannot build " + mIntent.getClass().getSimpleName() + ". Specified end time(0) is before/at begin";
+			final String eMessage = e.getMessage();
+			if (!eMessage.startsWith(message)) {
+				throw new AssertionError(
+						"Expected exception with message <" + message + "...> but message was <" + eMessage + "...>"
+				);
+			}
+			return;
+		}
+		final String intentName = mIntent.getClass().getSimpleName();
+		throw new AssertionError("No exception has been thrown while building intent(" + intentName + ").");
 	}
 
 	@Test

@@ -5,6 +5,10 @@ Intents
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/682a1d82be024161bebc4b8afae1cf9a)](https://www.codacy.com/app/universum-studios/android_intents?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_intents&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/682a1d82be024161bebc4b8afae1cf9a)](https://www.codacy.com/app/universum-studios/android_intents?utm_source=github.com&utm_medium=referral&utm_content=universum-studios/android_intents&utm_campaign=Badge_Coverage)
 
+Simple builders of common intents for the Android platform.
+
+For more information please visit the **[Wiki](https://github.com/universum-studios/android_intents/wiki)**.
+
 ## Download ##
 [![Bintray Badge](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Aintents/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Aintents/_latestVersion)
 
@@ -13,6 +17,10 @@ Download the latest **[release](https://github.com/universum-studios/android_int
 ### Gradle ###
 
     compile "universum.studios.android:intents:${DESIRED_VERSION}@aar"
+
+## Modules ##
+
+This library may be also used via **separate modules**. For more information please see **[Modules](https://github.com/universum-studios/android_intents/blob/master/MODULES.md)**.
 
 ## Compatibility ##
 
