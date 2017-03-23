@@ -54,6 +54,17 @@ android {
                 '../library-mimetype/src/main/java'
         ]
         debug.java.srcDirs = release.java.srcDirs
+        androidTest.java.srcDirs = [
+                '../library/src/androidTest/java',
+                '../library-core/src/androidTest/java',
+                '../library-calendar/src/androidTest/java',
+                '../library-contact/src/androidTest/java',
+                '../library-content/src/androidTest/java',
+                '../library-map/src/androidTest/java',
+                '../library-play/src/androidTest/java',
+                '../library-web/src/androidTest/java',
+                '../library-mimetype/src/androidTest/java'
+        ]
     }
 
     compileOptions {
