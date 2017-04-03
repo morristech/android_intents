@@ -1,6 +1,6 @@
 /*
  * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
+ *                             Copyright (C) 2017 Universum Studios
  * =================================================================================================
  *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
  * -------------------------------------------------------------------------------------------------
@@ -16,36 +16,25 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-package universum.studios.android.intent;
+package universum.studios.android.intent; 
+import android.support.test.runner.AndroidJUnit4;
 
-import android.util.Log;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import universum.studios.android.test.BaseInstrumentedTest;
 
 /**
- * Configuration options for the Intents library.
- *
  * @author Martin Albedinsky
  */
-public final class IntentsConfig {
+@RunWith(AndroidJUnit4.class)
+public final class IntentStartersTest extends BaseInstrumentedTest {
+    
+	@SuppressWarnings("unused")
+	private static final String TAG = "IntentStartersTest";
 
-	/**
-	 * Flag indicating whether the <b>verbose</b> output for the Intents library trough log-cat is
-	 * enabled or not.
-	 *
-	 * @see Log#v(String, String)
-	 */
-	public static boolean LOG_ENABLED = true;
-
-	/**
-	 * Flag indicating whether the <b>debug</b> output for the Intents library trough log-cat is
-	 * enabled or not.
-	 *
-	 * @see Log#d(String, String)
-	 */
-	public static boolean DEBUG_LOG_ENABLED = false;
-
-	/**
-	 */
-	private IntentsConfig() {
-		// Not allowed to be instantiated publicly.
+    @Test
+	public void test() {
+		// todo:: implement test
 	}
 }

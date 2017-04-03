@@ -45,7 +45,7 @@ import java.util.regex.Matcher;
  */
 public class EmailIntent extends BaseIntent<EmailIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -61,11 +61,11 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 */
 	public static final String URI_SCHEME = "mailto";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
@@ -76,7 +76,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 */
 	public static final Matcher EMAIL_MATCHER = Patterns.EMAIL_ADDRESS.matcher("");
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -105,11 +105,11 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 */
 	private List<String> mBccAddresses;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -124,7 +124,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @see #to(String...)
 	 * @see #addresses()
 	 */
-	public EmailIntent to(@NonNull String address) {
+	public EmailIntent to(@NonNull final String address) {
 		if (mAddresses == null) this.mAddresses = new ArrayList<>(1);
 		appendEmailAddress(mAddresses, address);
 		return this;
@@ -135,7 +135,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @param addresses The desired array of e-mail addresses to add.
 	 */
-	public EmailIntent to(@NonNull String... addresses) {
+	public EmailIntent to(@NonNull final String... addresses) {
 		return to(Arrays.asList(addresses));
 	}
 
@@ -150,7 +150,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #addresses()
 	 */
-	public EmailIntent to(@Nullable List<String> addresses) {
+	public EmailIntent to(@Nullable final List<String> addresses) {
 		if (addresses == null) {
 			this.mAddresses = null;
 		} else {
@@ -188,7 +188,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @see #cc(String...)
 	 * @see #ccAddresses()
 	 */
-	public EmailIntent cc(@NonNull String address) {
+	public EmailIntent cc(@NonNull final String address) {
 		if (mCcAddresses == null) this.mCcAddresses = new ArrayList<>(1);
 		appendEmailAddress(mCcAddresses, address);
 		return this;
@@ -199,7 +199,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @param addresses The desired array of e-mail addresses to add.
 	 */
-	public EmailIntent cc(@NonNull String... addresses) {
+	public EmailIntent cc(@NonNull final String... addresses) {
 		return cc(Arrays.asList(addresses));
 	}
 
@@ -216,7 +216,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @see #cc(String...)
 	 * @see #ccAddresses()
 	 */
-	public EmailIntent cc(@Nullable List<String> addresses) {
+	public EmailIntent cc(@Nullable final List<String> addresses) {
 		if (addresses == null) {
 			this.mCcAddresses = null;
 		} else {
@@ -254,7 +254,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @see #bcc(String...)
 	 * @see #bccAddresses()
 	 */
-	public EmailIntent bcc(@NonNull String address) {
+	public EmailIntent bcc(@NonNull final String address) {
 		if (mBccAddresses == null) this.mBccAddresses = new ArrayList<>(1);
 		appendEmailAddress(mBccAddresses, address);
 		return this;
@@ -265,7 +265,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @param addresses The desired array of e-mail addresses to add.
 	 */
-	public EmailIntent bcc(@NonNull String... addresses) {
+	public EmailIntent bcc(@NonNull final String... addresses) {
 		return bcc(Arrays.asList(addresses));
 	}
 
@@ -282,7 +282,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @see #bcc(String...)
 	 * @see #bccAddresses()
 	 */
-	public EmailIntent bcc(@Nullable List<String> addresses) {
+	public EmailIntent bcc(@Nullable final List<String> addresses) {
 		if (addresses == null) {
 			this.mBccAddresses = null;
 		} else {
@@ -316,7 +316,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @return This intent builder to allow methods chaining.en
 	 * @see #subject()
 	 */
-	public EmailIntent subject(@NonNull CharSequence subject) {
+	public EmailIntent subject(@NonNull final CharSequence subject) {
 		this.mSubject = subject;
 		return this;
 	}
@@ -339,7 +339,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #message()
 	 */
-	public EmailIntent message(@NonNull CharSequence message) {
+	public EmailIntent message(@NonNull final CharSequence message) {
 		this.mMessage = message;
 		return this;
 	}
@@ -369,7 +369,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		final Intent intent = new Intent(Intent.ACTION_SENDTO, createUri(mAddresses));
 		intent.putExtra(Intent.EXTRA_SUBJECT, mSubject);
 		intent.putExtra(Intent.EXTRA_TEXT, mMessage);
@@ -391,7 +391,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * addresses is empty.
 	 */
 	@Nullable
-	public static Uri createUri(@NonNull List<String> addresses) {
+	public static Uri createUri(@NonNull final List<String> addresses) {
 		final int n = addresses.size();
 		if (n == 0) {
 			return null;
@@ -412,7 +412,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param addresses The list of addresses to be transformed.
 	 * @return Array of same size as the specified addresses and also with the same content.
 	 */
-	private static String[] addressesToArray(List<String> addresses) {
+	private static String[] addressesToArray(final List<String> addresses) {
 		final String[] addressesArray = new String[addresses.size()];
 		addresses.toArray(addressesArray);
 		return addressesArray;
@@ -421,7 +421,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	/**
 	 */
 	@Override
-	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
+	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
 		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));
 	}
 
@@ -431,7 +431,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param list      The list into which to append the addresses.
 	 * @param addresses Addresses to append.
 	 */
-	private static void appendEmailAddresses(List<String> list, List<String> addresses) {
+	private static void appendEmailAddresses(final List<String> list, final List<String> addresses) {
 		if (!addresses.isEmpty()) for (final String address : addresses) appendEmailAddress(list, address);
 	}
 
@@ -442,7 +442,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param list    The list into which to append the address.
 	 * @param address Address to append.
 	 */
-	private static void appendEmailAddress(List<String> list, String address) {
+	private static void appendEmailAddress(final List<String> list, final String address) {
 		if (EMAIL_MATCHER.reset(address).matches()) {
 			list.add(address);
 			return;
@@ -450,7 +450,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 		Log.e(TAG, "Invalid e-mail address('" + address + "') specified.");
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

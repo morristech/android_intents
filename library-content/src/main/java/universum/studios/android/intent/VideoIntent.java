@@ -38,7 +38,7 @@ import java.io.File;
  */
 public class VideoIntent extends ContentIntent<VideoIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -64,15 +64,15 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 */
 	public static final String VIDEO_FILE_NAME_FORMAT = "VIDEO_%s";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -81,11 +81,11 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 */
 	private ContentHandler mCameraHandler;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -118,7 +118,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * @see #createCameraIntent()
 	 */
 	@NonNull
-	public static Intent createCameraIntent(@Nullable File outputFile) {
+	public static Intent createCameraIntent(@Nullable final File outputFile) {
 		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));
 	}
 
@@ -134,7 +134,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * @see #createCameraIntent(File)
 	 */
 	@NonNull
-	public static Intent createCameraIntent(@Nullable Uri outputUri) {
+	public static Intent createCameraIntent(@Nullable final Uri outputUri) {
 		final Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 		if (outputUri != null) {
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
@@ -160,7 +160,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * @see #createVideoFile()
 	 */
 	@Nullable
-	public static File createVideoFile(@NonNull String fileName) {
+	public static File createVideoFile(@NonNull final String fileName) {
 		return createContentFile(appendDefaultFileSuffixIfNotPresented(fileName, ".mp4"), Environment.DIRECTORY_MOVIES);
 	}
 
@@ -170,7 +170,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 */
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public VideoIntent withDefaultHandlers(@NonNull Context context) {
+	public VideoIntent withDefaultHandlers(@NonNull final Context context) {
 		withHandlers(
 				onCreateGalleryHandler(context.getResources()),
 				mCameraHandler = onCreateCameraHandler(context.getResources())
@@ -193,7 +193,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * @see #onCreateCameraHandler(Resources)
 	 */
 	@NonNull
-	protected ContentHandler onCreateGalleryHandler(@NonNull Resources resources) {
+	protected ContentHandler onCreateGalleryHandler(@NonNull final Resources resources) {
 		return new ContentHandler(
 				"Gallery",
 				createGalleryIntent()
@@ -210,7 +210,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * @see #onCreateGalleryHandler(Resources)
 	 */
 	@NonNull
-	protected ContentHandler onCreateCameraHandler(@NonNull Resources resources) {
+	protected ContentHandler onCreateCameraHandler(@NonNull final Resources resources) {
 		return new ContentHandler(
 				"Camera",
 				createCameraIntent()
@@ -242,7 +242,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 */
 	@Override
-	public VideoIntent output(@Nullable Uri uri) {
+	public VideoIntent output(@Nullable final Uri uri) {
 		super.output(uri);
 		if (mCameraHandler != null) {
 			if (mUri == null) {
@@ -254,7 +254,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 		return this;
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

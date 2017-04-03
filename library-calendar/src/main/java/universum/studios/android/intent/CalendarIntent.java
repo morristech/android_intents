@@ -75,7 +75,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class CalendarIntent extends BaseIntent<CalendarIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -141,15 +141,15 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	public @interface Availability {
 	}
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -188,7 +188,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 */
 	private int mAvailability = AVAILABILITY_BUSY;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
@@ -206,7 +206,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 		this.mEndTime = mBeginTime + 1;
 	}
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -220,7 +220,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #type()
 	 */
-	public CalendarIntent type(@Type int type) {
+	public CalendarIntent type(@Type final int type) {
 		this.mType = type;
 		return this;
 	}
@@ -250,7 +250,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @see #eventId()
 	 * @see #type(int)
 	 */
-	public CalendarIntent eventId(@IntRange(from = 1, to = Long.MAX_VALUE) long eventId) {
+	public CalendarIntent eventId(@IntRange(from = 1, to = Long.MAX_VALUE) final long eventId) {
 		this.mEventId = eventId;
 		return this;
 	}
@@ -275,7 +275,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #time()
 	 */
-	public CalendarIntent time(@IntRange(from = 0, to = Long.MAX_VALUE) long time) {
+	public CalendarIntent time(@IntRange(from = 0, to = Long.MAX_VALUE) final long time) {
 		this.mBeginTime = time;
 		return this;
 	}
@@ -302,7 +302,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @see #type(int)
 	 * @see #beginTime()
 	 */
-	public CalendarIntent beginTime(@IntRange(from = 0, to = Long.MAX_VALUE) long beginTime) {
+	public CalendarIntent beginTime(@IntRange(from = 0, to = Long.MAX_VALUE) final long beginTime) {
 		this.mBeginTime = beginTime;
 		return this;
 	}
@@ -330,7 +330,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @see #type(int)
 	 * @see #endTime()
 	 */
-	public CalendarIntent endTime(@IntRange(from = 0, to = Long.MAX_VALUE) long endTime) {
+	public CalendarIntent endTime(@IntRange(from = 0, to = Long.MAX_VALUE) final long endTime) {
 		this.mEndTime = endTime;
 		return this;
 	}
@@ -354,7 +354,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #title()
 	 */
-	public CalendarIntent title(@Nullable CharSequence title) {
+	public CalendarIntent title(@Nullable final CharSequence title) {
 		this.mTitle = title;
 		return this;
 	}
@@ -378,7 +378,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #description()
 	 */
-	public CalendarIntent description(@Nullable CharSequence description) {
+	public CalendarIntent description(@Nullable final CharSequence description) {
 		this.mDescription = description;
 		return this;
 	}
@@ -402,7 +402,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #location()
 	 */
-	public CalendarIntent location(@Nullable CharSequence location) {
+	public CalendarIntent location(@Nullable final CharSequence location) {
 		this.mLocation = location;
 		return this;
 	}
@@ -428,7 +428,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #availability()
 	 */
-	public CalendarIntent availability(@Availability int availability) {
+	public CalendarIntent availability(@Availability final int availability) {
 		this.mAvailability = availability;
 		return this;
 	}
@@ -496,7 +496,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	@NonNull
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		switch (mType) {
 			case TYPE_VIEW:
 				final Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
@@ -526,7 +526,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 		}
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

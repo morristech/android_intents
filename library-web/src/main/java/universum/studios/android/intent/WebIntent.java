@@ -41,7 +41,7 @@ import java.util.regex.Pattern;
  */
 public class WebIntent extends BaseIntent<WebIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -50,11 +50,11 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 */
 	// private static final String TAG = "WebIntent";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
@@ -76,7 +76,7 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 */
 	@VisibleForTesting static final String HTTP_PREFIX = "http://";
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -85,11 +85,11 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 */
 	private String mUrl;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -104,7 +104,7 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #url()
 	 */
-	public WebIntent url(@NonNull String url) {
+	public WebIntent url(@NonNull final String url) {
 		if (WEB_URL_MATCHER.reset(url).matches()) {
 			if (HTTP_FORMAT_MATCHER.reset(url).matches()) {
 				this.mUrl = url;
@@ -140,11 +140,11 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		return new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

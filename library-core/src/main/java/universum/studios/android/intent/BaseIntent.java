@@ -61,7 +61,7 @@ import android.widget.Toast;
  */
 public abstract class BaseIntent<I extends BaseIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -70,15 +70,15 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 */
 	// private static final String TAG = "BaseIntent";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -102,11 +102,11 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 */
 	private boolean mApplyTransitions;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -120,7 +120,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @see #dialogTitle()
 	 */
 	@SuppressWarnings("unchecked")
-	public I dialogTitle(@Nullable CharSequence title) {
+	public I dialogTitle(@Nullable final CharSequence title) {
 		this.mDialogTitle = title;
 		return (I) this;
 	}
@@ -144,7 +144,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @see #activityNotFoundMessage()
 	 */
 	@SuppressWarnings("unchecked")
-	public I activityNotFoundMessage(@Nullable CharSequence message) {
+	public I activityNotFoundMessage(@Nullable final CharSequence message) {
 		this.mActivityNotFoundMessage = message;
 		return (I) this;
 	}
@@ -171,7 +171,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #enterTransition()
 	 */
-	public I enterTransition(@AnimRes int transition) {
+	public I enterTransition(@AnimRes final int transition) {
 		return transitions(transition, mExitTransition);
 	}
 
@@ -196,7 +196,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #exitTransition()
 	 */
-	public I exitTransition(@AnimRes int transition) {
+	public I exitTransition(@AnimRes final int transition) {
 		return transitions(mEnterTransition, transition);
 	}
 
@@ -222,7 +222,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @see #exitTransition(int)
 	 */
 	@SuppressWarnings("unchecked")
-	public I transitions(@AnimRes int enterTransition, @AnimRes int exitTransition) {
+	public I transitions(@AnimRes final int enterTransition, @AnimRes final int exitTransition) {
 		if (enterTransition >= 0 || exitTransition >= 0) {
 			this.mEnterTransition = enterTransition;
 			this.mExitTransition = exitTransition;
@@ -241,7 +241,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *                for default available starters.
 	 * @return {@code True} if the intent has been successfully started, {@code false} otherwise.
 	 */
-	public boolean startWith(@NonNull IntentStarter starter) {
+	public boolean startWith(@NonNull final IntentStarter starter) {
 		final Context context = starter.getContext();
 		final Intent intent = build(context);
 		if (isActivityForIntentAvailable(context, intent)) {
@@ -260,7 +260,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *                                  requested intent.
 	 */
 	@NonNull
-	public Intent build(@NonNull Context context) {
+	public Intent build(@NonNull final Context context) {
 		ensureCanBuildOrThrow();
 		return onBuild(context);
 	}
@@ -298,7 +298,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 */
 	@CheckResult
 	@SuppressWarnings("ConstantConditions")
-	public static boolean isActivityForIntentAvailable(@NonNull Context context, @NonNull Intent intent) {
+	public static boolean isActivityForIntentAvailable(@NonNull final Context context, @NonNull final Intent intent) {
 		return intent.resolveActivity(context.getPackageManager()) != null;
 	}
 
@@ -308,7 +308,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *
 	 * @param message Message to be included into exception.
 	 */
-	protected final IllegalArgumentException cannotBuildIntentException(@NonNull String message) {
+	protected final IllegalArgumentException cannotBuildIntentException(@NonNull final String message) {
 		return new IllegalArgumentException("Cannot build " + getClass().getSimpleName() + ". " + message);
 	}
 
@@ -322,7 +322,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @param intent  The intent instance created by this intent builder.
 	 * @return {@code True} to indicate that the intent has been started, {@code false} otherwise.
 	 */
-	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
+	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
 		starter.startIntent(intent);
 		if (mApplyTransitions) {
 			starter.overridePendingTransition(mEnterTransition, mExitTransition);
@@ -339,11 +339,11 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @param context The context obtained from the {@link IntentStarter}.
 	 * @see #activityNotFoundMessage(CharSequence)
 	 */
-	protected void notifyActivityNotFound(@NonNull Context context) {
+	protected void notifyActivityNotFound(@NonNull final Context context) {
 		Toast.makeText(context, mActivityNotFoundMessage, Toast.LENGTH_LONG).show();
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

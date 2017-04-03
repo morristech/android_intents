@@ -36,7 +36,7 @@ import android.text.TextUtils;
  */
 public class DialerIntent extends BaseIntent<DialerIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -52,15 +52,15 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	 */
 	public static final String URI_SCHEME = "tel";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -69,11 +69,11 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	 */
 	private String mPhoneNumber;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -84,7 +84,7 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #phoneNumber()
 	 */
-	public DialerIntent phoneNumber(@Nullable String number) {
+	public DialerIntent phoneNumber(@Nullable final String number) {
 		this.mPhoneNumber = number;
 		return this;
 	}
@@ -114,11 +114,11 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		return new Intent(Intent.ACTION_DIAL, Uri.fromParts(URI_SCHEME, mPhoneNumber, null));
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }
