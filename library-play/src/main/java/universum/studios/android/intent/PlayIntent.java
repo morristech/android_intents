@@ -38,7 +38,7 @@ import android.text.TextUtils;
  */
 public final class PlayIntent extends BaseIntent<PlayIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -53,15 +53,15 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	@VisibleForTesting
 	static final String VIEW_URL_BASE = "https://play.google.com/store/apps/details?id=";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -70,11 +70,11 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 */
 	private String mPackageName;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -86,7 +86,7 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #packageName()
 	 */
-	public PlayIntent packageName(@NonNull String packageName) {
+	public PlayIntent packageName(@NonNull final String packageName) {
 		this.mPackageName = packageName;
 		return this;
 	}
@@ -106,7 +106,7 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		return new Intent(Intent.ACTION_VIEW).setData(Uri.parse(VIEW_URL_BASE + (
 				TextUtils.isEmpty(mPackageName) ?
 						context.getPackageName() :
@@ -114,7 +114,7 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 		)));
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

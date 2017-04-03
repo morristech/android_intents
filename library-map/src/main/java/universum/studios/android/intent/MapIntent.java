@@ -26,7 +26,6 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * A {@link BaseIntent} builder implementation providing API for building and starting of intents
@@ -47,7 +46,7 @@ import android.util.Log;
  */
 public class MapIntent extends BaseIntent<MapIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -93,15 +92,15 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 	public static final int ZOOM_LEVEL_MAX = 23;
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -135,11 +134,11 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 	private boolean mLatLngSet;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -152,7 +151,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @see #lat()
 	 * @see #lng()
 	 */
-	public MapIntent location(@FloatRange(from = LAT_MIN, to = LAT_MAX) double lat, @FloatRange(from = LNG_MIN, to = LNG_MAX) double lng) {
+	public MapIntent location(@FloatRange(from = LAT_MIN, to = LAT_MAX) final double lat, @FloatRange(from = LNG_MIN, to = LNG_MAX) final double lng) {
 		this.mLat = Math.max(LAT_MIN, Math.min(LAT_MAX, lat));
 		this.mLng = Math.max(LNG_MIN, Math.min(LNG_MAX, lng));
 		this.mLatLngSet = true;
@@ -191,7 +190,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #locationQuery()
 	 */
-	public MapIntent locationQuery(@Nullable String query) {
+	public MapIntent locationQuery(@Nullable final String query) {
 		this.mLocationQuery = query;
 		return this;
 	}
@@ -215,7 +214,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #zoomLevel()
 	 */
-	public MapIntent zoomLevel(@IntRange(from = ZOOM_LEVEL_MIN, to = ZOOM_LEVEL_MAX) int level) {
+	public MapIntent zoomLevel(@IntRange(from = ZOOM_LEVEL_MIN, to = ZOOM_LEVEL_MAX) final int level) {
 		this.mZoomLevel = Math.max(ZOOM_LEVEL_MIN, Math.min(ZOOM_LEVEL_MAX, level));
 		return this;
 	}
@@ -238,7 +237,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #label()
 	 */
-	public MapIntent label(@Nullable String label) {
+	public MapIntent label(@Nullable final String label) {
 		this.mLabel = label;
 		return this;
 	}
@@ -268,7 +267,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		final StringBuilder uriBuilder = new StringBuilder(64);
 		if (mLatLngSet) {
 			if (TextUtils.isEmpty(mLabel)) {
@@ -297,11 +296,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 				this.appendLabel(uriBuilder);
 			}
 		}
-		final Uri locationUri = Uri.parse(URI_SCHEME + ":" + uriBuilder.toString());
-		if (IntentsConfig.DEBUG_LOG_ENABLED) {
-			Log.v(TAG, "Building intent with uri('" + locationUri.toString() + "').");
-		}
-		return new Intent(Intent.ACTION_VIEW, locationUri);
+		return new Intent(Intent.ACTION_VIEW, Uri.parse(URI_SCHEME + ":" + uriBuilder.toString()));
 	}
 
 	/**
@@ -312,7 +307,7 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 *
 	 * @param uriBuilder The builder where to append the location query value.
 	 */
-	private void appendLocationQuery(StringBuilder uriBuilder) {
+	private void appendLocationQuery(final StringBuilder uriBuilder) {
 		uriBuilder.append("q=").append(Uri.encode(mLocationQuery));
 	}
 
@@ -323,11 +318,11 @@ public class MapIntent extends BaseIntent<MapIntent> {
 	 *
 	 * @param uriBuilder The builder where to append the label value.
 	 */
-	private void appendLabel(StringBuilder uriBuilder) {
+	private void appendLabel(final StringBuilder uriBuilder) {
 		uriBuilder.append("(").append(Uri.encode(mLabel)).append(")");
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

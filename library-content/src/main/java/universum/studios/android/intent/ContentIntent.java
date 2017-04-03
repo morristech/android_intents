@@ -55,7 +55,7 @@ import java.util.Locale;
  */
 public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseIntent<I> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -71,15 +71,15 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 */
 	public static final String CONTENT_FILE_TIME_STAMP_FORMAT = "yyyyMMdd_HHmmss";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -104,11 +104,11 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 */
 	private List<ContentHandler> mHandlers;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -133,7 +133,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *                              ..., external directory types.
 	 */
 	@Nullable
-	public static File createContentFile(@NonNull String fileName, @NonNull String externalDirectoryType) {
+	public static File createContentFile(@NonNull final String fileName, @NonNull final String externalDirectoryType) {
 		return createContentFile(fileName, Environment.getExternalStoragePublicDirectory(externalDirectoryType));
 	}
 
@@ -148,7 +148,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @see #createContentFile(String, String)
 	 */
 	@Nullable
-	public static File createContentFile(@NonNull String fileName, @NonNull File directory) {
+	public static File createContentFile(@NonNull final String fileName, @NonNull final File directory) {
 		try {
 			final File file = new File(directory.getPath() + File.separator + fileName);
 			return file.createNewFile() ? file : null;
@@ -169,7 +169,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @param defaultSuffix The suffix to append if necessary.
 	 * @return The given file name with the appended suffix if necessary.
 	 */
-	static String appendDefaultFileSuffixIfNotPresented(String fileName, String defaultSuffix) {
+	static String appendDefaultFileSuffixIfNotPresented(final String fileName, final String defaultSuffix) {
 		return fileName.contains(".") ? fileName : fileName + defaultSuffix;
 	}
 
@@ -180,14 +180,14 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @return This intent builder to allow methods chaining.
 	 */
-	public abstract ContentIntent withDefaultHandlers(@NonNull Context context);
+	public abstract ContentIntent withDefaultHandlers(@NonNull final Context context);
 
 	/**
 	 * Same as {@link #withHandlers(List)} for variable array of ContentHandlers.
 	 *
 	 * @param handlers The desired array of handlers to add.
 	 */
-	public I withHandlers(@NonNull ContentHandler... handlers) {
+	public I withHandlers(@NonNull final ContentHandler... handlers) {
 		return withHandlers(Arrays.asList(handlers));
 	}
 
@@ -199,7 +199,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @return This intent builder to allow methods chaining.
 	 */
 	@SuppressWarnings("unchecked")
-	public I withHandlers(@Nullable List<ContentHandler> handlers) {
+	public I withHandlers(@Nullable final List<ContentHandler> handlers) {
 		if (handlers == null) {
 			this.mHandlers = null;
 		} else {
@@ -225,7 +225,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @see #handlers()
 	 */
 	@SuppressWarnings("unchecked")
-	public I withHandler(@NonNull ContentHandler handler) {
+	public I withHandler(@NonNull final ContentHandler handler) {
 		if (mHandlers == null) this.mHandlers = new ArrayList<>(1);
 		mHandlers.add(handler);
 		return (I) this;
@@ -254,7 +254,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *             the current input uri.
 	 */
 	@SuppressWarnings("unchecked")
-	public I input(@Nullable File file) {
+	public I input(@Nullable final File file) {
 		if (file == null) input((Uri) null);
 		else input(Uri.fromFile(file));
 		return (I) this;
@@ -276,7 +276,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @see #uri()
 	 */
 	@SuppressWarnings("unchecked")
-	public I input(@Nullable Uri uri) {
+	public I input(@Nullable final Uri uri) {
 		this.mUri = uri;
 		this.mDataType = null;
 		this.mHasInputUri = uri != null;
@@ -291,7 +291,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *             output uri.
 	 */
 	@SuppressWarnings("unchecked")
-	public I output(@Nullable File file) {
+	public I output(@Nullable final File file) {
 		if (file == null) output((Uri) null);
 		else output(Uri.fromFile(file));
 		return (I) this;
@@ -307,7 +307,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @see #uri()
 	 */
 	@SuppressWarnings("unchecked")
-	public I output(@Nullable Uri uri) {
+	public I output(@Nullable final Uri uri) {
 		this.mUri = uri;
 		this.mDataType = null;
 		this.mHasInputUri = false;
@@ -332,7 +332,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @see #dataType()
 	 */
 	@SuppressWarnings("unchecked")
-	public I dataType(@NonNull @MimeType.Value String type) {
+	public I dataType(@NonNull @MimeType.Value final String type) {
 		this.mDataType = type;
 		return (I) this;
 	}
@@ -353,7 +353,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	/**
 	 */
 	@Override
-	public boolean startWith(@NonNull IntentStarter starter) {
+	public boolean startWith(@NonNull final IntentStarter starter) {
 		final Context context = starter.getContext();
 		if (mHandlers != null && !mHandlers.isEmpty()) {
 			onShowChooserDialog(starter);
@@ -403,7 +403,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 */
 	@NonNull
 	@Override
-	public Intent build(@NonNull Context context) {
+	public Intent build(@NonNull final Context context) {
 		if (mHandlers != null && !mHandlers.isEmpty()) {
 			throw new IllegalStateException("Cannot build intent for set of ContentHandlers.");
 		}
@@ -429,18 +429,18 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		return new Intent(Intent.ACTION_VIEW).setDataAndType(mUri, mDataType);
 	}
 
 	/**
 	 */
 	@Override
-	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
+	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
 		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 
@@ -483,7 +483,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 		 * @param intent Intent to be started when an item associated with this handler within
 		 *               <b>chooser dialog</b> is clicked.
 		 */
-		public ContentHandler(@NonNull CharSequence name, @NonNull Intent intent) {
+		public ContentHandler(@NonNull final CharSequence name, @NonNull final Intent intent) {
 			this.name = name;
 			this.intent = intent;
 		}
@@ -518,7 +518,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 		 * @return This handler to allow methods chaining.
 		 * @see #requestCode()
 		 */
-		public ContentHandler requestCode(int code) {
+		public ContentHandler requestCode(final int code) {
 			this.requestCode = code;
 			return this;
 		}

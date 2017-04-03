@@ -36,7 +36,7 @@ import android.text.TextUtils;
  */
 public final class SmsIntent extends BaseIntent {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -45,11 +45,11 @@ public final class SmsIntent extends BaseIntent {
 	 */
 	// private static final String TAG = "SmsIntent";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
@@ -60,7 +60,7 @@ public final class SmsIntent extends BaseIntent {
 	 */
 	public static final String URI_SCHEME = "sms";
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -74,11 +74,11 @@ public final class SmsIntent extends BaseIntent {
 	 */
 	private CharSequence mBody;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -89,7 +89,7 @@ public final class SmsIntent extends BaseIntent {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #phoneNumber()
 	 */
-	public SmsIntent phoneNumber(@Nullable String number) {
+	public SmsIntent phoneNumber(@Nullable final String number) {
 		this.mPhoneNumber = number;
 		return this;
 	}
@@ -112,7 +112,7 @@ public final class SmsIntent extends BaseIntent {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #body()
 	 */
-	public SmsIntent body(@NonNull CharSequence body) {
+	public SmsIntent body(@NonNull final CharSequence body) {
 		this.mBody = body;
 		return this;
 	}
@@ -142,7 +142,7 @@ public final class SmsIntent extends BaseIntent {
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromParts(URI_SCHEME, mPhoneNumber, null));
 		if (!TextUtils.isEmpty(mBody)) {
 			intent.putExtra("sms_body", mBody);
@@ -150,7 +150,7 @@ public final class SmsIntent extends BaseIntent {
 		return intent;
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

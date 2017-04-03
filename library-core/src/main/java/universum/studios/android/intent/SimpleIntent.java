@@ -37,7 +37,7 @@ import android.support.annotation.Nullable;
  */
 public class SimpleIntent extends BaseIntent<SimpleIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -59,15 +59,15 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 */
 	private static final int TYPE_ACTION = 0x02;
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -101,11 +101,11 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 */
 	private boolean mForResult;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -118,7 +118,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #activityClass()
 	 */
-	public SimpleIntent activityClass(@NonNull Class<? extends Activity> activityClass) {
+	public SimpleIntent activityClass(@NonNull final Class<? extends Activity> activityClass) {
 		this.mActivityClass = activityClass;
 		this.mType = TYPE_ACTIVITY;
 		return this;
@@ -146,7 +146,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #action()
 	 */
-	public SimpleIntent action(@NonNull String action) {
+	public SimpleIntent action(@NonNull final String action) {
 		this.mAction = action;
 		this.mType = TYPE_ACTION;
 		return this;
@@ -172,7 +172,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #flags()
 	 */
-	public SimpleIntent flags(@IntRange(from = 0, to = Integer.MAX_VALUE) int flags) {
+	public SimpleIntent flags(@IntRange(from = 0, to = Integer.MAX_VALUE) final int flags) {
 		this.mFlags = flags;
 		return this;
 	}
@@ -185,7 +185,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @see #flags(int)
 	 * @see #flags()
 	 */
-	public SimpleIntent flag(@IntRange(from = 1, to = Integer.MAX_VALUE) int flag) {
+	public SimpleIntent flag(@IntRange(from = 1, to = Integer.MAX_VALUE) final int flag) {
 		this.mFlags |= flag;
 		return this;
 	}
@@ -211,7 +211,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #requestCode()
 	 */
-	public SimpleIntent requestCode(int requestCode) {
+	public SimpleIntent requestCode(final int requestCode) {
 		this.mRequestCode = requestCode;
 		this.mForResult = mRequestCode >= 0;
 		return this;
@@ -252,7 +252,7 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		switch (mType) {
 			case TYPE_ACTION:
 				return new Intent(mAction).setFlags(mFlags);
@@ -265,13 +265,13 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 */
 	@Override
 	@SuppressWarnings("ResourceType")
-	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
+	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
 		if (mForResult) starter.startIntentForResult(intent, mRequestCode);
 		else starter.startIntent(intent);
 		return true;
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }

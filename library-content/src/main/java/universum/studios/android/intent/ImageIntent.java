@@ -46,7 +46,7 @@ import java.io.IOException;
  */
 public class ImageIntent extends ContentIntent<ImageIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -72,15 +72,15 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 */
 	public static final String IMAGE_FILE_NAME_FORMAT = "IMAGE_%s";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -89,11 +89,11 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 */
 	private ContentHandler mCameraHandler;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -125,7 +125,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 * @see #createCameraIntent()
 	 */
 	@NonNull
-	public static Intent createCameraIntent(@Nullable File outputFile) {
+	public static Intent createCameraIntent(@Nullable final File outputFile) {
 		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));
 	}
 
@@ -141,7 +141,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 * @see #createCameraIntent(File)
 	 */
 	@NonNull
-	public static Intent createCameraIntent(@Nullable Uri outputUri) {
+	public static Intent createCameraIntent(@Nullable final Uri outputUri) {
 		final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		if (outputUri != null) {
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
@@ -167,7 +167,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 * @see #createImageFile()
 	 */
 	@Nullable
-	public static File createImageFile(@NonNull String fileName) {
+	public static File createImageFile(@NonNull final String fileName) {
 		return createContentFile(appendDefaultFileSuffixIfNotPresented(fileName, ".jpg"), Environment.DIRECTORY_PICTURES);
 	}
 
@@ -194,7 +194,13 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 */
 	@Nullable
 	@SuppressWarnings("deprecation")
-	static Bitmap processResultIntent(int requestCode, int resultCode, @Nullable Intent data, @NonNull Context context, @Nullable ImageOptions options) {
+	static Bitmap processResultIntent(
+			final int requestCode,
+			final int resultCode,
+			@Nullable final Intent data,
+			@NonNull final Context context,
+			@Nullable final ImageOptions options
+	) {
 		if (data == null || resultCode != Activity.RESULT_OK) {
 			// User canceled the intent or no data are available.
 			return null;
@@ -247,7 +253,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 */
 	@Override
 	@SuppressWarnings("ConstantConditions")
-	public ImageIntent withDefaultHandlers(@NonNull Context context) {
+	public ImageIntent withDefaultHandlers(@NonNull final Context context) {
 		withHandlers(
 				onCreateGalleryHandler(context.getResources()),
 				mCameraHandler = onCreateCameraHandler(context.getResources())
@@ -270,7 +276,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 * @see #onCreateCameraHandler(Resources)
 	 */
 	@NonNull
-	protected ContentHandler onCreateGalleryHandler(@NonNull Resources resources) {
+	protected ContentHandler onCreateGalleryHandler(@NonNull final Resources resources) {
 		return new ContentHandler(
 				"Gallery",
 				createGalleryIntent()
@@ -287,7 +293,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 * @see #onCreateGalleryHandler(Resources)
 	 */
 	@NonNull
-	protected ContentHandler onCreateCameraHandler(@NonNull Resources resources) {
+	protected ContentHandler onCreateCameraHandler(@NonNull final Resources resources) {
 		return new ContentHandler(
 				"Camera",
 				createCameraIntent()
@@ -320,7 +326,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 */
 	@Override
-	public ImageIntent output(@Nullable Uri uri) {
+	public ImageIntent output(@Nullable final Uri uri) {
 		super.output(uri);
 		if (mCameraHandler != null) {
 			if (mUri == null) {
@@ -332,7 +338,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 		return this;
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 
@@ -355,7 +361,7 @@ public class ImageIntent extends ContentIntent<ImageIntent> {
 		 * @param height The desired image height to re-size to.
 		 * @return This options instance.
 		 */
-		public ImageOptions inSize(@IntRange(from = 0, to = Integer.MAX_VALUE) int width, @IntRange(from = 0, to = Integer.MAX_VALUE) int height) {
+		public ImageOptions inSize(@IntRange(from = 0, to = Integer.MAX_VALUE) final int width, @IntRange(from = 0, to = Integer.MAX_VALUE) final int height) {
 			this.width = width;
 			this.height = height;
 			return this;

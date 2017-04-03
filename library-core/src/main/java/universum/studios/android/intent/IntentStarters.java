@@ -42,7 +42,7 @@ import android.support.annotation.Nullable;
  */
 public final class IntentStarters {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -51,29 +51,29 @@ public final class IntentStarters {
 	 */
 	// private static final String TAG = "IntentStarters";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
 	/**
 	 */
 	private IntentStarters() {
-		// Creation of instances of this class is not publicly allowed.
+		// Not allowed to be instantiated publicly.
 	}
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -84,7 +84,7 @@ public final class IntentStarters {
 	 * @return IntentStarter ready to start the desired intent via {@link BaseIntent#startWith(IntentStarter)}.
 	 */
 	@NonNull
-	public static IntentStarter activityStarter(@NonNull Activity activity) {
+	public static IntentStarter activityStarter(@NonNull final Activity activity) {
 		return new ActivityStarter(activity);
 	}
 
@@ -94,7 +94,7 @@ public final class IntentStarters {
 	 * @param fragment The fragment for which to create intent starter.
 	 * @return IntentStarter ready to start the desired intent via {@link BaseIntent#startWith(IntentStarter)}.
 	 */
-	public static IntentStarter fragmentStarter(@NonNull Fragment fragment) {
+	public static IntentStarter fragmentStarter(@NonNull final Fragment fragment) {
 		return new FragmentStarter(fragment);
 	}
 
@@ -104,11 +104,11 @@ public final class IntentStarters {
 	 * @param fragment The fragment for which to create intent starter.
 	 * @return IntentStarter ready to start the desired intent via {@link BaseIntent#startWith(IntentStarter)}.
 	 */
-	public static IntentStarter supportFragmentStarter(@NonNull android.support.v4.app.Fragment fragment) {
+	public static IntentStarter supportFragmentStarter(@NonNull final android.support.v4.app.Fragment fragment) {
 		return new SupportFragmentStarter(fragment);
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 
@@ -127,7 +127,7 @@ public final class IntentStarters {
 		 *
 		 * @param activity The activity to which to delegate intent starting.
 		 */
-		private ActivityStarter(Activity activity) {
+		private ActivityStarter(final Activity activity) {
 			this.activity = activity;
 		}
 
@@ -142,14 +142,14 @@ public final class IntentStarters {
 		/**
 		 */
 		@Override
-		public void startIntent(@NonNull Intent intent) {
+		public void startIntent(@NonNull final Intent intent) {
 			activity.startActivity(intent);
 		}
 
 		/**
 		 */
 		@Override
-		public void startIntent(@NonNull Intent intent, @Nullable Bundle options) {
+		public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				activity.startActivity(intent, options);
 			}
@@ -158,14 +158,14 @@ public final class IntentStarters {
 		/**
 		 */
 		@Override
-		public void startIntentForResult(@NonNull Intent intent, int requestCode) {
+		public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
 			activity.startActivityForResult(intent, requestCode);
 		}
 
 		/**
 		 */
 		@Override
-		public void startIntentForResult(@NonNull Intent intent, int requestCode, @Nullable Bundle options) {
+		public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				activity.startActivityForResult(intent, requestCode, options);
 			}
@@ -174,7 +174,7 @@ public final class IntentStarters {
 		/**
 		 */
 		@Override
-		public void overridePendingTransition(@AnimRes int enterAnimRes, @AnimRes int exitAnimRes) {
+		public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
 			activity.overridePendingTransition(enterAnimRes, exitAnimRes);
 		}
 	}
@@ -194,7 +194,7 @@ public final class IntentStarters {
 		 *
 		 * @param fragment The fragment to which to delegate intent starting.
 		 */
-		private FragmentStarter(Fragment fragment) {
+		private FragmentStarter(final Fragment fragment) {
 			this.fragment = fragment;
 		}
 
@@ -209,14 +209,14 @@ public final class IntentStarters {
 		/**
 		 */
 		@Override
-		public void startIntent(@NonNull Intent intent) {
+		public void startIntent(@NonNull final Intent intent) {
 			fragment.startActivity(intent);
 		}
 
 		/**
 		 */
 		@Override
-		public void startIntent(@NonNull Intent intent, @Nullable Bundle options) {
+		public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				fragment.startActivity(intent, options);
 			}
@@ -225,14 +225,14 @@ public final class IntentStarters {
 		/**
 		 */
 		@Override
-		public void startIntentForResult(@NonNull Intent intent, int requestCode) {
+		public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
 			fragment.startActivityForResult(intent, requestCode);
 		}
 
 		/**
 		 */
 		@Override
-		public void startIntentForResult(@NonNull Intent intent, int requestCode, @Nullable Bundle options) {
+		public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 				fragment.startActivityForResult(intent, requestCode, options);
 			}
@@ -241,7 +241,7 @@ public final class IntentStarters {
 		/**
 		 */
 		@Override
-		public void overridePendingTransition(@AnimRes int enterAnimRes, @AnimRes int exitAnimRes) {
+		public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
 			fragment.getActivity().overridePendingTransition(enterAnimRes, exitAnimRes);
 		}
 	}
@@ -262,7 +262,7 @@ public final class IntentStarters {
 		 *
 		 * @param fragment The fragment to which to delegate intent starting.
 		 */
-		private SupportFragmentStarter(android.support.v4.app.Fragment fragment) {
+		private SupportFragmentStarter(final android.support.v4.app.Fragment fragment) {
 			this.fragment = fragment;
 		}
 
@@ -277,35 +277,35 @@ public final class IntentStarters {
 		/**
 		 */
 		@Override
-		public void startIntent(@NonNull Intent intent) {
+		public void startIntent(@NonNull final Intent intent) {
 			fragment.startActivity(intent);
 		}
 
 		/**
 		 */
 		@Override
-		public void startIntent(@NonNull Intent intent, @Nullable Bundle options) {
+		public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
 			fragment.startActivity(intent, options);
 		}
 
 		/**
 		 */
 		@Override
-		public void startIntentForResult(@NonNull Intent intent, int requestCode) {
+		public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
 			fragment.startActivityForResult(intent, requestCode);
 		}
 
 		/**
 		 */
 		@Override
-		public void startIntentForResult(@NonNull Intent intent, int requestCode, @Nullable Bundle options) {
+		public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
 			fragment.startActivityForResult(intent, requestCode, options);
 		}
 
 		/**
 		 */
 		@Override
-		public void overridePendingTransition(@AnimRes int enterAnimRes, @AnimRes int exitAnimRes) {
+		public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
 			fragment.getActivity().overridePendingTransition(enterAnimRes, exitAnimRes);
 		}
 	}

@@ -45,7 +45,7 @@ import java.util.List;
  */
 public class ShareIntent extends BaseIntent<ShareIntent> {
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -54,15 +54,15 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 */
 	// private static final String TAG = "ShareIntent";
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -91,11 +91,11 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 */
 	private List<Uri> mUris;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -106,7 +106,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #content()
 	 */
-	public ShareIntent content(@Nullable CharSequence text) {
+	public ShareIntent content(@Nullable final CharSequence text) {
 		this.mContent = text;
 		return this;
 	}
@@ -129,7 +129,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #uri()
 	 */
-	public ShareIntent uri(@Nullable Uri uri) {
+	public ShareIntent uri(@Nullable final Uri uri) {
 		this.mUri = uri;
 		return this;
 	}
@@ -151,7 +151,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 * @param uris The desired array of content uris.
 	 * @see #uris()
 	 */
-	public ShareIntent uris(@NonNull Uri... uris) {
+	public ShareIntent uris(@NonNull final Uri... uris) {
 		return uris(Arrays.asList(uris));
 	}
 
@@ -163,7 +163,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 * @see #uris(Uri...)
 	 * @see #uris()
 	 */
-	public ShareIntent uris(@Nullable List<Uri> uris) {
+	public ShareIntent uris(@Nullable final List<Uri> uris) {
 		this.mUris = uris;
 		return this;
 	}
@@ -192,7 +192,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #mimeType()
 	 */
-	public ShareIntent mimeType(@NonNull @MimeType.Value String type) {
+	public ShareIntent mimeType(@NonNull @MimeType.Value final String type) {
 		this.mDataType = type;
 		return this;
 	}
@@ -216,7 +216,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #title()
 	 */
-	public ShareIntent title(@Nullable CharSequence title) {
+	public ShareIntent title(@Nullable final CharSequence title) {
 		this.mTitle = title;
 		return this;
 	}
@@ -249,7 +249,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 		final Intent intent = new Intent(Intent.ACTION_SEND);
 		intent.setType(mDataType);
 		if (!TextUtils.isEmpty(mTitle)) {
@@ -270,11 +270,11 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	/**
 	 */
 	@Override
-	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
+	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
 		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }
