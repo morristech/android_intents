@@ -29,22 +29,39 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import universum.studios.android.test.BaseInstrumentedTest;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static universum.studios.android.intent.ContactTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class EmailIntentTest extends IntentBaseTest<EmailIntent> {
+public final class EmailIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "EmailIntentTest";
 
-	public EmailIntentTest() {
-		super(EmailIntent.class);
+	private EmailIntent mIntent;
+
+	@Override
+	public void beforeTest() throws Exception {
+		super.beforeTest();
+		this.mIntent = new EmailIntent();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mIntent = null;
 	}
 
 	@Test
@@ -71,17 +88,26 @@ public final class EmailIntentTest extends IntentBaseTest<EmailIntent> {
 
 	@Test
 	public void testToMultiple() {
-		mIntent.to("test1@android.com", "test2@android.com", "test3@android.com");
+		mIntent.to("test1@android.com", "test2@android.com");
+		mIntent.to("test3@android.com", "test4@android.com");
 		final List<String> emailAddresses = mIntent.addresses();
-		assertThat(emailAddresses.size(), is(3));
+		assertThat(emailAddresses.size(), is(4));
 		assertThat(emailAddresses.get(0), is("test1@android.com"));
 		assertThat(emailAddresses.get(1), is("test2@android.com"));
 		assertThat(emailAddresses.get(2), is("test3@android.com"));
+		assertThat(emailAddresses.get(3), is("test4@android.com"));
 	}
 
 	@Test
 	public void testToWithEmptyList() {
 		mIntent.to(new ArrayList<String>(0));
+		assertThat(mIntent.addresses(), is(Collections.EMPTY_LIST));
+	}
+
+	@Test
+	public void testToWithNullList() {
+		mIntent.to("test1@android.com", "test2@android.com");
+		mIntent.to((List<String>) null);
 		assertThat(mIntent.addresses(), is(Collections.EMPTY_LIST));
 	}
 
@@ -111,15 +137,25 @@ public final class EmailIntentTest extends IntentBaseTest<EmailIntent> {
 	@Test
 	public void testCcMultiple() {
 		mIntent.cc("test.cc1@android.com", "test.cc2@android.com");
+		mIntent.cc("test.cc3@android.com", "test.cc4@android.com");
 		final List<String> ccEmailAddresses = mIntent.ccAddresses();
-		assertThat(ccEmailAddresses.size(), is(2));
+		assertThat(ccEmailAddresses.size(), is(4));
 		assertThat(ccEmailAddresses.get(0), is("test.cc1@android.com"));
 		assertThat(ccEmailAddresses.get(1), is("test.cc2@android.com"));
+		assertThat(ccEmailAddresses.get(2), is("test.cc3@android.com"));
+		assertThat(ccEmailAddresses.get(3), is("test.cc4@android.com"));
 	}
 
 	@Test
 	public void testCcWithEmptyList() {
 		mIntent.cc(new ArrayList<String>(0));
+		assertThat(mIntent.ccAddresses(), is(Collections.EMPTY_LIST));
+	}
+
+	@Test
+	public void testCcWithNullList() {
+		mIntent.cc("test.cc1@android.com", "test.cc2@android.com");
+		mIntent.cc((List<String>) null);
 		assertThat(mIntent.ccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
@@ -142,7 +178,8 @@ public final class EmailIntentTest extends IntentBaseTest<EmailIntent> {
 
 	@Test
 	public void testBccMultiple() {
-		mIntent.bcc("test.bcc1@android.com", "test.bcc2@android.com", "test.bcc3@android.com", "test.bcc4@android.com");
+		mIntent.bcc("test.bcc1@android.com", "test.bcc2@android.com");
+		mIntent.bcc("test.bcc3@android.com", "test.bcc4@android.com");
 		final List<String> bccEmailAddresses = mIntent.bccAddresses();
 		assertThat(bccEmailAddresses.size(), is(4));
 		assertThat(bccEmailAddresses.get(0), is("test.bcc1@android.com"));
@@ -154,6 +191,13 @@ public final class EmailIntentTest extends IntentBaseTest<EmailIntent> {
 	@Test
 	public void testBccWithEmptyList() {
 		mIntent.bcc(new ArrayList<String>(0));
+		assertThat(mIntent.bccAddresses(), is(Collections.EMPTY_LIST));
+	}
+
+	@Test
+	public void testBccWithNullList() {
+		mIntent.bcc("test.bcc1@android.com", "test.bcc2@android.com");
+		mIntent.bcc((List<String>) null);
 		assertThat(mIntent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
@@ -228,7 +272,8 @@ public final class EmailIntentTest extends IntentBaseTest<EmailIntent> {
 
 	@Test
 	public void testBuildWithoutAddresses() {
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No e-mail address/-es specified."
 		);
@@ -274,5 +319,14 @@ public final class EmailIntentTest extends IntentBaseTest<EmailIntent> {
 	@Test
 	public void testCreateUriForEmptyAddresses() {
 		assertThat(EmailIntent.createUri(new ArrayList<String>(0)), is(nullValue()));
+	}
+
+	@Test
+	public void testOnStartWith() {
+		mIntent.to("test1@android.com");
+		final Intent intent = mIntent.build(mContext);
+		final IntentStarter mockIntentStarter = mock(IntentStarter.class);
+		mIntent.onStartWith(mockIntentStarter, intent);
+		verify(mockIntentStarter, times(1)).startIntent(any(Intent.class));
 	}
 }

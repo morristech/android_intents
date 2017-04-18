@@ -25,23 +25,36 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import universum.studios.android.test.BaseInstrumentedTest;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
+import static universum.studios.android.intent.MapTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
 @SuppressWarnings("ResourceType")
-public final class MapIntentTest extends IntentBaseTest<MapIntent> {
+public final class MapIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "MapIntentTest";
 
-	public MapIntentTest() {
-		super(MapIntent.class);
+	private MapIntent mIntent;
+
+	@Override
+	public void beforeTest() throws Exception {
+		super.beforeTest();
+		this.mIntent = new MapIntent();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mIntent = null;
 	}
 
 	@Test
@@ -209,7 +222,8 @@ public final class MapIntentTest extends IntentBaseTest<MapIntent> {
 
 	@Test
 	public void testBuildWithoutParams() {
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No latitude and longitude nor location query specified."
 		);

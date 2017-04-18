@@ -30,6 +30,9 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
+import universum.studios.android.test.BaseInstrumentedTest;
+
+import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
@@ -41,88 +44,105 @@ import static universum.studios.android.intent.ContentIntentTest.hasRelativePath
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-@SuppressWarnings("ResultOfMethodCallIgnored")
-public final class ImageIntentTest extends IntentBaseTest<ImageIntent> {
+public final class VideoIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "ImageIntentTest";
+	private static final String TAG = "VideoIntentTest";
 
-	public ImageIntentTest() {
-		super(ImageIntent.class);
+	private VideoIntent mIntent;
+
+	@Override
+	public void beforeTest() throws Exception {
+		super.beforeTest();
+		this.mIntent = new VideoIntent();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mIntent = null;
 	}
 
 	@Test
 	public void testCreateGalleryIntent() {
-		final Intent intent = ImageIntent.createGalleryIntent();
+		final Intent intent = VideoIntent.createGalleryIntent();
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_GET_CONTENT));
-		assertThat(intent.getType(), is(MimeType.IMAGE));
+		assertThat(intent.getType(), is(MimeType.VIDEO));
 	}
 
 	@Test
 	public void testCreateCameraIntent() {
-		final Intent intent = ImageIntent.createCameraIntent();
+		final Intent intent = VideoIntent.createCameraIntent();
 		assertThat(intent, is(not(nullValue())));
-		assertThat(intent.getAction(), is(MediaStore.ACTION_IMAGE_CAPTURE));
+		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
+		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
+	}
+
+	@Test
+	public void testCreateCameraIntentWithNullOutputFile() {
+		final Intent intent = VideoIntent.createCameraIntent((File) null);
+		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
 		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
 
 	@Test
 	public void testCreateCameraIntentOutputFile() {
-		final Intent intent = ImageIntent.createCameraIntent(new File("content://android/data/images", "camera-image.jpg"));
+		final Intent intent = VideoIntent.createCameraIntent(new File("content://android/data/video", "camera-video.mp4"));
 		assertThat(intent, is(not(nullValue())));
-		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("content://android/data/images", "camera-image.jpg"))));
+		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("content://android/data/video", "camera-video.mp4"))));
 	}
 
 	@Test
 	public void testCreateCameraIntentOutputUri() {
-		final Intent intent = ImageIntent.createCameraIntent(Uri.parse("content://android/data/images/camera-image.jpg"));
+		final Intent intent = VideoIntent.createCameraIntent(Uri.parse("content://android/data/video/camera-video.mp4"));
 		assertThat(intent, is(not(nullValue())));
-		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.parse("content://android/data/images/camera-image.jpg")));
+		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.parse("content://android/data/video/camera-video.mp4")));
 	}
 
 	@Test
 	@SuppressWarnings("ConstantConditions")
-	public void testCreateImageFile() {
-		final File file = ImageIntent.createImageFile();
+	public void testCreateVideoFile() {
+		final File file = VideoIntent.createVideoFile();
 		if (file != null) {
 			assertThat(file.exists(), is(true));
-			assertThat(file, hasRelativePath("/Pictures/"));
-			file.delete();
+			assertThat(file, hasRelativePath("/Movies/"));
+			assertThat(file.delete(), is(true));
 		}
 	}
 
 	@Test
 	@SuppressWarnings("ConstantConditions")
-	public void testCreateImageFileName() {
-		final File file = ImageIntent.createImageFile("zebra-image");
+	public void testCreateVideoFileName() {
+		final File file = VideoIntent.createVideoFile("elephant-video");
 		if (file != null) {
 			assertThat(file.exists(), is(true));
-			assertThat(file, hasPath("/Pictures/zebra-image.jpg"));
-			file.delete();
+			assertThat(file, hasPath("/Movies/elephant-video.mp4"));
+			assertThat(file.delete(), is(true));
 		}
 	}
 
 	@Test
 	public void testWithDefaultHandlers() {
-		assertThat(mIntent.handlers(), is(Collections.EMPTY_LIST));
+		assertEquals(Collections.EMPTY_LIST, mIntent.handlers());
 		mIntent.withDefaultHandlers(mContext);
 		final List<ContentIntent.ContentHandler> handlers = mIntent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(2));
 		final ContentIntent.ContentHandler galleryHandler = handlers.get(0);
 		assertThat(galleryHandler.name().toString(), is("Gallery"));
-		assertThat(galleryHandler.requestCode(), is(ImageIntent.REQUEST_CODE_GALLERY));
+		assertThat(galleryHandler.requestCode(), is(VideoIntent.REQUEST_CODE_GALLERY));
 		final ContentIntent.ContentHandler cameraHandler = handlers.get(1);
 		assertThat(cameraHandler.name().toString(), is("Camera"));
-		assertThat(cameraHandler.requestCode(), is(ImageIntent.REQUEST_CODE_CAMERA));
+		assertThat(cameraHandler.requestCode(), is(VideoIntent.REQUEST_CODE_CAMERA));
 	}
 
 	@Test
 	public void testInput() {
 		assertThat(mIntent.dataType(), is(nullValue()));
 		mIntent.input(new File("file.tmp"));
-		assertThat(mIntent.dataType(), is(MimeType.IMAGE));
+		assertThat(mIntent.dataType(), is(MimeType.VIDEO));
 	}
 
 	@Test
@@ -150,5 +170,15 @@ public final class ImageIntentTest extends IntentBaseTest<ImageIntent> {
 		assertThat(cameraIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 		mIntent.output(new File("file.tmp"));
 		assertThat(cameraIntent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("file.tmp"))));
+	}
+
+	@Test
+	public void testNullOutputAfterWithDefaultHandlers() {
+		mIntent.withDefaultHandlers(mContext);
+		mIntent.output(new File("file.tmp"));
+		final ContentIntent.ContentHandler cameraHandler = mIntent.handlers().get(1);
+		final Intent cameraIntent = cameraHandler.intent();
+		mIntent.output((Uri) null);
+		assertThat(cameraIntent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
 }

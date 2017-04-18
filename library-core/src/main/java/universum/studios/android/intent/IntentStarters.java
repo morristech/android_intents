@@ -127,7 +127,7 @@ public final class IntentStarters {
 		 *
 		 * @param activity The activity to which to delegate intent starting.
 		 */
-		private ActivityStarter(final Activity activity) {
+		ActivityStarter(final Activity activity) {
 			this.activity = activity;
 		}
 
@@ -194,7 +194,7 @@ public final class IntentStarters {
 		 *
 		 * @param fragment The fragment to which to delegate intent starting.
 		 */
-		private FragmentStarter(final Fragment fragment) {
+		FragmentStarter(final Fragment fragment) {
 			this.fragment = fragment;
 		}
 
@@ -262,7 +262,7 @@ public final class IntentStarters {
 		 *
 		 * @param fragment The fragment to which to delegate intent starting.
 		 */
-		private SupportFragmentStarter(final android.support.v4.app.Fragment fragment) {
+		SupportFragmentStarter(final android.support.v4.app.Fragment fragment) {
 			this.fragment = fragment;
 		}
 

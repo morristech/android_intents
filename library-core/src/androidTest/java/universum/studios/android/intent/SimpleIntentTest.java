@@ -26,25 +26,40 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import universum.studios.android.intent.inner.TestActivity;
+import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.TestActivity;
 
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static universum.studios.android.intent.CoreTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class SimpleIntentTest extends IntentBaseTest<SimpleIntent> {
+public final class SimpleIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "SimpleIntentTest";
 
-	public SimpleIntentTest() {
-		super(SimpleIntent.class);
+	private SimpleIntent mIntent;
+
+	@Override
+	public void beforeTest() throws Exception {
+		super.beforeTest();
+		this.mIntent = new SimpleIntent();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mIntent = null;
 	}
 
 	@Test
@@ -141,7 +156,8 @@ public final class SimpleIntentTest extends IntentBaseTest<SimpleIntent> {
 
 	@Test
 	public void testBuildWithoutParams() {
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No activity class or action specified."
 		);
@@ -151,7 +167,8 @@ public final class SimpleIntentTest extends IntentBaseTest<SimpleIntent> {
 	@SuppressWarnings("ConstantConditions")
 	public void testBuildWithInvalidActivityClass() {
 		mIntent.activityClass(null);
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No activity class specified."
 		);
@@ -161,9 +178,29 @@ public final class SimpleIntentTest extends IntentBaseTest<SimpleIntent> {
 	@SuppressWarnings("ConstantConditions")
 	public void testBuildWithInvalidAction() {
 		mIntent.action(null);
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No action specified."
 		);
+	}
+
+	@Test
+	public void testOnStartWith() {
+		mIntent.activityClass(TestActivity.class);
+		final Intent intent = mIntent.build(mContext);
+		final IntentStarter mockStarter = mock(IntentStarter.class);
+		assertThat(mIntent.onStartWith(mockStarter, intent), is(true));
+		verify(mockStarter, times(1)).startIntent(intent);
+	}
+
+	@Test
+	public void testOnStartWithForResult() {
+		mIntent.activityClass(TestActivity.class);
+		mIntent.requestCode(1000);
+		final Intent intent = mIntent.build(mContext);
+		final IntentStarter mockStarter = mock(IntentStarter.class);
+		assertThat(mIntent.onStartWith(mockStarter, intent), is(true));
+		verify(mockStarter, times(1)).startIntentForResult(intent, 1000);
 	}
 }

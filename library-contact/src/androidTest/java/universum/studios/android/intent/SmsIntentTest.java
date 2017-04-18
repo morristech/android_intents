@@ -1,6 +1,6 @@
 /*
  * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
+ *                             Copyright (C) 2017 Universum Studios
  * =================================================================================================
  *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
  * -------------------------------------------------------------------------------------------------
@@ -25,39 +25,68 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import universum.studios.android.test.BaseInstrumentedTest;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
+import static universum.studios.android.intent.ContactTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class DialerIntentTest extends IntentBaseTest<DialerIntent> {
+public final class SmsIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "DialerIntentTest";
+	private static final String TAG = "SmsIntentTest";
 
-	public DialerIntentTest() {
-		super(DialerIntent.class);
+	private SmsIntent mIntent;
+
+	@Override
+	public void beforeTest() throws Exception {
+		super.beforeTest();
+		this.mIntent = new SmsIntent();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mIntent = null;
 	}
 
 	@Test
 	public void testUriScheme() {
-		assertThat(DialerIntent.URI_SCHEME, is("tel"));
+		assertThat(SmsIntent.URI_SCHEME, is("sms"));
 	}
 
 	@Test
 	public void testDefaultPhoneNumber() {
-		assertThat(mIntent.phoneNumber(), is(not(nullValue())));
-		assertThat(mIntent.phoneNumber().length(), is(0));
+		assertThat(mIntent.phoneNumber(), is(""));
 	}
 
 	@Test
-	public void testPhoneNumberText() {
+	public void testPhoneNumber() {
 		mIntent.phoneNumber("00124456");
 		assertThat(mIntent.phoneNumber(), is("00124456"));
+	}
+
+	@Test
+	public void testDefaultBody() {
+		assertThat(mIntent.body().toString(), is(""));
+	}
+
+	@Test
+	public void testBody() {
+		mIntent.body("Sms body.");
+		assertThat(mIntent.body().toString(), is("Sms body."));
+	}
+
+	@Test
+	public void testNullBody() {
+		mIntent.body(null);
+		assertThat(mIntent.body().toString(), is(""));
 	}
 
 	@Test
@@ -65,13 +94,25 @@ public final class DialerIntentTest extends IntentBaseTest<DialerIntent> {
 		mIntent.phoneNumber("02644569874");
 		final Intent intent = mIntent.build(mContext);
 		assertThat(intent, is(not(nullValue())));
-		assertThat(intent.getAction(), is(Intent.ACTION_DIAL));
-		assertThat(intent.getData(), is(Uri.parse("tel:02644569874")));
+		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
+		assertThat(intent.getData(), is(Uri.parse("sms:02644569874")));
+	}
+
+	@Test
+	public void testBuildWithBody() {
+		mIntent.phoneNumber("02644569874");
+		mIntent.body("Sms body content.");
+		final Intent intent = mIntent.build(mContext);
+		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
+		assertThat(intent.getData(), is(Uri.parse("sms:02644569874")));
+		assertThat(intent.getStringExtra("sms_body"), is("Sms body content."));
 	}
 
 	@Test
 	public void testBuildWithoutNumber() {
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No phone number specified."
 		);

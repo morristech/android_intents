@@ -39,33 +39,51 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.TestUtils;
+
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static universum.studios.android.intent.ContentTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.ContentIntentImpl> {
+public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "ContentIntentTest";
 
-	public ContentIntentTest() {
-		super(ContentIntentTest.ContentIntentImpl.class);
+	private ContentIntentImpl mIntent;
+
+	@Override
+	public void beforeTest() throws Exception {
+		super.beforeTest();
+		this.mIntent = new ContentIntentImpl();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mIntent = null;
 	}
 
 	@NonNull
 	static Matcher<File> hasPath(String path) {
-		return new FilePath(TestsConfig.STORAGE_BASE_PATH + path);
+		return new FilePath(TestUtils.STORAGE_BASE_PATH + path);
 	}
 
 	@NonNull
 	static Matcher<File> hasRelativePath(String path) {
-		return new FileRelativePath(TestsConfig.STORAGE_BASE_PATH + path);
+		return new FileRelativePath(TestUtils.STORAGE_BASE_PATH + path);
 	}
 
 	public void testCreateContentFileTimeStamp() {
@@ -132,12 +150,21 @@ public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.Co
 	}
 
 	@Test
+	public void testWithNullHandlers() {
+		mIntent.withHandlers(new ArrayList<ContentIntent.ContentHandler>(0));
+		mIntent.withHandlers((List<ContentIntent.ContentHandler>) null);
+		assertThat(mIntent.handlers(), is(Collections.EMPTY_LIST));
+	}
+
+	@Test
 	public void testWithHandler() {
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler", new Intent()));
+		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
+		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler2", new Intent()));
 		final List<ContentIntent.ContentHandler> handlers = mIntent.handlers();
 		assertThat(handlers, is(not(nullValue())));
-		assertThat(handlers.size(), is(1));
-		assertThat(handlers.get(0).name().toString(), is("TestHandler"));
+		assertThat(handlers.size(), is(2));
+		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
+		assertThat(handlers.get(1).name().toString(), is("TestHandler2"));
 	}
 
 	@Test
@@ -230,7 +257,8 @@ public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.Co
 	@Test
 	public void testBuildWithOutputUri() {
 		mIntent.output(Uri.parse("content://android/data/images/lion.jpg"));
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No input Uri specified."
 		);
@@ -238,7 +266,8 @@ public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.Co
 
 	@Test
 	public void testBuildWithoutUri() {
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No input Uri specified."
 		);
@@ -247,10 +276,31 @@ public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.Co
 	@Test
 	public void testBuildWithoutDataType() {
 		mIntent.input(Uri.parse("content://android/data/images/lion.jpg"));
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No MIME type specified for input Uri."
 		);
+	}
+
+	@Test
+	public void testStartWith() {
+		// todo:
+	}
+
+	@Test
+	public void testOnShowChooserDialog() {
+		// todo:
+	}
+
+	@Test
+	public void testOnStartWith() {
+		mIntent.input(Uri.EMPTY);
+		mIntent.dataType(MimeType.TEXT_HTML);
+		final Intent intent = mIntent.build(mContext);
+		final IntentStarter mockStarter = mock(IntentStarter.class);
+		mIntent.onStartWith(mockStarter, intent);
+		verify(mockStarter, times(1)).startIntent(any(Intent.class));
 	}
 
 	static final class ContentIntentImpl extends ContentIntent<ContentIntentImpl> {
@@ -265,7 +315,7 @@ public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.Co
 
 		private final String expected;
 
-		private FilePath(String expected) {
+		FilePath(String expected) {
 			this.expected = expected;
 		}
 
@@ -284,7 +334,7 @@ public final class ContentIntentTest extends IntentBaseTest<ContentIntentTest.Co
 
 		private final String expected;
 
-		private FileRelativePath(String expected) {
+		FileRelativePath(String expected) {
 			this.expected = expected;
 		}
 

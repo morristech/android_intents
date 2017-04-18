@@ -28,23 +28,40 @@ import org.junit.runner.RunWith;
 import java.util.Collections;
 import java.util.List;
 
+import universum.studios.android.test.BaseInstrumentedTest;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static universum.studios.android.intent.ContentTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
 @SuppressWarnings("ResourceType")
-public final class ShareIntentTest extends IntentBaseTest<ShareIntent> {
+public final class ShareIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "ShareIntentTest";
 
-	public ShareIntentTest() {
-		super(ShareIntent.class);
+	private ShareIntent mIntent;
+
+	@Override
+	public void beforeTest() throws Exception {
+		super.beforeTest();
+		this.mIntent = new ShareIntent();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mIntent = null;
 	}
 
 	@Test
@@ -151,18 +168,30 @@ public final class ShareIntentTest extends IntentBaseTest<ShareIntent> {
 
 	@Test
 	public void testBuildWithoutContent() {
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No content to share specified."
 		);
 	}
 
+	@Test
 	public void testBuildWithoutMimeType() {
 		mIntent.content("Content to share");
 		mIntent.mimeType("");
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"No content's MIME type specified."
 		);
+	}
+
+	@Test
+	public void testOnStartWith() {
+		mIntent.content("Text to share.");
+		final Intent intent = mIntent.build(mContext);
+		final IntentStarter mockStarter = mock(IntentStarter.class);
+		mIntent.onStartWith(mockStarter, intent);
+		verify(mockStarter, times(1)).startIntent(any(Intent.class));
 	}
 }

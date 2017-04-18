@@ -22,66 +22,71 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import universum.studios.android.test.BaseInstrumentedTest;
+
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
+import static universum.studios.android.intent.ContactTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class WebIntentTest extends IntentBaseTest<WebIntent> {
+public final class DialerIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
-	private static final String TAG = "WebIntentTest";
+	private static final String TAG = "DialerIntentTest";
 
-	public WebIntentTest() {
-		super(WebIntent.class);
+	private DialerIntent mIntent;
+
+	@Override
+	public void beforeTest() throws Exception {
+		super.beforeTest();
+		this.mIntent = new DialerIntent();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mIntent = null;
 	}
 
 	@Test
-	public void testDefaultUrl() {
-		assertThat(mIntent.url(), is(not(nullValue())));
-		assertThat(mIntent.url().length(), is(0));
+	public void testUriScheme() {
+		assertThat(DialerIntent.URI_SCHEME, is("tel"));
 	}
 
 	@Test
-	public void testUrlText() {
-		mIntent.url("http://www.google.com");
-		assertThat(mIntent.url(), is("http://www.google.com"));
+	public void testDefaultPhoneNumber() {
+		assertThat(mIntent.phoneNumber(), is(""));
 	}
 
 	@Test
-	public void testUrlTextWithoutPrefix() {
-		mIntent.url("www.google.com");
-		assertThat(mIntent.url(), is("http://www.google.com"));
-	}
-
-	@Test
-	public void testUrlTextWithInvalidValue() {
-		mIntent.url("google");
-		assertThat(mIntent.url(), is(""));
+	public void testPhoneNumber() {
+		mIntent.phoneNumber("00124456");
+		assertThat(mIntent.phoneNumber(), is("00124456"));
 	}
 
 	@Test
 	public void testBuild() {
-		mIntent.url("inbox.google.com");
+		mIntent.phoneNumber("02644569874");
 		final Intent intent = mIntent.build(mContext);
-		assertThat(intent, is(not(CoreMatchers.nullValue())));
-		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
-		assertThat(intent.getData(), is(Uri.parse("http://inbox.google.com")));
+		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(Intent.ACTION_DIAL));
+		assertThat(intent.getData(), is(Uri.parse("tel:02644569874")));
 	}
 
 	@Test
-	public void testBuildWithoutUrl() {
-		assertThatBuildThrowsExceptionWithCause(
+	public void testBuildWithoutNumber() {
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
-				"No or invalid URL specified."
+				"No phone number specified."
 		);
 	}
 }

@@ -28,39 +28,45 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import universum.studios.android.intent.test.R;
+import universum.studios.android.test.BaseInstrumentedTest;
 
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
+import static universum.studios.android.intent.CalendarTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
 @SuppressWarnings("ResourceType")
-public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
+public final class CalendarIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "CalendarIntentTest";
 
-	private long currentTime;
-
-	public CalendarIntentTest() {
-		super(CalendarIntent.class);
-	}
+	private CalendarIntent mIntent;
+	private long mCurrentTime;
 
 	@Override
 	public void beforeTest() throws Exception {
-		this.currentTime = System.currentTimeMillis();
 		super.beforeTest();
+		this.mCurrentTime = System.currentTimeMillis();
+		this.mIntent = new CalendarIntent();
+	}
+
+	@Override
+	public void afterTest() throws Exception {
+		super.afterTest();
+		this.mCurrentTime = 0;
+		this.mIntent = null;
 	}
 
 	@Test
 	public void testDefaultType() {
-		assertThat(mIntent.type(), is(CalendarIntent.TYPE_INSERT_EVENT));
+		assertThat(mIntent.type(), is(CalendarIntent.TYPE_VIEW));
 	}
 
 	@Test
@@ -82,7 +88,7 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 
 	@Test
 	public void testDefaultTime() {
-		assertThatTimeIsInRange(mIntent.time(), currentTime, currentTime + 10);
+		assertThatTimeIsInRange(mIntent.time(), mCurrentTime, mCurrentTime + 10);
 	}
 
 	@Test
@@ -93,7 +99,7 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 
 	@Test
 	public void testDefaultBeginTime() {
-		assertThatTimeIsInRange(mIntent.beginTime(), currentTime, currentTime + 10);
+		assertThatTimeIsInRange(mIntent.beginTime(), mCurrentTime, mCurrentTime + 10);
 	}
 
 	@Test
@@ -104,7 +110,7 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 
 	@Test
 	public void testDefaultEndTime() {
-		assertThatTimeIsInRange(mIntent.endTime(), currentTime + 1, currentTime + 11);
+		assertThatTimeIsInRange(mIntent.endTime(), mCurrentTime + 1, mCurrentTime + 11);
 	}
 
 	@Test
@@ -119,13 +125,7 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	}
 
 	@Test
-	public void testTitleResId() {
-		mIntent.title(getText(R.string.test_intent_calendar_event_title));
-		assertThat(mIntent.title(), is(getText(R.string.test_intent_calendar_event_title)));
-	}
-
-	@Test
-	public void testTitleText() {
+	public void testTitle() {
 		mIntent.title("New event");
 		assertThat(mIntent.title().toString(), is("New event"));
 	}
@@ -136,7 +136,7 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	}
 
 	@Test
-	public void testDescriptionText() {
+	public void testDescription() {
 		mIntent.description("Event's description text.");
 		assertThat(mIntent.description().toString(), is("Event's description text."));
 	}
@@ -147,7 +147,7 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	}
 
 	@Test
-	public void testLocationText() {
+	public void testLocation() {
 		mIntent.location("Rome");
 		assertThat(mIntent.location().toString(), is("Rome"));
 	}
@@ -166,7 +166,7 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	@Test
 	public void testBuildTypeOfView() {
 		mIntent.type(CalendarIntent.TYPE_VIEW);
-		final long time = currentTime - 1000 * 60 * 60 * 24;
+		final long time = mCurrentTime - 1000 * 60 * 60 * 24;
 		mIntent.time(time);
 		final Intent intent = mIntent.build(mContext);
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
@@ -177,7 +177,8 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	public void testBuildTypeOfViewWithInvalidTime() {
 		mIntent.type(CalendarIntent.TYPE_VIEW);
 		mIntent.time(-1000);
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"Specified invalid time(-1000) where to open calendar for view. Must be none-negative time value."
 		);
@@ -187,9 +188,10 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	public void testBuildTypeOfInsertEvent() {
 		// INSERT EVENT type is the default one.
 		// mIntent.type(CalendarIntent.TYPE_INSERT_EVENT);
-		final long beginTime = currentTime;
+		final long beginTime = mCurrentTime;
 		final long endTime = beginTime + 1000 * 60 * 60 * 12;
-		mIntent.title("Event title")
+		mIntent.type(CalendarIntent.TYPE_INSERT_EVENT)
+				.title("Event title")
 				.description("Event description.")
 				.location("Location of the event")
 				.beginTime(beginTime).endTime(endTime)
@@ -206,8 +208,10 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 
 	@Test
 	public void testBuildTypeOfInsertEventWithInvalidBeginTime() {
+		mIntent.type(CalendarIntent.TYPE_INSERT_EVENT);
 		mIntent.beginTime(-1);
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"Specified invalid begin time(-1). Must be none-negative time value."
 		);
@@ -215,8 +219,10 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 
 	@Test
 	public void testBuildTypeOfInsertEventWithInvalidEndTime() {
+		mIntent.type(CalendarIntent.TYPE_INSERT_EVENT);
 		mIntent.endTime(-5);
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"Specified invalid end time(-5). Must be none-negative time value."
 		);
@@ -224,6 +230,7 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 
 	@Test
 	public void testBuildTypeOfInsertEventWithInvalidEndVsBeginTime() {
+		mIntent.type(CalendarIntent.TYPE_INSERT_EVENT);
 		mIntent.endTime(0);
 		try {
 			mIntent.build(mContext);
@@ -254,10 +261,21 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	}
 
 	@Test
+	public void testBuildTypeOfEditEventWithoutTitle() {
+		mIntent.type(CalendarIntent.TYPE_EDIT_EVENT);
+		mIntent.eventId(123);
+		final Intent intent = mIntent.build(mContext);
+		assertThat(intent, is(not(CoreMatchers.nullValue())));
+		assertThat(intent.getAction(), is(Intent.ACTION_EDIT));
+		assertThat(intent.getData(), is(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 123)));
+	}
+
+	@Test
 	public void testBuildTypeOfEditEventWithInvalidEventId() {
 		mIntent.type(CalendarIntent.TYPE_EDIT_EVENT);
 		mIntent.eventId(-123);
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"Specified invalid event id(-123)."
 		);
@@ -277,13 +295,14 @@ public final class CalendarIntentTest extends IntentBaseTest<CalendarIntent> {
 	public void testBuildTypeOfViewEventWithInvalidEventId() {
 		mIntent.type(CalendarIntent.TYPE_VIEW_EVENT);
 		mIntent.eventId(-123);
-		assertThatBuildThrowsExceptionWithCause(
+		assertThatBuildThrowsExceptionWithMessage(
+				mContext,
 				mIntent,
 				"Specified invalid event id(-123)."
 		);
 	}
 
-	static void assertThatTimeIsInRange(long time, long rangeStart, long rangeEnd) {
+	private static void assertThatTimeIsInRange(long time, long rangeStart, long rangeEnd) {
 		assertTrue(
 				"Time<" + time + "> is not in the range[" + rangeStart + ", " + rangeEnd + "]!",
 				time >= rangeStart && time <= rangeEnd
