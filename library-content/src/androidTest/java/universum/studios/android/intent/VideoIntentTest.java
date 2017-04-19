@@ -80,6 +80,14 @@ public final class VideoIntentTest extends BaseInstrumentedTest {
 	}
 
 	@Test
+	public void testCreateCameraIntentWithOutputFile() {
+		final Intent intent = VideoIntent.createCameraIntent(new File("content://android/data/video", "camera-video.mp4"));
+		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
+		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("content://android/data/video", "camera-video.mp4"))));
+	}
+
+	@Test
 	public void testCreateCameraIntentWithNullOutputFile() {
 		final Intent intent = VideoIntent.createCameraIntent((File) null);
 		assertThat(intent, is(not(nullValue())));
@@ -88,16 +96,10 @@ public final class VideoIntentTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testCreateCameraIntentOutputFile() {
-		final Intent intent = VideoIntent.createCameraIntent(new File("content://android/data/video", "camera-video.mp4"));
-		assertThat(intent, is(not(nullValue())));
-		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("content://android/data/video", "camera-video.mp4"))));
-	}
-
-	@Test
-	public void testCreateCameraIntentOutputUri() {
+	public void testCreateCameraIntentWithOutputUri() {
 		final Intent intent = VideoIntent.createCameraIntent(Uri.parse("content://android/data/video/camera-video.mp4"));
 		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
 		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.parse("content://android/data/video/camera-video.mp4")));
 	}
 

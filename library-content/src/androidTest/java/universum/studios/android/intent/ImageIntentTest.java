@@ -80,16 +80,26 @@ public final class ImageIntentTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testCreateCameraIntentOutputFile() {
+	public void testCreateCameraIntentWithOutputFile() {
 		final Intent intent = ImageIntent.createCameraIntent(new File("content://android/data/images", "camera-image.jpg"));
 		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(MediaStore.ACTION_IMAGE_CAPTURE));
 		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("content://android/data/images", "camera-image.jpg"))));
 	}
 
 	@Test
-	public void testCreateCameraIntentOutputUri() {
+	public void testCreateCameraIntentWithNullOutputFile() {
+		final Intent intent = ImageIntent.createCameraIntent((File) null);
+		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(MediaStore.ACTION_IMAGE_CAPTURE));
+		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
+	}
+
+	@Test
+	public void testCreateCameraIntentWithOutputUri() {
 		final Intent intent = ImageIntent.createCameraIntent(Uri.parse("content://android/data/images/camera-image.jpg"));
 		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(MediaStore.ACTION_IMAGE_CAPTURE));
 		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.parse("content://android/data/images/camera-image.jpg")));
 	}
 
@@ -162,5 +172,15 @@ public final class ImageIntentTest extends BaseInstrumentedTest {
 		assertThat(cameraIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 		mIntent.output(new File("file.tmp"));
 		assertThat(cameraIntent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("file.tmp"))));
+	}
+
+	@Test
+	public void testNullOutputAfterWithDefaultHandlers() {
+		mIntent.withDefaultHandlers(mContext);
+		mIntent.output(new File("file.tmp"));
+		final ContentIntent.ContentHandler cameraHandler = mIntent.handlers().get(1);
+		final Intent cameraIntent = cameraHandler.intent();
+		mIntent.output((Uri) null);
+		assertThat(cameraIntent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
 }

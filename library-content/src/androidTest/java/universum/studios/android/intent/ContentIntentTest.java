@@ -23,11 +23,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.annotation.UiThreadTest;
+import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
+import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -40,8 +44,14 @@ import java.util.List;
 import java.util.Locale;
 
 import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.TestActivity;
 import universum.studios.android.test.TestUtils;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -51,6 +61,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static universum.studios.android.intent.ContentTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
@@ -61,6 +72,8 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "ContentIntentTest";
+
+	@Rule public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
 
 	private ContentIntentImpl mIntent;
 
@@ -141,6 +154,24 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 		assertThat(handlers.size(), is(2));
 		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
 		assertThat(handlers.get(1).name().toString(), is("TestHandler2"));
+	}
+	@Test
+	public void testWithHandlersMultiple() {
+		mIntent.withHandlers(
+				new ContentIntent.ContentHandler("TestHandler1", new Intent()),
+				new ContentIntent.ContentHandler("TestHandler2", new Intent())
+		);
+		mIntent.withHandlers(
+				new ContentIntent.ContentHandler("TestHandler3", new Intent()),
+				new ContentIntent.ContentHandler("TestHandler4", new Intent())
+		);
+		final List<ContentIntent.ContentHandler> handlers = mIntent.handlers();
+		assertThat(handlers, is(not(nullValue())));
+		assertThat(handlers.size(), is(4));
+		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
+		assertThat(handlers.get(1).name().toString(), is("TestHandler2"));
+		assertThat(handlers.get(2).name().toString(), is("TestHandler3"));
+		assertThat(handlers.get(3).name().toString(), is("TestHandler4"));
 	}
 
 	@Test
@@ -283,14 +314,93 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 		);
 	}
 
-	@Test
-	public void testStartWith() {
-		// todo:
+	@Test(expected = IllegalStateException.class)
+	public void testBuildWithHandlers() {
+		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
+		mIntent.build(mContext);
 	}
 
 	@Test
-	public void testOnShowChooserDialog() {
-		// todo:
+	@UiThreadTest
+	public void testStartWith() {
+		mIntent.input(Uri.EMPTY);
+		mIntent.dataType(MimeType.TEXT_HTML);
+		final IntentStarter mockStarter = mock(IntentStarter.class);
+		when(mockStarter.getContext()).thenReturn(mContext);
+		mIntent.startWith(mockStarter);
+		verify(mockStarter, times(1)).startIntent(any(Intent.class));
+	}
+
+	@Test
+	public void testStartWithWithHandlers() throws Throwable {
+		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
+		final IntentStarter mockStarter = mock(IntentStarter.class);
+		when(mockStarter.getContext()).thenReturn(ACTIVITY_RULE.getActivity());
+		ACTIVITY_RULE.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				mIntent.startWith(mockStarter);
+			}
+		});
+		InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+		verify(mockStarter, times(0)).startIntent(any(Intent.class));
+	}
+
+	@Test
+	public void testOnShowChooserDialog() throws Throwable {
+		mIntent.dialogTitle("Test Dialog");
+		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
+		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler2", new Intent()));
+		ACTIVITY_RULE.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				mIntent.onShowChooserDialog(IntentStarters.activityStarter(ACTIVITY_RULE.getActivity()));
+			}
+		});
+		InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+		onView(withText("Test Dialog")).check(matches(isDisplayed()));
+		onView(withText("TestHandler1")).check(matches(isDisplayed()));
+		onView(withText("TestHandler2")).check(matches(isDisplayed()));
+	}
+
+	@Test
+	public void testChooserDialogOnClickWithoutRequestCode() throws Throwable {
+		mIntent.dialogTitle("Test Dialog");
+		final Intent intent = new Intent(Intent.ACTION_VIEW);
+		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", intent));
+		final IntentStarter mockStarter = mock(IntentStarter.class);
+		when(mockStarter.getContext()).thenReturn(ACTIVITY_RULE.getActivity());
+		ACTIVITY_RULE.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				mIntent.onShowChooserDialog(mockStarter);
+			}
+		});
+		InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+		onView(withText("TestHandler1")).perform(click());
+		verify(mockStarter, times(1)).startIntent(intent);
+	}
+
+	@Test
+	public void testChooserDialogOnClickWithRequestCode() throws Throwable {
+		mIntent.dialogTitle("Test Dialog");
+		final Intent intent = new Intent(Intent.ACTION_VIEW);
+		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", intent).requestCode(1000));
+		final IntentStarter mockStarter = mock(IntentStarter.class);
+		when(mockStarter.getContext()).thenReturn(ACTIVITY_RULE.getActivity());
+		ACTIVITY_RULE.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				mIntent.onShowChooserDialog(mockStarter);
+			}
+		});
+		InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+		onView(withText("TestHandler1")).perform(click());
+		verify(mockStarter, times(1)).startIntentForResult(intent, 1000);
 	}
 
 	@Test
