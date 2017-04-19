@@ -24,7 +24,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
 import android.support.test.InstrumentationRegistry;
-import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -57,6 +56,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
+import static org.junit.Assume.assumeTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -321,10 +321,10 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	@UiThreadTest
 	public void testStartWith() {
 		mIntent.input(Uri.EMPTY);
 		mIntent.dataType(MimeType.TEXT_HTML);
+		assumeTrue(BaseIntent.isActivityForIntentAvailable(mContext, mIntent.build(mContext)));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(mContext);
 		mIntent.startWith(mockStarter);
