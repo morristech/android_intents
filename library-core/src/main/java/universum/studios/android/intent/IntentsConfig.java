@@ -21,26 +21,38 @@ package universum.studios.android.intent;
 import android.util.Log;
 
 /**
+ * <b>This class has been deprecated and will be removed in the next release.</b>
+ * <p>
  * Configuration options for the Intents library.
  *
  * @author Martin Albedinsky
+ * @deprecated Not used.
  */
+@Deprecated
 public final class IntentsConfig {
 
 	/**
+	 * <b>This field has been deprecated and will be removed in the next release.</b>
+	 * <p>
 	 * Flag indicating whether the <b>verbose</b> output for the Intents library trough log-cat is
 	 * enabled or not.
 	 *
 	 * @see Log#v(String, String)
+	 * @deprecated Not used.
 	 */
+	@Deprecated
 	public static boolean LOG_ENABLED = true;
 
 	/**
+	 * <b>This field has been deprecated and will be removed in the next release.</b>
+	 * <p>
 	 * Flag indicating whether the <b>debug</b> output for the Intents library trough log-cat is
 	 * enabled or not.
 	 *
 	 * @see Log#d(String, String)
+	 * @deprecated Not used.
 	 */
+	@Deprecated
 	public static boolean DEBUG_LOG_ENABLED = false;
 
 	/**

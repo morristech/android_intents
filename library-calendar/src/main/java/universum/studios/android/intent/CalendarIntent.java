@@ -154,9 +154,9 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 */
 
 	/**
-	 * Type of intent creating by this builder.
+	 * Type of intent that to be created by this builder.
 	 */
-	private int mType = TYPE_INSERT_EVENT;
+	private int mType = TYPE_VIEW;
 
 	/**
 	 * Id of newly creating or already existing calendar event.
@@ -213,7 +213,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	/**
 	 * Sets a type determining whether to create, view or edit an event in the calendar.
 	 * <p>
-	 * Default value: <b>{@link #TYPE_INSERT_EVENT}</b>
+	 * Default value: <b>{@link #TYPE_VIEW}</b>
 	 *
 	 * @param type One of {@link #TYPE_VIEW}, {@link #TYPE_INSERT_EVENT}, {@link #TYPE_EDIT_EVENT},
 	 *             {@link #TYPE_VIEW_EVENT}.
@@ -227,8 +227,6 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 
 	/**
 	 * Returns the type of the intent that will be created by this intent builder.
-	 * <p>
-	 * Default value: <b>{@link #TYPE_INSERT_EVENT}</b>
 	 *
 	 * @return One of {@link #TYPE_VIEW}, {@link #TYPE_INSERT_EVENT}, {@link #TYPE_EDIT_EVENT},
 	 * {@link #TYPE_VIEW_EVENT}.
