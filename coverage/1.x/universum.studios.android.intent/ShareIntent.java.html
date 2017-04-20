@@ -45,7 +45,7 @@ import java.util.List;
  */
 <span class="fc" id="L46">public class ShareIntent extends BaseIntent&lt;ShareIntent&gt; {</span>
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -54,15 +54,15 @@ import java.util.List;
 	 */
 	// private static final String TAG = &quot;ShareIntent&quot;;
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -91,11 +91,11 @@ import java.util.List;
 	 */
 	private List&lt;Uri&gt; mUris;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -106,7 +106,7 @@ import java.util.List;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #content()
 	 */
-	public ShareIntent content(@Nullable CharSequence text) {
+	public ShareIntent content(@Nullable final CharSequence text) {
 <span class="fc" id="L110">		this.mContent = text;</span>
 <span class="fc" id="L111">		return this;</span>
 	}
@@ -129,7 +129,7 @@ import java.util.List;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #uri()
 	 */
-	public ShareIntent uri(@Nullable Uri uri) {
+	public ShareIntent uri(@Nullable final Uri uri) {
 <span class="fc" id="L133">		this.mUri = uri;</span>
 <span class="fc" id="L134">		return this;</span>
 	}
@@ -151,7 +151,7 @@ import java.util.List;
 	 * @param uris The desired array of content uris.
 	 * @see #uris()
 	 */
-	public ShareIntent uris(@NonNull Uri... uris) {
+	public ShareIntent uris(@NonNull final Uri... uris) {
 <span class="fc" id="L155">		return uris(Arrays.asList(uris));</span>
 	}
 
@@ -163,7 +163,7 @@ import java.util.List;
 	 * @see #uris(Uri...)
 	 * @see #uris()
 	 */
-	public ShareIntent uris(@Nullable List&lt;Uri&gt; uris) {
+	public ShareIntent uris(@Nullable final List&lt;Uri&gt; uris) {
 <span class="fc" id="L167">		this.mUris = uris;</span>
 <span class="fc" id="L168">		return this;</span>
 	}
@@ -192,7 +192,7 @@ import java.util.List;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #mimeType()
 	 */
-	public ShareIntent mimeType(@NonNull @MimeType.Value String type) {
+	public ShareIntent mimeType(@NonNull @MimeType.Value final String type) {
 <span class="fc" id="L196">		this.mDataType = type;</span>
 <span class="fc" id="L197">		return this;</span>
 	}
@@ -216,7 +216,7 @@ import java.util.List;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #title()
 	 */
-	public ShareIntent title(@Nullable CharSequence title) {
+	public ShareIntent title(@Nullable final CharSequence title) {
 <span class="fc" id="L220">		this.mTitle = title;</span>
 <span class="fc" id="L221">		return this;</span>
 	}
@@ -240,8 +240,8 @@ import java.util.List;
 <span class="fc bfc" id="L240" title="All 6 branches covered.">		if (TextUtils.isEmpty(mContent) &amp;&amp; mUri == null &amp;&amp; mUris == null) {</span>
 <span class="fc" id="L241">			throw cannotBuildIntentException(&quot;No content to share specified.&quot;);</span>
 		}
-<span class="pc bpc" id="L243" title="1 of 2 branches missed.">		if (TextUtils.isEmpty(mDataType)) {</span>
-<span class="nc" id="L244">			throw cannotBuildIntentException(&quot;No content's MIME type specified.&quot;);</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">		if (TextUtils.isEmpty(mDataType)) {</span>
+<span class="fc" id="L244">			throw cannotBuildIntentException(&quot;No content's MIME type specified.&quot;);</span>
 		}
 <span class="fc" id="L246">	}</span>
 
@@ -249,7 +249,7 @@ import java.util.List;
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 <span class="fc" id="L253">		final Intent intent = new Intent(Intent.ACTION_SEND);</span>
 <span class="fc" id="L254">		intent.setType(mDataType);</span>
 <span class="fc bfc" id="L255" title="All 2 branches covered.">		if (!TextUtils.isEmpty(mTitle)) {</span>
@@ -270,12 +270,12 @@ import java.util.List;
 	/**
 	 */
 	@Override
-	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
-<span class="nc" id="L274">		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));</span>
+	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
+<span class="fc" id="L274">		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));</span>
 	}
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.1</div></body></html>

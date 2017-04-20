@@ -26,7 +26,6 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.util.Log;
 
 /**
  * A {@link BaseIntent} builder implementation providing API for building and starting of intents
@@ -45,9 +44,9 @@ import android.util.Log;
  *
  * @author Martin Albedinsky
  */
-<span class="fc" id="L48">public class MapIntent extends BaseIntent&lt;MapIntent&gt; {</span>
+<span class="fc" id="L47">public class MapIntent extends BaseIntent&lt;MapIntent&gt; {</span>
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -93,15 +92,15 @@ import android.util.Log;
 	 */
 	public static final int ZOOM_LEVEL_MAX = 23;
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -135,11 +134,11 @@ import android.util.Log;
 	 */
 	private boolean mLatLngSet;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -152,11 +151,11 @@ import android.util.Log;
 	 * @see #lat()
 	 * @see #lng()
 	 */
-	public MapIntent location(@FloatRange(from = LAT_MIN, to = LAT_MAX) double lat, @FloatRange(from = LNG_MIN, to = LNG_MAX) double lng) {
-<span class="fc" id="L156">		this.mLat = Math.max(LAT_MIN, Math.min(LAT_MAX, lat));</span>
-<span class="fc" id="L157">		this.mLng = Math.max(LNG_MIN, Math.min(LNG_MAX, lng));</span>
-<span class="fc" id="L158">		this.mLatLngSet = true;</span>
-<span class="fc" id="L159">		return this;</span>
+	public MapIntent location(@FloatRange(from = LAT_MIN, to = LAT_MAX) final double lat, @FloatRange(from = LNG_MIN, to = LNG_MAX) final double lng) {
+<span class="fc" id="L155">		this.mLat = Math.max(LAT_MIN, Math.min(LAT_MAX, lat));</span>
+<span class="fc" id="L156">		this.mLng = Math.max(LNG_MIN, Math.min(LNG_MAX, lng));</span>
+<span class="fc" id="L157">		this.mLatLngSet = true;</span>
+<span class="fc" id="L158">		return this;</span>
 	}
 
 	/**
@@ -168,7 +167,7 @@ import android.util.Log;
 	 */
 	@FloatRange(from = LAT_MIN, to = LAT_MAX)
 	public double lat() {
-<span class="fc" id="L171">		return mLat;</span>
+<span class="fc" id="L170">		return mLat;</span>
 	}
 
 	/**
@@ -180,7 +179,7 @@ import android.util.Log;
 	 */
 	@FloatRange(from = LNG_MIN, to = LNG_MAX)
 	public double lng() {
-<span class="fc" id="L183">		return mLng;</span>
+<span class="fc" id="L182">		return mLng;</span>
 	}
 
 	/**
@@ -191,9 +190,9 @@ import android.util.Log;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #locationQuery()
 	 */
-	public MapIntent locationQuery(@Nullable String query) {
-<span class="fc" id="L195">		this.mLocationQuery = query;</span>
-<span class="fc" id="L196">		return this;</span>
+	public MapIntent locationQuery(@Nullable final String query) {
+<span class="fc" id="L194">		this.mLocationQuery = query;</span>
+<span class="fc" id="L195">		return this;</span>
 	}
 
 	/**
@@ -204,7 +203,7 @@ import android.util.Log;
 	 */
 	@NonNull
 	public String locationQuery() {
-<span class="fc bfc" id="L207" title="All 2 branches covered.">		return mLocationQuery == null ? &quot;&quot; : mLocationQuery;</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">		return mLocationQuery == null ? &quot;&quot; : mLocationQuery;</span>
 	}
 
 	/**
@@ -215,9 +214,9 @@ import android.util.Log;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #zoomLevel()
 	 */
-	public MapIntent zoomLevel(@IntRange(from = ZOOM_LEVEL_MIN, to = ZOOM_LEVEL_MAX) int level) {
-<span class="fc" id="L219">		this.mZoomLevel = Math.max(ZOOM_LEVEL_MIN, Math.min(ZOOM_LEVEL_MAX, level));</span>
-<span class="fc" id="L220">		return this;</span>
+	public MapIntent zoomLevel(@IntRange(from = ZOOM_LEVEL_MIN, to = ZOOM_LEVEL_MAX) final int level) {
+<span class="fc" id="L218">		this.mZoomLevel = Math.max(ZOOM_LEVEL_MIN, Math.min(ZOOM_LEVEL_MAX, level));</span>
+<span class="fc" id="L219">		return this;</span>
 	}
 
 	/**
@@ -228,7 +227,7 @@ import android.util.Log;
 	 */
 	@IntRange(from = 0, to = ZOOM_LEVEL_MAX)
 	public int zoomLevel() {
-<span class="fc" id="L231">		return mZoomLevel;</span>
+<span class="fc" id="L230">		return mZoomLevel;</span>
 	}
 
 	/**
@@ -238,9 +237,9 @@ import android.util.Log;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #label()
 	 */
-	public MapIntent label(@Nullable String label) {
-<span class="fc" id="L242">		this.mLabel = label;</span>
-<span class="fc" id="L243">		return this;</span>
+	public MapIntent label(@Nullable final String label) {
+<span class="fc" id="L241">		this.mLabel = label;</span>
+<span class="fc" id="L242">		return this;</span>
 	}
 
 	/**
@@ -251,57 +250,53 @@ import android.util.Log;
 	 */
 	@NonNull
 	public String label() {
-<span class="fc bfc" id="L254" title="All 2 branches covered.">		return mLabel == null ? &quot;&quot; : mLabel;</span>
+<span class="fc bfc" id="L253" title="All 2 branches covered.">		return mLabel == null ? &quot;&quot; : mLabel;</span>
 	}
 
 	/**
 	 */
 	@Override
 	protected void ensureCanBuildOrThrow() {
-<span class="fc" id="L261">		super.ensureCanBuildOrThrow();</span>
-<span class="fc bfc" id="L262" title="All 4 branches covered.">		if (!mLatLngSet &amp;&amp; TextUtils.isEmpty(mLocationQuery)) {</span>
-<span class="fc" id="L263">			throw cannotBuildIntentException(&quot;No latitude and longitude nor location query specified.&quot;);</span>
+<span class="fc" id="L260">		super.ensureCanBuildOrThrow();</span>
+<span class="fc bfc" id="L261" title="All 4 branches covered.">		if (!mLatLngSet &amp;&amp; TextUtils.isEmpty(mLocationQuery)) {</span>
+<span class="fc" id="L262">			throw cannotBuildIntentException(&quot;No latitude and longitude nor location query specified.&quot;);</span>
 		}
-<span class="fc" id="L265">	}</span>
+<span class="fc" id="L264">	}</span>
 
 	/**
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
-<span class="fc" id="L272">		final StringBuilder uriBuilder = new StringBuilder(64);</span>
-<span class="fc bfc" id="L273" title="All 2 branches covered.">		if (mLatLngSet) {</span>
-<span class="fc bfc" id="L274" title="All 2 branches covered.">			if (TextUtils.isEmpty(mLabel)) {</span>
-<span class="fc" id="L275">				uriBuilder.append(mLat);</span>
-<span class="fc" id="L276">				uriBuilder.append(&quot;,&quot;);</span>
-<span class="fc" id="L277">				uriBuilder.append(mLng);</span>
-<span class="fc bfc" id="L278" title="All 2 branches covered.">				if (mZoomLevel != 0) {</span>
-<span class="fc" id="L279">					uriBuilder.append(&quot;?z=&quot;);</span>
-<span class="fc" id="L280">					uriBuilder.append(mZoomLevel);</span>
+	protected Intent onBuild(@NonNull final Context context) {
+<span class="fc" id="L271">		final StringBuilder uriBuilder = new StringBuilder(64);</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">		if (mLatLngSet) {</span>
+<span class="fc bfc" id="L273" title="All 2 branches covered.">			if (TextUtils.isEmpty(mLabel)) {</span>
+<span class="fc" id="L274">				uriBuilder.append(mLat);</span>
+<span class="fc" id="L275">				uriBuilder.append(&quot;,&quot;);</span>
+<span class="fc" id="L276">				uriBuilder.append(mLng);</span>
+<span class="fc bfc" id="L277" title="All 2 branches covered.">				if (mZoomLevel != 0) {</span>
+<span class="fc" id="L278">					uriBuilder.append(&quot;?z=&quot;);</span>
+<span class="fc" id="L279">					uriBuilder.append(mZoomLevel);</span>
 				}
-<span class="fc bfc" id="L282" title="All 2 branches covered.">				if (!TextUtils.isEmpty(mLocationQuery)) {</span>
-<span class="fc bfc" id="L283" title="All 2 branches covered.">					uriBuilder.append(mZoomLevel == 0 ? &quot;?&quot; : &quot;&amp;&quot;);</span>
-<span class="fc" id="L284">					this.appendLocationQuery(uriBuilder);</span>
+<span class="fc bfc" id="L281" title="All 2 branches covered.">				if (!TextUtils.isEmpty(mLocationQuery)) {</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">					uriBuilder.append(mZoomLevel == 0 ? &quot;?&quot; : &quot;&amp;&quot;);</span>
+<span class="fc" id="L283">					this.appendLocationQuery(uriBuilder);</span>
 				}
 			} else {
-<span class="fc" id="L287">				uriBuilder.append(&quot;0,0?q=&quot;);</span>
-<span class="fc" id="L288">				uriBuilder.append(mLat);</span>
-<span class="fc" id="L289">				uriBuilder.append(&quot;,&quot;);</span>
-<span class="fc" id="L290">				uriBuilder.append(mLng);</span>
-<span class="fc" id="L291">				this.appendLabel(uriBuilder);</span>
+<span class="fc" id="L286">				uriBuilder.append(&quot;0,0?q=&quot;);</span>
+<span class="fc" id="L287">				uriBuilder.append(mLat);</span>
+<span class="fc" id="L288">				uriBuilder.append(&quot;,&quot;);</span>
+<span class="fc" id="L289">				uriBuilder.append(mLng);</span>
+<span class="fc" id="L290">				this.appendLabel(uriBuilder);</span>
 			}
 		} else {
-<span class="fc" id="L294">			uriBuilder.append(&quot;0,0?&quot;);</span>
-<span class="fc" id="L295">			this.appendLocationQuery(uriBuilder);</span>
-<span class="fc bfc" id="L296" title="All 2 branches covered.">			if (!TextUtils.isEmpty(mLabel)) {</span>
-<span class="fc" id="L297">				this.appendLabel(uriBuilder);</span>
+<span class="fc" id="L293">			uriBuilder.append(&quot;0,0?&quot;);</span>
+<span class="fc" id="L294">			this.appendLocationQuery(uriBuilder);</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">			if (!TextUtils.isEmpty(mLabel)) {</span>
+<span class="fc" id="L296">				this.appendLabel(uriBuilder);</span>
 			}
 		}
-<span class="fc" id="L300">		final Uri locationUri = Uri.parse(URI_SCHEME + &quot;:&quot; + uriBuilder.toString());</span>
-<span class="pc bpc" id="L301" title="1 of 2 branches missed.">		if (IntentsConfig.DEBUG_LOG_ENABLED) {</span>
-<span class="nc" id="L302">			Log.v(TAG, &quot;Building intent with uri('&quot; + locationUri.toString() + &quot;').&quot;);</span>
-		}
-<span class="fc" id="L304">		return new Intent(Intent.ACTION_VIEW, locationUri);</span>
+<span class="fc" id="L299">		return new Intent(Intent.ACTION_VIEW, Uri.parse(URI_SCHEME + &quot;:&quot; + uriBuilder.toString()));</span>
 	}
 
 	/**
@@ -312,9 +307,9 @@ import android.util.Log;
 	 *
 	 * @param uriBuilder The builder where to append the location query value.
 	 */
-	private void appendLocationQuery(StringBuilder uriBuilder) {
-<span class="fc" id="L316">		uriBuilder.append(&quot;q=&quot;).append(Uri.encode(mLocationQuery));</span>
-<span class="fc" id="L317">	}</span>
+	private void appendLocationQuery(final StringBuilder uriBuilder) {
+<span class="fc" id="L311">		uriBuilder.append(&quot;q=&quot;).append(Uri.encode(mLocationQuery));</span>
+<span class="fc" id="L312">	}</span>
 
 	/**
 	 * Appends {@link #mLabel} to the specified &lt;var&gt;uriBuilder&lt;/var&gt;.
@@ -323,12 +318,12 @@ import android.util.Log;
 	 *
 	 * @param uriBuilder The builder where to append the label value.
 	 */
-	private void appendLabel(StringBuilder uriBuilder) {
-<span class="fc" id="L327">		uriBuilder.append(&quot;(&quot;).append(Uri.encode(mLabel)).append(&quot;)&quot;);</span>
-<span class="fc" id="L328">	}</span>
+	private void appendLabel(final StringBuilder uriBuilder) {
+<span class="fc" id="L322">		uriBuilder.append(&quot;(&quot;).append(Uri.encode(mLabel)).append(&quot;)&quot;);</span>
+<span class="fc" id="L323">	}</span>
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.1</div></body></html>

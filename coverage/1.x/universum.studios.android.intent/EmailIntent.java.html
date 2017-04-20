@@ -45,7 +45,7 @@ import java.util.regex.Matcher;
  */
 <span class="fc" id="L46">public class EmailIntent extends BaseIntent&lt;EmailIntent&gt; {</span>
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -61,11 +61,11 @@ import java.util.regex.Matcher;
 	 */
 	public static final String URI_SCHEME = &quot;mailto&quot;;
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
@@ -76,7 +76,7 @@ import java.util.regex.Matcher;
 	 */
 <span class="fc" id="L77">	public static final Matcher EMAIL_MATCHER = Patterns.EMAIL_ADDRESS.matcher(&quot;&quot;);</span>
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -105,11 +105,11 @@ import java.util.regex.Matcher;
 	 */
 	private List&lt;String&gt; mBccAddresses;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -124,7 +124,7 @@ import java.util.regex.Matcher;
 	 * @see #to(String...)
 	 * @see #addresses()
 	 */
-	public EmailIntent to(@NonNull String address) {
+	public EmailIntent to(@NonNull final String address) {
 <span class="fc bfc" id="L128" title="All 2 branches covered.">		if (mAddresses == null) this.mAddresses = new ArrayList&lt;&gt;(1);</span>
 <span class="fc" id="L129">		appendEmailAddress(mAddresses, address);</span>
 <span class="fc" id="L130">		return this;</span>
@@ -135,7 +135,7 @@ import java.util.regex.Matcher;
 	 *
 	 * @param addresses The desired array of e-mail addresses to add.
 	 */
-	public EmailIntent to(@NonNull String... addresses) {
+	public EmailIntent to(@NonNull final String... addresses) {
 <span class="fc" id="L139">		return to(Arrays.asList(addresses));</span>
 	}
 
@@ -150,11 +150,11 @@ import java.util.regex.Matcher;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #addresses()
 	 */
-	public EmailIntent to(@Nullable List&lt;String&gt; addresses) {
-<span class="pc bpc" id="L154" title="1 of 2 branches missed.">		if (addresses == null) {</span>
-<span class="nc" id="L155">			this.mAddresses = null;</span>
+	public EmailIntent to(@Nullable final List&lt;String&gt; addresses) {
+<span class="fc bfc" id="L154" title="All 2 branches covered.">		if (addresses == null) {</span>
+<span class="fc" id="L155">			this.mAddresses = null;</span>
 		} else {
-<span class="pc bpc" id="L157" title="1 of 2 branches missed.">			if (mAddresses == null) {</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">			if (mAddresses == null) {</span>
 <span class="fc" id="L158">				this.mAddresses = new ArrayList&lt;&gt;(addresses.size());</span>
 			}
 <span class="fc" id="L160">			appendEmailAddresses(mAddresses, addresses);</span>
@@ -188,7 +188,7 @@ import java.util.regex.Matcher;
 	 * @see #cc(String...)
 	 * @see #ccAddresses()
 	 */
-	public EmailIntent cc(@NonNull String address) {
+	public EmailIntent cc(@NonNull final String address) {
 <span class="fc bfc" id="L192" title="All 2 branches covered.">		if (mCcAddresses == null) this.mCcAddresses = new ArrayList&lt;&gt;(1);</span>
 <span class="fc" id="L193">		appendEmailAddress(mCcAddresses, address);</span>
 <span class="fc" id="L194">		return this;</span>
@@ -199,7 +199,7 @@ import java.util.regex.Matcher;
 	 *
 	 * @param addresses The desired array of e-mail addresses to add.
 	 */
-	public EmailIntent cc(@NonNull String... addresses) {
+	public EmailIntent cc(@NonNull final String... addresses) {
 <span class="fc" id="L203">		return cc(Arrays.asList(addresses));</span>
 	}
 
@@ -216,11 +216,11 @@ import java.util.regex.Matcher;
 	 * @see #cc(String...)
 	 * @see #ccAddresses()
 	 */
-	public EmailIntent cc(@Nullable List&lt;String&gt; addresses) {
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">		if (addresses == null) {</span>
-<span class="nc" id="L221">			this.mCcAddresses = null;</span>
+	public EmailIntent cc(@Nullable final List&lt;String&gt; addresses) {
+<span class="fc bfc" id="L220" title="All 2 branches covered.">		if (addresses == null) {</span>
+<span class="fc" id="L221">			this.mCcAddresses = null;</span>
 		} else {
-<span class="pc bpc" id="L223" title="1 of 2 branches missed.">			if (mCcAddresses == null) {</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">			if (mCcAddresses == null) {</span>
 <span class="fc" id="L224">				this.mCcAddresses = new ArrayList&lt;&gt;(addresses.size());</span>
 			}
 <span class="fc" id="L226">			appendEmailAddresses(mCcAddresses, addresses);</span>
@@ -254,7 +254,7 @@ import java.util.regex.Matcher;
 	 * @see #bcc(String...)
 	 * @see #bccAddresses()
 	 */
-	public EmailIntent bcc(@NonNull String address) {
+	public EmailIntent bcc(@NonNull final String address) {
 <span class="fc bfc" id="L258" title="All 2 branches covered.">		if (mBccAddresses == null) this.mBccAddresses = new ArrayList&lt;&gt;(1);</span>
 <span class="fc" id="L259">		appendEmailAddress(mBccAddresses, address);</span>
 <span class="fc" id="L260">		return this;</span>
@@ -265,7 +265,7 @@ import java.util.regex.Matcher;
 	 *
 	 * @param addresses The desired array of e-mail addresses to add.
 	 */
-	public EmailIntent bcc(@NonNull String... addresses) {
+	public EmailIntent bcc(@NonNull final String... addresses) {
 <span class="fc" id="L269">		return bcc(Arrays.asList(addresses));</span>
 	}
 
@@ -282,11 +282,11 @@ import java.util.regex.Matcher;
 	 * @see #bcc(String...)
 	 * @see #bccAddresses()
 	 */
-	public EmailIntent bcc(@Nullable List&lt;String&gt; addresses) {
-<span class="pc bpc" id="L286" title="1 of 2 branches missed.">		if (addresses == null) {</span>
-<span class="nc" id="L287">			this.mBccAddresses = null;</span>
+	public EmailIntent bcc(@Nullable final List&lt;String&gt; addresses) {
+<span class="fc bfc" id="L286" title="All 2 branches covered.">		if (addresses == null) {</span>
+<span class="fc" id="L287">			this.mBccAddresses = null;</span>
 		} else {
-<span class="pc bpc" id="L289" title="1 of 2 branches missed.">			if (mBccAddresses == null) {</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">			if (mBccAddresses == null) {</span>
 <span class="fc" id="L290">				this.mBccAddresses = new ArrayList&lt;&gt;(addresses.size());</span>
 			}
 <span class="fc" id="L292">			appendEmailAddresses(mBccAddresses, addresses);</span>
@@ -316,7 +316,7 @@ import java.util.regex.Matcher;
 	 * @return This intent builder to allow methods chaining.en
 	 * @see #subject()
 	 */
-	public EmailIntent subject(@NonNull CharSequence subject) {
+	public EmailIntent subject(@NonNull final CharSequence subject) {
 <span class="fc" id="L320">		this.mSubject = subject;</span>
 <span class="fc" id="L321">		return this;</span>
 	}
@@ -339,7 +339,7 @@ import java.util.regex.Matcher;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #message()
 	 */
-	public EmailIntent message(@NonNull CharSequence message) {
+	public EmailIntent message(@NonNull final CharSequence message) {
 <span class="fc" id="L343">		this.mMessage = message;</span>
 <span class="fc" id="L344">		return this;</span>
 	}
@@ -369,7 +369,7 @@ import java.util.regex.Matcher;
 	 */
 	@NonNull
 	@Override
-	protected Intent onBuild(@NonNull Context context) {
+	protected Intent onBuild(@NonNull final Context context) {
 <span class="fc" id="L373">		final Intent intent = new Intent(Intent.ACTION_SENDTO, createUri(mAddresses));</span>
 <span class="fc" id="L374">		intent.putExtra(Intent.EXTRA_SUBJECT, mSubject);</span>
 <span class="fc" id="L375">		intent.putExtra(Intent.EXTRA_TEXT, mMessage);</span>
@@ -391,7 +391,7 @@ import java.util.regex.Matcher;
 	 * addresses is empty.
 	 */
 	@Nullable
-	public static Uri createUri(@NonNull List&lt;String&gt; addresses) {
+	public static Uri createUri(@NonNull final List&lt;String&gt; addresses) {
 <span class="fc" id="L395">		final int n = addresses.size();</span>
 <span class="fc bfc" id="L396" title="All 2 branches covered.">		if (n == 0) {</span>
 <span class="fc" id="L397">			return null;</span>
@@ -412,7 +412,7 @@ import java.util.regex.Matcher;
 	 * @param addresses The list of addresses to be transformed.
 	 * @return Array of same size as the specified addresses and also with the same content.
 	 */
-	private static String[] addressesToArray(List&lt;String&gt; addresses) {
+	private static String[] addressesToArray(final List&lt;String&gt; addresses) {
 <span class="fc" id="L416">		final String[] addressesArray = new String[addresses.size()];</span>
 <span class="fc" id="L417">		addresses.toArray(addressesArray);</span>
 <span class="fc" id="L418">		return addressesArray;</span>
@@ -421,8 +421,8 @@ import java.util.regex.Matcher;
 	/**
 	 */
 	@Override
-	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
-<span class="nc" id="L425">		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));</span>
+	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
+<span class="fc" id="L425">		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));</span>
 	}
 
 	/**
@@ -431,7 +431,7 @@ import java.util.regex.Matcher;
 	 * @param list      The list into which to append the addresses.
 	 * @param addresses Addresses to append.
 	 */
-	private static void appendEmailAddresses(List&lt;String&gt; list, List&lt;String&gt; addresses) {
+	private static void appendEmailAddresses(final List&lt;String&gt; list, final List&lt;String&gt; addresses) {
 <span class="fc bfc" id="L435" title="All 4 branches covered.">		if (!addresses.isEmpty()) for (final String address : addresses) appendEmailAddress(list, address);</span>
 <span class="fc" id="L436">	}</span>
 
@@ -442,7 +442,7 @@ import java.util.regex.Matcher;
 	 * @param list    The list into which to append the address.
 	 * @param address Address to append.
 	 */
-	private static void appendEmailAddress(List&lt;String&gt; list, String address) {
+	private static void appendEmailAddress(final List&lt;String&gt; list, final String address) {
 <span class="fc bfc" id="L446" title="All 2 branches covered.">		if (EMAIL_MATCHER.reset(address).matches()) {</span>
 <span class="fc" id="L447">			list.add(address);</span>
 <span class="fc" id="L448">			return;</span>
@@ -450,8 +450,8 @@ import java.util.regex.Matcher;
 <span class="fc" id="L450">		Log.e(TAG, &quot;Invalid e-mail address('&quot; + address + &quot;') specified.&quot;);</span>
 <span class="fc" id="L451">	}</span>
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.1</div></body></html>

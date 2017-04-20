@@ -61,7 +61,7 @@ import android.widget.Toast;
  */
 <span class="fc" id="L62">public abstract class BaseIntent&lt;I extends BaseIntent&gt; {</span>
 
-	/**
+	/*
 	 * Constants ===================================================================================
 	 */
 
@@ -70,15 +70,15 @@ import android.widget.Toast;
 	 */
 	// private static final String TAG = &quot;BaseIntent&quot;;
 
-	/**
+	/*
 	 * Interface ===================================================================================
 	 */
 
-	/**
+	/*
 	 * Static members ==============================================================================
 	 */
 
-	/**
+	/*
 	 * Members =====================================================================================
 	 */
 
@@ -102,11 +102,11 @@ import android.widget.Toast;
 	 */
 	private boolean mApplyTransitions;
 
-	/**
+	/*
 	 * Constructors ================================================================================
 	 */
 
-	/**
+	/*
 	 * Methods =====================================================================================
 	 */
 
@@ -120,7 +120,7 @@ import android.widget.Toast;
 	 * @see #dialogTitle()
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
-	public I dialogTitle(@Nullable CharSequence title) {
+	public I dialogTitle(@Nullable final CharSequence title) {
 <span class="fc" id="L124">		this.mDialogTitle = title;</span>
 <span class="fc" id="L125">		return (I) this;</span>
 	}
@@ -144,7 +144,7 @@ import android.widget.Toast;
 	 * @see #activityNotFoundMessage()
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
-	public I activityNotFoundMessage(@Nullable CharSequence message) {
+	public I activityNotFoundMessage(@Nullable final CharSequence message) {
 <span class="fc" id="L148">		this.mActivityNotFoundMessage = message;</span>
 <span class="fc" id="L149">		return (I) this;</span>
 	}
@@ -158,7 +158,7 @@ import android.widget.Toast;
 	 */
 	@NonNull
 	public CharSequence activityNotFoundMessage() {
-<span class="pc bpc" id="L161" title="1 of 2 branches missed.">		return mActivityNotFoundMessage == null ? &quot;&quot; : mActivityNotFoundMessage;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">		return mActivityNotFoundMessage == null ? &quot;&quot; : mActivityNotFoundMessage;</span>
 	}
 
 	/**
@@ -171,7 +171,7 @@ import android.widget.Toast;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #enterTransition()
 	 */
-	public I enterTransition(@AnimRes int transition) {
+	public I enterTransition(@AnimRes final int transition) {
 <span class="fc" id="L175">		return transitions(transition, mExitTransition);</span>
 	}
 
@@ -196,7 +196,7 @@ import android.widget.Toast;
 	 * @return This intent builder to allow methods chaining.
 	 * @see #exitTransition()
 	 */
-	public I exitTransition(@AnimRes int transition) {
+	public I exitTransition(@AnimRes final int transition) {
 <span class="fc" id="L200">		return transitions(mEnterTransition, transition);</span>
 	}
 
@@ -222,15 +222,11 @@ import android.widget.Toast;
 	 * @see #exitTransition(int)
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
-	public I transitions(@AnimRes int enterTransition, @AnimRes int exitTransition) {
-<span class="pc bpc" id="L226" title="3 of 4 branches missed.">		if (enterTransition &gt;= 0 || exitTransition &gt;= 0) {</span>
-<span class="fc" id="L227">			this.mEnterTransition = enterTransition;</span>
-<span class="fc" id="L228">			this.mExitTransition = exitTransition;</span>
-<span class="fc" id="L229">			this.mApplyTransitions = true;</span>
-		} else {
-<span class="nc" id="L231">			this.mApplyTransitions = false;</span>
-		}
-<span class="fc" id="L233">		return (I) this;</span>
+	public I transitions(@AnimRes final int enterTransition, @AnimRes final int exitTransition) {
+<span class="fc" id="L226">		this.mEnterTransition = Math.max(0, enterTransition);</span>
+<span class="fc" id="L227">		this.mExitTransition = Math.max(0, exitTransition);</span>
+<span class="fc bfc" id="L228" title="All 4 branches covered.">		this.mApplyTransitions = enterTransition &gt;= 0 || exitTransition &gt;= 0;</span>
+<span class="fc" id="L229">		return (I) this;</span>
 	}
 
 	/**
@@ -241,14 +237,14 @@ import android.widget.Toast;
 	 *                for default available starters.
 	 * @return {@code True} if the intent has been successfully started, {@code false} otherwise.
 	 */
-	public boolean startWith(@NonNull IntentStarter starter) {
-<span class="nc" id="L245">		final Context context = starter.getContext();</span>
-<span class="nc" id="L246">		final Intent intent = build(context);</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (isActivityForIntentAvailable(context, intent)) {</span>
-<span class="nc" id="L248">			return onStartWith(starter, intent);</span>
+	public boolean startWith(@NonNull final IntentStarter starter) {
+<span class="fc" id="L241">		final Context context = starter.getContext();</span>
+<span class="fc" id="L242">		final Intent intent = build(context);</span>
+<span class="fc bfc" id="L243" title="All 2 branches covered.">		if (isActivityForIntentAvailable(context, intent)) {</span>
+<span class="fc" id="L244">			return onStartWith(starter, intent);</span>
 		}
-<span class="nc" id="L250">		notifyActivityNotFound(context);</span>
-<span class="nc" id="L251">		return false;</span>
+<span class="fc" id="L246">		notifyActivityNotFound(context);</span>
+<span class="fc" id="L247">		return false;</span>
 	}
 
 	/**
@@ -260,9 +256,9 @@ import android.widget.Toast;
 	 *                                  requested intent.
 	 */
 	@NonNull
-	public Intent build(@NonNull Context context) {
-<span class="fc" id="L264">		ensureCanBuildOrThrow();</span>
-<span class="fc" id="L265">		return onBuild(context);</span>
+	public Intent build(@NonNull final Context context) {
+<span class="fc" id="L260">		ensureCanBuildOrThrow();</span>
+<span class="fc" id="L261">		return onBuild(context);</span>
 	}
 
 	/**
@@ -274,7 +270,7 @@ import android.widget.Toast;
 	protected void ensureCanBuildOrThrow() {
 		// Inheritance hierarchies should perform here checks whether an Intent from the current
 		// data may be built or not. If Intent cannot be properly built, an exception should be thrown.
-<span class="fc" id="L277">	}</span>
+<span class="fc" id="L273">	}</span>
 
 	/**
 	 * Invoked from {@link #build(Context)} after {@link #ensureCanBuildOrThrow()} to build intent
@@ -298,8 +294,8 @@ import android.widget.Toast;
 	 */
 	@CheckResult
 	@SuppressWarnings(&quot;ConstantConditions&quot;)
-	public static boolean isActivityForIntentAvailable(@NonNull Context context, @NonNull Intent intent) {
-<span class="pc bpc" id="L302" title="1 of 2 branches missed.">		return intent.resolveActivity(context.getPackageManager()) != null;</span>
+	public static boolean isActivityForIntentAvailable(@NonNull final Context context, @NonNull final Intent intent) {
+<span class="fc bfc" id="L298" title="All 2 branches covered.">		return intent.resolveActivity(context.getPackageManager()) != null;</span>
 	}
 
 	/**
@@ -308,8 +304,8 @@ import android.widget.Toast;
 	 *
 	 * @param message Message to be included into exception.
 	 */
-	protected final IllegalArgumentException cannotBuildIntentException(@NonNull String message) {
-<span class="fc" id="L312">		return new IllegalArgumentException(&quot;Cannot build &quot; + getClass().getSimpleName() + &quot;. &quot; + message);</span>
+	protected final IllegalArgumentException cannotBuildIntentException(@NonNull final String message) {
+<span class="fc" id="L308">		return new IllegalArgumentException(&quot;Cannot build &quot; + getClass().getSimpleName() + &quot;. &quot; + message);</span>
 	}
 
 	/**
@@ -322,12 +318,12 @@ import android.widget.Toast;
 	 * @param intent  The intent instance created by this intent builder.
 	 * @return {@code True} to indicate that the intent has been started, {@code false} otherwise.
 	 */
-	protected boolean onStartWith(@NonNull IntentStarter starter, @NonNull Intent intent) {
-<span class="nc" id="L326">		starter.startIntent(intent);</span>
-<span class="nc bnc" id="L327" title="All 2 branches missed.">		if (mApplyTransitions) {</span>
-<span class="nc" id="L328">			starter.overridePendingTransition(mEnterTransition, mExitTransition);</span>
+	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
+<span class="fc" id="L322">		starter.startIntent(intent);</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">		if (mApplyTransitions) {</span>
+<span class="fc" id="L324">			starter.overridePendingTransition(mEnterTransition, mExitTransition);</span>
 		}
-<span class="nc" id="L330">		return true;</span>
+<span class="fc" id="L326">		return true;</span>
 	}
 
 	/**
@@ -339,12 +335,12 @@ import android.widget.Toast;
 	 * @param context The context obtained from the {@link IntentStarter}.
 	 * @see #activityNotFoundMessage(CharSequence)
 	 */
-	protected void notifyActivityNotFound(@NonNull Context context) {
-<span class="fc" id="L343">		Toast.makeText(context, mActivityNotFoundMessage, Toast.LENGTH_LONG).show();</span>
-<span class="fc" id="L344">	}</span>
+	protected void notifyActivityNotFound(@NonNull final Context context) {
+<span class="fc" id="L339">		Toast.makeText(context, mActivityNotFoundMessage, Toast.LENGTH_LONG).show();</span>
+<span class="fc" id="L340">	}</span>
 
-	/**
+	/*
 	 * Inner classes ===============================================================================
 	 */
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.1</div></body></html>

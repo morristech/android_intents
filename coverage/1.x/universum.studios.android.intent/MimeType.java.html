@@ -27,14 +27,14 @@ import java.lang.annotation.RetentionPolicy;
  * This class specifies the most commonly used &lt;b&gt;MIME&lt;/b&gt; types for a content distributed on devices
  * powered by the Android.
  *
- * &lt;h3&gt;Text based types:&lt;/h3&gt;
+ * &lt;h3&gt;Text types:&lt;/h3&gt;
  * &lt;ul&gt;
  * &lt;li&gt;{@link #TEXT}&lt;/li&gt;
  * &lt;li&gt;{@link #TEXT_PLAIN}&lt;/li&gt;
  * &lt;li&gt;{@link #TEXT_HTML}&lt;/li&gt;
  * &lt;/ul&gt;
  *
- * &lt;h3&gt;Image based types:&lt;/h3&gt;
+ * &lt;h3&gt;Image types:&lt;/h3&gt;
  * &lt;ul&gt;
  * &lt;li&gt;{@link #IMAGE}&lt;/li&gt;
  * &lt;li&gt;{@link #IMAGE_JPEG}&lt;/li&gt;
@@ -42,7 +42,7 @@ import java.lang.annotation.RetentionPolicy;
  * &lt;li&gt;{@link #IMAGE_BITMAP}&lt;/li&gt;
  * &lt;/ul&gt;
  *
- * &lt;h3&gt;Audio based types:&lt;/h3&gt;
+ * &lt;h3&gt;Audio types:&lt;/h3&gt;
  * &lt;ul&gt;
  * &lt;li&gt;{@link #AUDIO}&lt;/li&gt;
  * &lt;li&gt;{@link #AUDIO_MP3}&lt;/li&gt;
@@ -50,7 +50,7 @@ import java.lang.annotation.RetentionPolicy;
  * &lt;li&gt;{@link #AUDIO_MPEG}&lt;/li&gt;
  * &lt;/ul&gt;
  *
- * &lt;h3&gt;Video based types&lt;/h3&gt;
+ * &lt;h3&gt;Video types&lt;/h3&gt;
  * &lt;ul&gt;
  * &lt;li&gt;{@link #VIDEO}&lt;/li&gt;
  * &lt;li&gt;{@link #VIDEO_MP4}&lt;/li&gt;
@@ -65,72 +65,100 @@ import java.lang.annotation.RetentionPolicy;
 public abstract class MimeType {
 
 	/**
+	 * Mime type targeting &lt;b&gt;overall&lt;/b&gt; text content.
 	 */
 	public static final String TEXT = &quot;text/*&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;plain&lt;/b&gt; text content.
 	 */
 	public static final String TEXT_PLAIN = &quot;text/plain&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;HTML&lt;/b&gt; text content.
 	 */
 	public static final String TEXT_HTML = &quot;text/html&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;overall&lt;/b&gt; image content.
 	 */
 	public static final String IMAGE = &quot;image/*&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;JPEG&lt;/b&gt; image content.
 	 */
 	public static final String IMAGE_JPEG = &quot;image/jpeg&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;PNG&lt;/b&gt; image content.
 	 */
 	public static final String IMAGE_PNG = &quot;image/png&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;Bitmap&lt;/b&gt; image content.
 	 */
 	public static final String IMAGE_BITMAP = &quot;image/bmp&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;overall&lt;/b&gt; audio content.
 	 */
 	public static final String AUDIO = &quot;audio/*&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;MPEG&lt;/b&gt; audio content.
 	 */
 	public static final String AUDIO_MPEG = &quot;audio/mpeg&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;MP3&lt;/b&gt; audio content.
 	 */
 	public static final String AUDIO_MP3 = &quot;audio/mp3&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;MP4&lt;/b&gt; audio content.
 	 */
 	public static final String AUDIO_MP4 = &quot;audio/mp4&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;overall&lt;/b&gt; video content.
 	 */
 	public static final String VIDEO = &quot;video/*&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;JPEG&lt;/b&gt; video content.
 	 */
 	public static final String VIDEO_JPEG = &quot;video/jpeg&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;MPEG&lt;/b&gt; video content.
 	 */
 	public static final String VIDEO_MPEG = &quot;video/mpeg&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;MP4&lt;/b&gt; video content.
 	 */
 	public static final String VIDEO_MP4 = &quot;video/mp4&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;3GP&lt;/b&gt; video content.
 	 */
-	public static final String VIDEO_3GP = &quot;video/3gpp&quot;;
+	public static final String VIDEO_3GP = &quot;video/3gp&quot;;
 
 	/**
+	 * Mime type targeting &lt;b&gt;3GPP&lt;/b&gt; video content.
 	 */
-	public static final String VIDEO_3GP2 = &quot;video/3gpp2&quot;;
+	public static final String VIDEO_3GPP = &quot;video/3gpp&quot;;
+
+	/**
+	 * Mime type targeting &lt;b&gt;3GPP2&lt;/b&gt; video content.
+	 */
+	public static final String VIDEO_3GPP2 = &quot;video/3gpp2&quot;;
+
+	/**
+	 * @deprecated Use {@link #VIDEO_3GPP2} instead.
+	 */
+	@Deprecated
+	public static final String VIDEO_3GP2 = VIDEO_3GPP2;
 
 	/**
 	 * Defines an annotation for determining set of available mime-type values specified in {@link MimeType}.
@@ -139,7 +167,7 @@ public abstract class MimeType {
 			TEXT, TEXT_PLAIN, TEXT_HTML,
 			IMAGE, IMAGE_JPEG, IMAGE_PNG, IMAGE_BITMAP,
 			AUDIO, AUDIO_MPEG, AUDIO_MP3, AUDIO_MP4,
-			VIDEO, VIDEO_JPEG, VIDEO_MPEG, VIDEO_MP4, VIDEO_3GP, VIDEO_3GP2
+			VIDEO, VIDEO_JPEG, VIDEO_MPEG, VIDEO_MP4, VIDEO_3GP, VIDEO_3GPP, VIDEO_3GPP2
 	})
 	@Retention(RetentionPolicy.SOURCE)
 	public @interface Value {
@@ -149,9 +177,9 @@ public abstract class MimeType {
 	 * Creates a new empty instance of MimeType. Inheritance hierarchies should declare theirs
 	 * constructors private in order to became a standard utility classes.
 	 */
-<span class="nc" id="L152">	protected MimeType() {</span>
+<span class="nc" id="L180">	protected MimeType() {</span>
 		// We allow to override this class only so it may be used as container for other application
 		// specific/needed mime types.
-<span class="nc" id="L155">	}</span>
+<span class="nc" id="L183">	}</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.0</div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.5.201505241946</span>Generated by the Android Gradle plugin 2.3.1</div></body></html>
