@@ -18,7 +18,28 @@
  */
 package universum.studios.android.intent;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 /**
  * @author Martin Albedinsky
  */
-@SuppressWarnings("unused") final class CoreTests {}
+@SuppressWarnings("unused") final class CoreTests {
+
+	static void assertThatBuildThrowsExceptionWithMessage(@NonNull Context context, @NonNull BaseIntent intent, @NonNull String exceptionMessage) {
+		try {
+			intent.build(context);
+		} catch (IllegalArgumentException e) {
+			final String message = "Cannot build " + intent.getClass().getSimpleName() + ". " + exceptionMessage;
+			final String eMessage = e.getMessage();
+			if (!eMessage.contentEquals(message)) {
+				throw new AssertionError(
+						"Expected exception with message <" + message + "> but message was <" + eMessage + ">"
+				);
+			}
+			return;
+		}
+		final String intentName = intent.getClass().getSimpleName();
+		throw new AssertionError("No exception has been thrown while building intent(" + intentName + ").");
+	}
+}

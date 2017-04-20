@@ -112,7 +112,7 @@ public final class SmsIntent extends BaseIntent {
 	 * @return This intent builder to allow methods chaining.
 	 * @see #body()
 	 */
-	public SmsIntent body(@NonNull final CharSequence body) {
+	public SmsIntent body(@Nullable final CharSequence body) {
 		this.mBody = body;
 		return this;
 	}

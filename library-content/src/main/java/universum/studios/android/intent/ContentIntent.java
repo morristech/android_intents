@@ -202,7 +202,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	public I withHandlers(@Nullable final List<ContentHandler> handlers) {
 		if (handlers == null) {
 			this.mHandlers = null;
-		} else {
+		} else if (!handlers.isEmpty()) {
 			if (mHandlers == null) {
 				this.mHandlers = new ArrayList<>(handlers.size());
 			}
@@ -355,16 +355,16 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	@Override
 	public boolean startWith(@NonNull final IntentStarter starter) {
 		final Context context = starter.getContext();
-		if (mHandlers != null && !mHandlers.isEmpty()) {
-			onShowChooserDialog(starter);
-			return true;
+		if (mHandlers == null) {
+			final Intent intent = build(context);
+			if (isActivityForIntentAvailable(context, intent)) {
+				return onStartWith(starter, intent);
+			}
+			notifyActivityNotFound(context);
+			return false;
 		}
-		final Intent intent = build(context);
-		if (isActivityForIntentAvailable(context, intent)) {
-			return onStartWith(starter, intent);
-		}
-		notifyActivityNotFound(context);
-		return false;
+		onShowChooserDialog(starter);
+		return true;
 	}
 
 	/**
@@ -382,19 +382,17 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 		}
 		final AlertDialog.Builder builder = new AlertDialog.Builder(starter.getContext());
 		builder.setTitle(mDialogTitle);
-		builder.setItems(providerNames,
-				new DialogInterface.OnClickListener() {
+		builder.setItems(providerNames, new DialogInterface.OnClickListener() {
 
-					/**
-					 */
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						final ContentHandler handler = mHandlers.get(which);
-						if (handler.requestCode < 0) starter.startIntent(handler.intent);
-						else starter.startIntentForResult(handler.intent, handler.requestCode);
-					}
-				}
-		);
+			/**
+			 */
+			@Override
+			public void onClick(@NonNull final DialogInterface dialog, final int which) {
+				final ContentHandler handler = mHandlers.get(which);
+				if (handler.requestCode < 0) starter.startIntent(handler.intent);
+				else starter.startIntentForResult(handler.intent, handler.requestCode);
+			}
+		});
 		builder.show();
 	}
 
@@ -404,10 +402,10 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	@NonNull
 	@Override
 	public Intent build(@NonNull final Context context) {
-		if (mHandlers != null && !mHandlers.isEmpty()) {
-			throw new IllegalStateException("Cannot build intent for set of ContentHandlers.");
+		if (mHandlers == null) {
+			return super.build(context);
 		}
-		return super.build(context);
+		throw new IllegalStateException("Cannot build intent for set of ContentHandlers.");
 	}
 
 	/**

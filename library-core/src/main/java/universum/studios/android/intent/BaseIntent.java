@@ -223,13 +223,9 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 */
 	@SuppressWarnings("unchecked")
 	public I transitions(@AnimRes final int enterTransition, @AnimRes final int exitTransition) {
-		if (enterTransition >= 0 || exitTransition >= 0) {
-			this.mEnterTransition = enterTransition;
-			this.mExitTransition = exitTransition;
-			this.mApplyTransitions = true;
-		} else {
-			this.mApplyTransitions = false;
-		}
+		this.mEnterTransition = Math.max(0, enterTransition);
+		this.mExitTransition = Math.max(0, exitTransition);
+		this.mApplyTransitions = enterTransition >= 0 || exitTransition >= 0;
 		return (I) this;
 	}
 
