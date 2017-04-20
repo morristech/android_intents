@@ -156,12 +156,12 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	/**
 	 * Type of intent that to be created by this builder.
 	 */
-<span class="nc" id="L159">	private int mType = TYPE_VIEW;</span>
+<span class="fc" id="L159">	private int mType = TYPE_VIEW;</span>
 
 	/**
 	 * Id of newly creating or already existing calendar event.
 	 */
-<span class="nc" id="L164">	private long mEventId = -1;</span>
+<span class="fc" id="L164">	private long mEventId = -1;</span>
 
 	/**
 	 * Time for newly creating calendar event.
@@ -186,7 +186,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	/**
 	 * Availability for newly creating calendar event.
 	 */
-<span class="nc" id="L189">	private int mAvailability = AVAILABILITY_BUSY;</span>
+<span class="fc" id="L189">	private int mAvailability = AVAILABILITY_BUSY;</span>
 
 	/*
 	 * Constructors ================================================================================
@@ -201,10 +201,10 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #endTime(long)
 	 */
 	public CalendarIntent() {
-<span class="nc" id="L204">		super();</span>
-<span class="nc" id="L205">		this.mBeginTime = System.currentTimeMillis();</span>
-<span class="nc" id="L206">		this.mEndTime = mBeginTime + 1;</span>
-<span class="nc" id="L207">	}</span>
+<span class="fc" id="L204">		super();</span>
+<span class="fc" id="L205">		this.mBeginTime = System.currentTimeMillis();</span>
+<span class="fc" id="L206">		this.mEndTime = mBeginTime + 1;</span>
+<span class="fc" id="L207">	}</span>
 
 	/*
 	 * Methods =====================================================================================
@@ -221,8 +221,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #type()
 	 */
 	public CalendarIntent type(@Type final int type) {
-<span class="nc" id="L224">		this.mType = type;</span>
-<span class="nc" id="L225">		return this;</span>
+<span class="fc" id="L224">		this.mType = type;</span>
+<span class="fc" id="L225">		return this;</span>
 	}
 
 	/**
@@ -234,7 +234,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 */
 	@Type
 	public int type() {
-<span class="nc" id="L237">		return mType;</span>
+<span class="fc" id="L237">		return mType;</span>
 	}
 
 	/**
@@ -249,8 +249,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #type(int)
 	 */
 	public CalendarIntent eventId(@IntRange(from = 1, to = Long.MAX_VALUE) final long eventId) {
-<span class="nc" id="L252">		this.mEventId = eventId;</span>
-<span class="nc" id="L253">		return this;</span>
+<span class="fc" id="L252">		this.mEventId = eventId;</span>
+<span class="fc" id="L253">		return this;</span>
 	}
 
 	/**
@@ -260,7 +260,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #eventId(long)
 	 */
 	public long eventId() {
-<span class="nc" id="L263">		return mEventId;</span>
+<span class="fc" id="L263">		return mEventId;</span>
 	}
 
 	/**
@@ -274,8 +274,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #time()
 	 */
 	public CalendarIntent time(@IntRange(from = 0, to = Long.MAX_VALUE) final long time) {
-<span class="nc" id="L277">		this.mBeginTime = time;</span>
-<span class="nc" id="L278">		return this;</span>
+<span class="fc" id="L277">		this.mBeginTime = time;</span>
+<span class="fc" id="L278">		return this;</span>
 	}
 
 	/**
@@ -285,7 +285,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #time(long)
 	 */
 	public long time() {
-<span class="nc" id="L288">		return mBeginTime;</span>
+<span class="fc" id="L288">		return mBeginTime;</span>
 	}
 
 	/**
@@ -301,8 +301,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #beginTime()
 	 */
 	public CalendarIntent beginTime(@IntRange(from = 0, to = Long.MAX_VALUE) final long beginTime) {
-<span class="nc" id="L304">		this.mBeginTime = beginTime;</span>
-<span class="nc" id="L305">		return this;</span>
+<span class="fc" id="L304">		this.mBeginTime = beginTime;</span>
+<span class="fc" id="L305">		return this;</span>
 	}
 
 	/**
@@ -313,7 +313,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #endTime(long)
 	 */
 	public long beginTime() {
-<span class="nc" id="L316">		return mBeginTime;</span>
+<span class="fc" id="L316">		return mBeginTime;</span>
 	}
 
 	/**
@@ -329,8 +329,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #endTime()
 	 */
 	public CalendarIntent endTime(@IntRange(from = 0, to = Long.MAX_VALUE) final long endTime) {
-<span class="nc" id="L332">		this.mEndTime = endTime;</span>
-<span class="nc" id="L333">		return this;</span>
+<span class="fc" id="L332">		this.mEndTime = endTime;</span>
+<span class="fc" id="L333">		return this;</span>
 	}
 
 	/**
@@ -341,7 +341,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #beginTime(long)
 	 */
 	public long endTime() {
-<span class="nc" id="L344">		return mEndTime;</span>
+<span class="fc" id="L344">		return mEndTime;</span>
 	}
 
 	/**
@@ -353,8 +353,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #title()
 	 */
 	public CalendarIntent title(@Nullable final CharSequence title) {
-<span class="nc" id="L356">		this.mTitle = title;</span>
-<span class="nc" id="L357">		return this;</span>
+<span class="fc" id="L356">		this.mTitle = title;</span>
+<span class="fc" id="L357">		return this;</span>
 	}
 
 	/**
@@ -365,7 +365,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 */
 	@NonNull
 	public CharSequence title() {
-<span class="nc bnc" id="L368" title="All 2 branches missed.">		return mTitle == null ? &quot;&quot; : mTitle;</span>
+<span class="fc bfc" id="L368" title="All 2 branches covered.">		return mTitle == null ? &quot;&quot; : mTitle;</span>
 	}
 
 	/**
@@ -377,8 +377,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #description()
 	 */
 	public CalendarIntent description(@Nullable final CharSequence description) {
-<span class="nc" id="L380">		this.mDescription = description;</span>
-<span class="nc" id="L381">		return this;</span>
+<span class="fc" id="L380">		this.mDescription = description;</span>
+<span class="fc" id="L381">		return this;</span>
 	}
 
 	/**
@@ -389,7 +389,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 */
 	@NonNull
 	public CharSequence description() {
-<span class="nc bnc" id="L392" title="All 2 branches missed.">		return mDescription == null ? &quot;&quot; : mDescription;</span>
+<span class="fc bfc" id="L392" title="All 2 branches covered.">		return mDescription == null ? &quot;&quot; : mDescription;</span>
 	}
 
 	/**
@@ -401,8 +401,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #location()
 	 */
 	public CalendarIntent location(@Nullable final CharSequence location) {
-<span class="nc" id="L404">		this.mLocation = location;</span>
-<span class="nc" id="L405">		return this;</span>
+<span class="fc" id="L404">		this.mLocation = location;</span>
+<span class="fc" id="L405">		return this;</span>
 	}
 
 	/**
@@ -413,7 +413,7 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 */
 	@NonNull
 	public CharSequence location() {
-<span class="nc bnc" id="L416" title="All 2 branches missed.">		return mLocation == null ? &quot;&quot; : mLocation;</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">		return mLocation == null ? &quot;&quot; : mLocation;</span>
 	}
 
 	/**
@@ -427,8 +427,8 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 * @see #availability()
 	 */
 	public CalendarIntent availability(@Availability final int availability) {
-<span class="nc" id="L430">		this.mAvailability = availability;</span>
-<span class="nc" id="L431">		return this;</span>
+<span class="fc" id="L430">		this.mAvailability = availability;</span>
+<span class="fc" id="L431">		return this;</span>
 	}
 
 	/**
@@ -442,38 +442,38 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	 */
 	@Availability
 	public int availability() {
-<span class="nc" id="L445">		return mAvailability;</span>
+<span class="fc" id="L445">		return mAvailability;</span>
 	}
 
 	/**
 	 */
 	@Override
 	protected void ensureCanBuildOrThrow() {
-<span class="nc" id="L452">		super.ensureCanBuildOrThrow();</span>
-<span class="nc bnc" id="L453" title="All 3 branches missed.">		switch (mType) {</span>
+<span class="fc" id="L452">		super.ensureCanBuildOrThrow();</span>
+<span class="fc bfc" id="L453" title="All 3 branches covered.">		switch (mType) {</span>
 			case TYPE_VIEW:
-<span class="nc bnc" id="L455" title="All 2 branches missed.">				if (mBeginTime &lt; 0) {</span>
-<span class="nc" id="L456">					throw cannotBuildIntentException(</span>
+<span class="fc bfc" id="L455" title="All 2 branches covered.">				if (mBeginTime &lt; 0) {</span>
+<span class="fc" id="L456">					throw cannotBuildIntentException(</span>
 							&quot;Specified invalid time(&quot; + mBeginTime + &quot;) where to open calendar for view. &quot; +
 									&quot;Must be none-negative time value.&quot;
 					);
 				}
 				break;
 			case TYPE_INSERT_EVENT:
-<span class="nc bnc" id="L463" title="All 2 branches missed.">				if (mBeginTime &lt; 0) {</span>
-<span class="nc" id="L464">					throw cannotBuildIntentException(</span>
+<span class="fc bfc" id="L463" title="All 2 branches covered.">				if (mBeginTime &lt; 0) {</span>
+<span class="fc" id="L464">					throw cannotBuildIntentException(</span>
 							&quot;Specified invalid begin time(&quot; + mBeginTime + &quot;). &quot; +
 									&quot;Must be none-negative time value.&quot;
 					);
 				}
-<span class="nc bnc" id="L469" title="All 2 branches missed.">				if (mEndTime &lt; 0) {</span>
-<span class="nc" id="L470">					throw cannotBuildIntentException(</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">				if (mEndTime &lt; 0) {</span>
+<span class="fc" id="L470">					throw cannotBuildIntentException(</span>
 							&quot;Specified invalid end time(&quot; + mEndTime + &quot;). &quot; +
 									&quot;Must be none-negative time value.&quot;
 					);
 				}
-<span class="nc bnc" id="L475" title="All 2 branches missed.">				if (mEndTime &lt;= mBeginTime) {</span>
-<span class="nc" id="L476">					throw cannotBuildIntentException(</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">				if (mEndTime &lt;= mBeginTime) {</span>
+<span class="fc" id="L476">					throw cannotBuildIntentException(</span>
 							&quot;Specified end time(&quot; + mEndTime + &quot;) is before/at begin time(&quot; + mBeginTime + &quot;). &quot; +
 									&quot;Must be greater than the begin time.&quot;
 					);
@@ -482,12 +482,12 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 			case TYPE_EDIT_EVENT:
 			case TYPE_VIEW_EVENT:
 			default:
-<span class="nc bnc" id="L485" title="All 2 branches missed.">				if (mEventId &lt;= 0) {</span>
-<span class="nc" id="L486">					throw cannotBuildIntentException(&quot;Specified invalid event id(&quot; + mEventId + &quot;).&quot;);</span>
+<span class="fc bfc" id="L485" title="All 2 branches covered.">				if (mEventId &lt;= 0) {</span>
+<span class="fc" id="L486">					throw cannotBuildIntentException(&quot;Specified invalid event id(&quot; + mEventId + &quot;).&quot;);</span>
 				}
 				break;
 		}
-<span class="nc" id="L490">	}</span>
+<span class="fc" id="L490">	}</span>
 
 	/**
 	 */
@@ -495,31 +495,31 @@ public class CalendarIntent extends BaseIntent&lt;CalendarIntent&gt; {
 	@Override
 	@SuppressWarnings(&quot;ConstantConditions&quot;)
 	protected Intent onBuild(@NonNull final Context context) {
-<span class="nc bnc" id="L498" title="All 4 branches missed.">		switch (mType) {</span>
+<span class="fc bfc" id="L498" title="All 4 branches covered.">		switch (mType) {</span>
 			case TYPE_VIEW:
-<span class="nc" id="L500">				final Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();</span>
-<span class="nc" id="L501">				builder.appendPath(&quot;time&quot;);</span>
-<span class="nc" id="L502">				ContentUris.appendId(builder, mBeginTime);</span>
-<span class="nc" id="L503">				return new Intent(Intent.ACTION_VIEW).setData(builder.build());</span>
+<span class="fc" id="L500">				final Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();</span>
+<span class="fc" id="L501">				builder.appendPath(&quot;time&quot;);</span>
+<span class="fc" id="L502">				ContentUris.appendId(builder, mBeginTime);</span>
+<span class="fc" id="L503">				return new Intent(Intent.ACTION_VIEW).setData(builder.build());</span>
 			case TYPE_INSERT_EVENT:
-<span class="nc" id="L505">				return new Intent(Intent.ACTION_INSERT)</span>
-<span class="nc" id="L506">						.setData(CalendarContract.Events.CONTENT_URI)</span>
-<span class="nc" id="L507">						.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, mBeginTime)</span>
-<span class="nc" id="L508">						.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, mEndTime)</span>
-<span class="nc" id="L509">						.putExtra(CalendarContract.Events.TITLE, mTitle)</span>
-<span class="nc" id="L510">						.putExtra(CalendarContract.Events.DESCRIPTION, mDescription)</span>
-<span class="nc" id="L511">						.putExtra(CalendarContract.Events.EVENT_LOCATION, mLocation)</span>
-<span class="nc" id="L512">						.putExtra(CalendarContract.Events.AVAILABILITY, mAvailability);</span>
+<span class="fc" id="L505">				return new Intent(Intent.ACTION_INSERT)</span>
+<span class="fc" id="L506">						.setData(CalendarContract.Events.CONTENT_URI)</span>
+<span class="fc" id="L507">						.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, mBeginTime)</span>
+<span class="fc" id="L508">						.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, mEndTime)</span>
+<span class="fc" id="L509">						.putExtra(CalendarContract.Events.TITLE, mTitle)</span>
+<span class="fc" id="L510">						.putExtra(CalendarContract.Events.DESCRIPTION, mDescription)</span>
+<span class="fc" id="L511">						.putExtra(CalendarContract.Events.EVENT_LOCATION, mLocation)</span>
+<span class="fc" id="L512">						.putExtra(CalendarContract.Events.AVAILABILITY, mAvailability);</span>
 			case TYPE_EDIT_EVENT:
-<span class="nc" id="L514">				final Intent intent = new Intent(Intent.ACTION_EDIT);</span>
-<span class="nc" id="L515">				intent.setData(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, mEventId));</span>
-<span class="nc bnc" id="L516" title="All 2 branches missed.">				if (!TextUtils.isEmpty(mTitle)) {</span>
-<span class="nc" id="L517">					intent.putExtra(CalendarContract.Events.TITLE, mTitle);</span>
+<span class="fc" id="L514">				final Intent intent = new Intent(Intent.ACTION_EDIT);</span>
+<span class="fc" id="L515">				intent.setData(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, mEventId));</span>
+<span class="fc bfc" id="L516" title="All 2 branches covered.">				if (!TextUtils.isEmpty(mTitle)) {</span>
+<span class="fc" id="L517">					intent.putExtra(CalendarContract.Events.TITLE, mTitle);</span>
 				}
-<span class="nc" id="L519">				return intent;</span>
+<span class="fc" id="L519">				return intent;</span>
 			default:
-<span class="nc" id="L521">				return new Intent(Intent.ACTION_VIEW).setData(</span>
-<span class="nc" id="L522">						ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, mEventId)</span>
+<span class="fc" id="L521">				return new Intent(Intent.ACTION_VIEW).setData(</span>
+<span class="fc" id="L522">						ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, mEventId)</span>
 				);
 		}
 	}

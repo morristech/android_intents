@@ -44,7 +44,7 @@ import java.io.IOException;
  *
  * @author Martin Albedinsky
  */
-<span class="nc" id="L47">public class ImageIntent extends ContentIntent&lt;ImageIntent&gt; {</span>
+<span class="fc" id="L47">public class ImageIntent extends ContentIntent&lt;ImageIntent&gt; {</span>
 
 	/*
 	 * Constants ===================================================================================
@@ -106,7 +106,7 @@ import java.io.IOException;
 	 */
 	@NonNull
 	public static Intent createGalleryIntent() {
-<span class="nc" id="L109">		return new Intent(Intent.ACTION_GET_CONTENT).setType(MimeType.IMAGE);</span>
+<span class="fc" id="L109">		return new Intent(Intent.ACTION_GET_CONTENT).setType(MimeType.IMAGE);</span>
 	}
 
 	/**
@@ -114,7 +114,7 @@ import java.io.IOException;
 	 */
 	@NonNull
 	public static Intent createCameraIntent() {
-<span class="nc" id="L117">		return createCameraIntent((Uri) null);</span>
+<span class="fc" id="L117">		return createCameraIntent((Uri) null);</span>
 	}
 
 	/**
@@ -126,7 +126,7 @@ import java.io.IOException;
 	 */
 	@NonNull
 	public static Intent createCameraIntent(@Nullable final File outputFile) {
-<span class="nc bnc" id="L129" title="All 2 branches missed.">		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));</span>
+<span class="fc bfc" id="L129" title="All 2 branches covered.">		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));</span>
 	}
 
 	/**
@@ -142,11 +142,11 @@ import java.io.IOException;
 	 */
 	@NonNull
 	public static Intent createCameraIntent(@Nullable final Uri outputUri) {
-<span class="nc" id="L145">		final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);</span>
-<span class="nc bnc" id="L146" title="All 2 branches missed.">		if (outputUri != null) {</span>
-<span class="nc" id="L147">			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);</span>
+<span class="fc" id="L145">		final Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);</span>
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		if (outputUri != null) {</span>
+<span class="fc" id="L147">			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);</span>
 		}
-<span class="nc" id="L149">		return intent;</span>
+<span class="fc" id="L149">		return intent;</span>
 	}
 
 	/**
@@ -155,7 +155,7 @@ import java.io.IOException;
 	 */
 	@Nullable
 	public static File createImageFile() {
-<span class="nc" id="L158">		return createImageFile(String.format(IMAGE_FILE_NAME_FORMAT, createContentFileTimeStamp()));</span>
+<span class="fc" id="L158">		return createImageFile(String.format(IMAGE_FILE_NAME_FORMAT, createContentFileTimeStamp()));</span>
 	}
 
 	/**
@@ -168,7 +168,7 @@ import java.io.IOException;
 	 */
 	@Nullable
 	public static File createImageFile(@NonNull final String fileName) {
-<span class="nc" id="L171">		return createContentFile(appendDefaultFileSuffixIfNotPresented(fileName, &quot;.jpg&quot;), Environment.DIRECTORY_PICTURES);</span>
+<span class="fc" id="L171">		return createContentFile(appendDefaultFileSuffixIfNotPresented(fileName, &quot;.jpg&quot;), Environment.DIRECTORY_PICTURES);</span>
 	}
 
 	/**
@@ -254,16 +254,16 @@ import java.io.IOException;
 	@Override
 	@SuppressWarnings(&quot;ConstantConditions&quot;)
 	public ImageIntent withDefaultHandlers(@NonNull final Context context) {
-<span class="nc" id="L257">		withHandlers(</span>
-<span class="nc" id="L258">				onCreateGalleryHandler(context.getResources()),</span>
-<span class="nc" id="L259">				mCameraHandler = onCreateCameraHandler(context.getResources())</span>
+<span class="fc" id="L257">		withHandlers(</span>
+<span class="fc" id="L258">				onCreateGalleryHandler(context.getResources()),</span>
+<span class="fc" id="L259">				mCameraHandler = onCreateCameraHandler(context.getResources())</span>
 		);
-<span class="nc bnc" id="L261" title="All 2 branches missed.">		if (mUri == null) {</span>
-<span class="nc" id="L262">			mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">		if (mUri == null) {</span>
+<span class="fc" id="L262">			mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);</span>
 		} else {
-<span class="nc" id="L264">			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);</span>
+<span class="fc" id="L264">			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);</span>
 		}
-<span class="nc" id="L266">		return this;</span>
+<span class="fc" id="L266">		return this;</span>
 	}
 
 	/**
@@ -277,10 +277,10 @@ import java.io.IOException;
 	 */
 	@NonNull
 	protected ContentHandler onCreateGalleryHandler(@NonNull final Resources resources) {
-<span class="nc" id="L280">		return new ContentHandler(</span>
+<span class="fc" id="L280">		return new ContentHandler(</span>
 				&quot;Gallery&quot;,
-<span class="nc" id="L282">				createGalleryIntent()</span>
-<span class="nc" id="L283">		).requestCode(REQUEST_CODE_GALLERY);</span>
+<span class="fc" id="L282">				createGalleryIntent()</span>
+<span class="fc" id="L283">		).requestCode(REQUEST_CODE_GALLERY);</span>
 	}
 
 	/**
@@ -294,10 +294,10 @@ import java.io.IOException;
 	 */
 	@NonNull
 	protected ContentHandler onCreateCameraHandler(@NonNull final Resources resources) {
-<span class="nc" id="L297">		return new ContentHandler(</span>
+<span class="fc" id="L297">		return new ContentHandler(</span>
 				&quot;Camera&quot;,
-<span class="nc" id="L299">				createCameraIntent()</span>
-<span class="nc" id="L300">		).requestCode(REQUEST_CODE_CAMERA);</span>
+<span class="fc" id="L299">				createCameraIntent()</span>
+<span class="fc" id="L300">		).requestCode(REQUEST_CODE_CAMERA);</span>
 	}
 
 	/**
@@ -306,11 +306,11 @@ import java.io.IOException;
 	 */
 	@Override
 	public ImageIntent input(@Nullable Uri uri) {
-<span class="nc" id="L309">		super.input(uri);</span>
-<span class="nc bnc" id="L310" title="All 2 branches missed.">		if (uri != null) {</span>
-<span class="nc" id="L311">			this.mDataType = MimeType.IMAGE;</span>
+<span class="fc" id="L309">		super.input(uri);</span>
+<span class="fc bfc" id="L310" title="All 2 branches covered.">		if (uri != null) {</span>
+<span class="fc" id="L311">			this.mDataType = MimeType.IMAGE;</span>
 		}
-<span class="nc" id="L313">		return this;</span>
+<span class="fc" id="L313">		return this;</span>
 	}
 
 	/**
@@ -327,15 +327,15 @@ import java.io.IOException;
 	 */
 	@Override
 	public ImageIntent output(@Nullable final Uri uri) {
-<span class="nc" id="L330">		super.output(uri);</span>
-<span class="nc bnc" id="L331" title="All 2 branches missed.">		if (mCameraHandler != null) {</span>
-<span class="nc bnc" id="L332" title="All 2 branches missed.">			if (mUri == null) {</span>
-<span class="nc" id="L333">				mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);</span>
+<span class="fc" id="L330">		super.output(uri);</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">		if (mCameraHandler != null) {</span>
+<span class="fc bfc" id="L332" title="All 2 branches covered.">			if (mUri == null) {</span>
+<span class="fc" id="L333">				mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);</span>
 			} else {
-<span class="nc" id="L335">				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);</span>
+<span class="fc" id="L335">				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);</span>
 			}
 		}
-<span class="nc" id="L338">		return this;</span>
+<span class="fc" id="L338">		return this;</span>
 	}
 
 	/*
@@ -347,7 +347,7 @@ import java.io.IOException;
 	 *
 	 * @author Martin Albedinsky
 	 */
-<span class="nc" id="L350">	public static class ImageOptions {</span>
+<span class="pc" id="L350">	public static class ImageOptions {</span>
 
 		/**
 		 * Dimensions to which should be obtained image bitmap re-sized.

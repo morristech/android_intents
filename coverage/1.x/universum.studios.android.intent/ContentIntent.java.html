@@ -53,7 +53,7 @@ import java.util.Locale;
  *
  * @author Martin Albedinsky
  */
-<span class="nc" id="L56">public abstract class ContentIntent&lt;I extends ContentIntent&lt;I&gt;&gt; extends BaseIntent&lt;I&gt; {</span>
+<span class="fc" id="L56">public abstract class ContentIntent&lt;I extends ContentIntent&lt;I&gt;&gt; extends BaseIntent&lt;I&gt; {</span>
 
 	/*
 	 * Constants ===================================================================================
@@ -120,7 +120,7 @@ import java.util.Locale;
 	 */
 	@NonNull
 	public static String createContentFileTimeStamp() {
-<span class="nc" id="L123">		return new SimpleDateFormat(CONTENT_FILE_TIME_STAMP_FORMAT, Locale.getDefault()).format(new Date());</span>
+<span class="fc" id="L123">		return new SimpleDateFormat(CONTENT_FILE_TIME_STAMP_FORMAT, Locale.getDefault()).format(new Date());</span>
 	}
 
 	/**
@@ -134,7 +134,7 @@ import java.util.Locale;
 	 */
 	@Nullable
 	public static File createContentFile(@NonNull final String fileName, @NonNull final String externalDirectoryType) {
-<span class="nc" id="L137">		return createContentFile(fileName, Environment.getExternalStoragePublicDirectory(externalDirectoryType));</span>
+<span class="fc" id="L137">		return createContentFile(fileName, Environment.getExternalStoragePublicDirectory(externalDirectoryType));</span>
 	}
 
 	/**
@@ -150,12 +150,12 @@ import java.util.Locale;
 	@Nullable
 	public static File createContentFile(@NonNull final String fileName, @NonNull final File directory) {
 		try {
-<span class="nc" id="L153">			final File file = new File(directory.getPath() + File.separator + fileName);</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">			return file.createNewFile() ? file : null;</span>
-<span class="nc" id="L155">		} catch (IOException e) {</span>
-<span class="nc" id="L156">			e.printStackTrace();</span>
+<span class="fc" id="L153">			final File file = new File(directory.getPath() + File.separator + fileName);</span>
+<span class="pc bpc" id="L154" title="1 of 2 branches missed.">			return file.createNewFile() ? file : null;</span>
+<span class="fc" id="L155">		} catch (IOException e) {</span>
+<span class="fc" id="L156">			e.printStackTrace();</span>
 		}
-<span class="nc" id="L158">		return null;</span>
+<span class="fc" id="L158">		return null;</span>
 	}
 
 	/**
@@ -170,7 +170,7 @@ import java.util.Locale;
 	 * @return The given file name with the appended suffix if necessary.
 	 */
 	static String appendDefaultFileSuffixIfNotPresented(final String fileName, final String defaultSuffix) {
-<span class="nc bnc" id="L173" title="All 2 branches missed.">		return fileName.contains(&quot;.&quot;) ? fileName : fileName + defaultSuffix;</span>
+<span class="fc bfc" id="L173" title="All 2 branches covered.">		return fileName.contains(&quot;.&quot;) ? fileName : fileName + defaultSuffix;</span>
 	}
 
 	/**
@@ -188,7 +188,7 @@ import java.util.Locale;
 	 * @param handlers The desired array of handlers to add.
 	 */
 	public I withHandlers(@NonNull final ContentHandler... handlers) {
-<span class="nc" id="L191">		return withHandlers(Arrays.asList(handlers));</span>
+<span class="fc" id="L191">		return withHandlers(Arrays.asList(handlers));</span>
 	}
 
 	/**
@@ -200,15 +200,15 @@ import java.util.Locale;
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public I withHandlers(@Nullable final List&lt;ContentHandler&gt; handlers) {
-<span class="nc bnc" id="L203" title="All 2 branches missed.">		if (handlers == null) {</span>
-<span class="nc" id="L204">			this.mHandlers = null;</span>
-<span class="nc bnc" id="L205" title="All 2 branches missed.">		} else if (!handlers.isEmpty()) {</span>
-<span class="nc bnc" id="L206" title="All 2 branches missed.">			if (mHandlers == null) {</span>
-<span class="nc" id="L207">				this.mHandlers = new ArrayList&lt;&gt;(handlers.size());</span>
+<span class="fc bfc" id="L203" title="All 2 branches covered.">		if (handlers == null) {</span>
+<span class="fc" id="L204">			this.mHandlers = null;</span>
+<span class="fc bfc" id="L205" title="All 2 branches covered.">		} else if (!handlers.isEmpty()) {</span>
+<span class="fc bfc" id="L206" title="All 2 branches covered.">			if (mHandlers == null) {</span>
+<span class="fc" id="L207">				this.mHandlers = new ArrayList&lt;&gt;(handlers.size());</span>
 			}
-<span class="nc" id="L209">			mHandlers.addAll(handlers);</span>
+<span class="fc" id="L209">			mHandlers.addAll(handlers);</span>
 		}
-<span class="nc" id="L211">		return (I) this;</span>
+<span class="fc" id="L211">		return (I) this;</span>
 	}
 
 	/**
@@ -226,9 +226,9 @@ import java.util.Locale;
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public I withHandler(@NonNull final ContentHandler handler) {
-<span class="nc bnc" id="L229" title="All 2 branches missed.">		if (mHandlers == null) this.mHandlers = new ArrayList&lt;&gt;(1);</span>
-<span class="nc" id="L230">		mHandlers.add(handler);</span>
-<span class="nc" id="L231">		return (I) this;</span>
+<span class="fc bfc" id="L229" title="All 2 branches covered.">		if (mHandlers == null) this.mHandlers = new ArrayList&lt;&gt;(1);</span>
+<span class="fc" id="L230">		mHandlers.add(handler);</span>
+<span class="fc" id="L231">		return (I) this;</span>
 	}
 
 	/**
@@ -243,7 +243,7 @@ import java.util.Locale;
 	@NonNull
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public List&lt;ContentHandler&gt; handlers() {
-<span class="nc bnc" id="L246" title="All 2 branches missed.">		return mHandlers == null ? Collections.EMPTY_LIST : new ArrayList&lt;&gt;(mHandlers);</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">		return mHandlers == null ? Collections.EMPTY_LIST : new ArrayList&lt;&gt;(mHandlers);</span>
 	}
 
 	/**
@@ -255,9 +255,9 @@ import java.util.Locale;
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public I input(@Nullable final File file) {
-<span class="nc bnc" id="L258" title="All 2 branches missed.">		if (file == null) input((Uri) null);</span>
-<span class="nc" id="L259">		else input(Uri.fromFile(file));</span>
-<span class="nc" id="L260">		return (I) this;</span>
+<span class="fc bfc" id="L258" title="All 2 branches covered.">		if (file == null) input((Uri) null);</span>
+<span class="fc" id="L259">		else input(Uri.fromFile(file));</span>
+<span class="fc" id="L260">		return (I) this;</span>
 	}
 
 	/**
@@ -277,10 +277,10 @@ import java.util.Locale;
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public I input(@Nullable final Uri uri) {
-<span class="nc" id="L280">		this.mUri = uri;</span>
-<span class="nc" id="L281">		this.mDataType = null;</span>
-<span class="nc bnc" id="L282" title="All 2 branches missed.">		this.mHasInputUri = uri != null;</span>
-<span class="nc" id="L283">		return (I) this;</span>
+<span class="fc" id="L280">		this.mUri = uri;</span>
+<span class="fc" id="L281">		this.mDataType = null;</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">		this.mHasInputUri = uri != null;</span>
+<span class="fc" id="L283">		return (I) this;</span>
 	}
 
 	/**
@@ -292,9 +292,9 @@ import java.util.Locale;
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public I output(@Nullable final File file) {
-<span class="nc bnc" id="L295" title="All 2 branches missed.">		if (file == null) output((Uri) null);</span>
-<span class="nc" id="L296">		else output(Uri.fromFile(file));</span>
-<span class="nc" id="L297">		return (I) this;</span>
+<span class="fc bfc" id="L295" title="All 2 branches covered.">		if (file == null) output((Uri) null);</span>
+<span class="fc" id="L296">		else output(Uri.fromFile(file));</span>
+<span class="fc" id="L297">		return (I) this;</span>
 	}
 
 	/**
@@ -308,10 +308,10 @@ import java.util.Locale;
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public I output(@Nullable final Uri uri) {
-<span class="nc" id="L311">		this.mUri = uri;</span>
-<span class="nc" id="L312">		this.mDataType = null;</span>
-<span class="nc" id="L313">		this.mHasInputUri = false;</span>
-<span class="nc" id="L314">		return (I) this;</span>
+<span class="fc" id="L311">		this.mUri = uri;</span>
+<span class="fc" id="L312">		this.mDataType = null;</span>
+<span class="fc" id="L313">		this.mHasInputUri = false;</span>
+<span class="fc" id="L314">		return (I) this;</span>
 	}
 
 	/**
@@ -321,7 +321,7 @@ import java.util.Locale;
 	 */
 	@Nullable
 	public Uri uri() {
-<span class="nc" id="L324">		return mUri;</span>
+<span class="fc" id="L324">		return mUri;</span>
 	}
 
 	/**
@@ -333,8 +333,8 @@ import java.util.Locale;
 	 */
 	@SuppressWarnings(&quot;unchecked&quot;)
 	public I dataType(@NonNull @MimeType.Value final String type) {
-<span class="nc" id="L336">		this.mDataType = type;</span>
-<span class="nc" id="L337">		return (I) this;</span>
+<span class="fc" id="L336">		this.mDataType = type;</span>
+<span class="fc" id="L337">		return (I) this;</span>
 	}
 
 	/**
@@ -347,24 +347,24 @@ import java.util.Locale;
 	@Nullable
 	@MimeType.Value
 	public String dataType() {
-<span class="nc" id="L350">		return mDataType;</span>
+<span class="fc" id="L350">		return mDataType;</span>
 	}
 
 	/**
 	 */
 	@Override
 	public boolean startWith(@NonNull final IntentStarter starter) {
-<span class="nc" id="L357">		final Context context = starter.getContext();</span>
-<span class="nc bnc" id="L358" title="All 2 branches missed.">		if (mHandlers == null) {</span>
-<span class="nc" id="L359">			final Intent intent = build(context);</span>
-<span class="nc bnc" id="L360" title="All 2 branches missed.">			if (isActivityForIntentAvailable(context, intent)) {</span>
-<span class="nc" id="L361">				return onStartWith(starter, intent);</span>
+<span class="fc" id="L357">		final Context context = starter.getContext();</span>
+<span class="fc bfc" id="L358" title="All 2 branches covered.">		if (mHandlers == null) {</span>
+<span class="fc" id="L359">			final Intent intent = build(context);</span>
+<span class="pc bpc" id="L360" title="1 of 2 branches missed.">			if (isActivityForIntentAvailable(context, intent)) {</span>
+<span class="fc" id="L361">				return onStartWith(starter, intent);</span>
 			}
 <span class="nc" id="L363">			notifyActivityNotFound(context);</span>
 <span class="nc" id="L364">			return false;</span>
 		}
-<span class="nc" id="L366">		onShowChooserDialog(starter);</span>
-<span class="nc" id="L367">		return true;</span>
+<span class="fc" id="L366">		onShowChooserDialog(starter);</span>
+<span class="fc" id="L367">		return true;</span>
 	}
 
 	/**
@@ -375,14 +375,14 @@ import java.util.Locale;
 	 *                for a selected content handler from the chooser dialog.
 	 */
 	protected void onShowChooserDialog(@NonNull final IntentStarter starter) {
-<span class="nc" id="L378">		final int n = mHandlers.size();</span>
-<span class="nc" id="L379">		final CharSequence[] providerNames = new CharSequence[n];</span>
-<span class="nc bnc" id="L380" title="All 2 branches missed.">		for (int i = 0; i &lt; n; i++) {</span>
-<span class="nc" id="L381">			providerNames[i] = mHandlers.get(i).name;</span>
+<span class="fc" id="L378">		final int n = mHandlers.size();</span>
+<span class="fc" id="L379">		final CharSequence[] providerNames = new CharSequence[n];</span>
+<span class="fc bfc" id="L380" title="All 2 branches covered.">		for (int i = 0; i &lt; n; i++) {</span>
+<span class="fc" id="L381">			providerNames[i] = mHandlers.get(i).name;</span>
 		}
-<span class="nc" id="L383">		final AlertDialog.Builder builder = new AlertDialog.Builder(starter.getContext());</span>
-<span class="nc" id="L384">		builder.setTitle(mDialogTitle);</span>
-<span class="pc" id="L385">		builder.setItems(providerNames, new DialogInterface.OnClickListener() {</span>
+<span class="fc" id="L383">		final AlertDialog.Builder builder = new AlertDialog.Builder(starter.getContext());</span>
+<span class="fc" id="L384">		builder.setTitle(mDialogTitle);</span>
+<span class="fc" id="L385">		builder.setItems(providerNames, new DialogInterface.OnClickListener() {</span>
 
 			/**
 			 */
@@ -393,8 +393,8 @@ import java.util.Locale;
 <span class="fc" id="L393">				else starter.startIntentForResult(handler.intent, handler.requestCode);</span>
 <span class="fc" id="L394">			}</span>
 		});
-<span class="nc" id="L396">		builder.show();</span>
-<span class="nc" id="L397">	}</span>
+<span class="fc" id="L396">		builder.show();</span>
+<span class="fc" id="L397">	}</span>
 
 	/**
 	 * @throws IllegalStateException If there is at least one {@link ContentHandler} attached.
@@ -402,25 +402,25 @@ import java.util.Locale;
 	@NonNull
 	@Override
 	public Intent build(@NonNull final Context context) {
-<span class="nc bnc" id="L405" title="All 2 branches missed.">		if (mHandlers == null) {</span>
-<span class="nc" id="L406">			return super.build(context);</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">		if (mHandlers == null) {</span>
+<span class="fc" id="L406">			return super.build(context);</span>
 		}
-<span class="nc" id="L408">		throw new IllegalStateException(&quot;Cannot build intent for set of ContentHandlers.&quot;);</span>
+<span class="fc" id="L408">		throw new IllegalStateException(&quot;Cannot build intent for set of ContentHandlers.&quot;);</span>
 	}
 
 	/**
 	 */
 	@Override
 	protected void ensureCanBuildOrThrow() {
-<span class="nc" id="L415">		super.ensureCanBuildOrThrow();</span>
-<span class="nc bnc" id="L416" title="All 2 branches missed.">		if (mHasInputUri) {</span>
-<span class="nc bnc" id="L417" title="All 2 branches missed.">			if (TextUtils.isEmpty(mDataType)) {</span>
-<span class="nc" id="L418">				throw cannotBuildIntentException(&quot;No MIME type specified for input Uri.&quot;);</span>
+<span class="fc" id="L415">		super.ensureCanBuildOrThrow();</span>
+<span class="fc bfc" id="L416" title="All 2 branches covered.">		if (mHasInputUri) {</span>
+<span class="fc bfc" id="L417" title="All 2 branches covered.">			if (TextUtils.isEmpty(mDataType)) {</span>
+<span class="fc" id="L418">				throw cannotBuildIntentException(&quot;No MIME type specified for input Uri.&quot;);</span>
 			}
 		} else {
-<span class="nc" id="L421">			throw cannotBuildIntentException(&quot;No input Uri specified.&quot;);</span>
+<span class="fc" id="L421">			throw cannotBuildIntentException(&quot;No input Uri specified.&quot;);</span>
 		}
-<span class="nc" id="L423">	}</span>
+<span class="fc" id="L423">	}</span>
 
 	/**
 	 * Will be invoked only if there are no content handlers assigned to this intent builder.
@@ -428,14 +428,14 @@ import java.util.Locale;
 	@NonNull
 	@Override
 	protected Intent onBuild(@NonNull final Context context) {
-<span class="nc" id="L431">		return new Intent(Intent.ACTION_VIEW).setDataAndType(mUri, mDataType);</span>
+<span class="fc" id="L431">		return new Intent(Intent.ACTION_VIEW).setDataAndType(mUri, mDataType);</span>
 	}
 
 	/**
 	 */
 	@Override
 	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
-<span class="nc" id="L438">		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));</span>
+<span class="fc" id="L438">		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));</span>
 	}
 
 	/*
@@ -452,7 +452,7 @@ import java.util.Locale;
 	 * @author Martin Albedinsky
 	 * @see ContentHandler#ContentHandler(CharSequence, Intent)
 	 */
-	public static class ContentHandler {
+<span class="fc" id="L455">	public static class ContentHandler {</span>
 
 		/**
 		 * Name of this &quot;content handler&quot; to be displayed within chooser dialog list.

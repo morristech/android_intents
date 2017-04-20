@@ -36,7 +36,7 @@ import java.io.File;
  *
  * @author Martin Albedinsky
  */
-<span class="nc" id="L39">public class VideoIntent extends ContentIntent&lt;VideoIntent&gt; {</span>
+<span class="fc" id="L39">public class VideoIntent extends ContentIntent&lt;VideoIntent&gt; {</span>
 
 	/*
 	 * Constants ===================================================================================
@@ -98,7 +98,7 @@ import java.io.File;
 	 */
 	@NonNull
 	public static Intent createGalleryIntent() {
-<span class="nc" id="L101">		return new Intent(Intent.ACTION_GET_CONTENT).setType(MimeType.VIDEO);</span>
+<span class="fc" id="L101">		return new Intent(Intent.ACTION_GET_CONTENT).setType(MimeType.VIDEO);</span>
 	}
 
 	/**
@@ -107,7 +107,7 @@ import java.io.File;
 	 */
 	@NonNull
 	public static Intent createCameraIntent() {
-<span class="nc" id="L110">		return createCameraIntent((Uri) null);</span>
+<span class="fc" id="L110">		return createCameraIntent((Uri) null);</span>
 	}
 
 	/**
@@ -119,7 +119,7 @@ import java.io.File;
 	 */
 	@NonNull
 	public static Intent createCameraIntent(@Nullable final File outputFile) {
-<span class="nc bnc" id="L122" title="All 2 branches missed.">		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));</span>
+<span class="fc bfc" id="L122" title="All 2 branches covered.">		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));</span>
 	}
 
 	/**
@@ -135,11 +135,11 @@ import java.io.File;
 	 */
 	@NonNull
 	public static Intent createCameraIntent(@Nullable final Uri outputUri) {
-<span class="nc" id="L138">		final Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);</span>
-<span class="nc bnc" id="L139" title="All 2 branches missed.">		if (outputUri != null) {</span>
-<span class="nc" id="L140">			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);</span>
+<span class="fc" id="L138">		final Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		if (outputUri != null) {</span>
+<span class="fc" id="L140">			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);</span>
 		}
-<span class="nc" id="L142">		return intent;</span>
+<span class="fc" id="L142">		return intent;</span>
 	}
 
 	/**
@@ -148,7 +148,7 @@ import java.io.File;
 	 */
 	@Nullable
 	public static File createVideoFile() {
-<span class="nc" id="L151">		return createVideoFile(String.format(VIDEO_FILE_NAME_FORMAT, createContentFileTimeStamp()));</span>
+<span class="fc" id="L151">		return createVideoFile(String.format(VIDEO_FILE_NAME_FORMAT, createContentFileTimeStamp()));</span>
 	}
 
 	/**
@@ -161,7 +161,7 @@ import java.io.File;
 	 */
 	@Nullable
 	public static File createVideoFile(@NonNull final String fileName) {
-<span class="nc" id="L164">		return createContentFile(appendDefaultFileSuffixIfNotPresented(fileName, &quot;.mp4&quot;), Environment.DIRECTORY_MOVIES);</span>
+<span class="fc" id="L164">		return createContentFile(appendDefaultFileSuffixIfNotPresented(fileName, &quot;.mp4&quot;), Environment.DIRECTORY_MOVIES);</span>
 	}
 
 	/**
@@ -171,16 +171,16 @@ import java.io.File;
 	@Override
 	@SuppressWarnings(&quot;ConstantConditions&quot;)
 	public VideoIntent withDefaultHandlers(@NonNull final Context context) {
-<span class="nc" id="L174">		withHandlers(</span>
-<span class="nc" id="L175">				onCreateGalleryHandler(context.getResources()),</span>
-<span class="nc" id="L176">				mCameraHandler = onCreateCameraHandler(context.getResources())</span>
+<span class="fc" id="L174">		withHandlers(</span>
+<span class="fc" id="L175">				onCreateGalleryHandler(context.getResources()),</span>
+<span class="fc" id="L176">				mCameraHandler = onCreateCameraHandler(context.getResources())</span>
 		);
-<span class="nc bnc" id="L178" title="All 2 branches missed.">		if (mUri == null) {</span>
-<span class="nc" id="L179">			mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">		if (mUri == null) {</span>
+<span class="fc" id="L179">			mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);</span>
 		} else {
-<span class="nc" id="L181">			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);</span>
+<span class="fc" id="L181">			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);</span>
 		}
-<span class="nc" id="L183">		return this;</span>
+<span class="fc" id="L183">		return this;</span>
 	}
 
 	/**
@@ -194,10 +194,10 @@ import java.io.File;
 	 */
 	@NonNull
 	protected ContentHandler onCreateGalleryHandler(@NonNull final Resources resources) {
-<span class="nc" id="L197">		return new ContentHandler(</span>
+<span class="fc" id="L197">		return new ContentHandler(</span>
 				&quot;Gallery&quot;,
-<span class="nc" id="L199">				createGalleryIntent()</span>
-<span class="nc" id="L200">		).requestCode(REQUEST_CODE_GALLERY);</span>
+<span class="fc" id="L199">				createGalleryIntent()</span>
+<span class="fc" id="L200">		).requestCode(REQUEST_CODE_GALLERY);</span>
 	}
 
 	/**
@@ -211,10 +211,10 @@ import java.io.File;
 	 */
 	@NonNull
 	protected ContentHandler onCreateCameraHandler(@NonNull final Resources resources) {
-<span class="nc" id="L214">		return new ContentHandler(</span>
+<span class="fc" id="L214">		return new ContentHandler(</span>
 				&quot;Camera&quot;,
-<span class="nc" id="L216">				createCameraIntent()</span>
-<span class="nc" id="L217">		).requestCode(REQUEST_CODE_CAMERA);</span>
+<span class="fc" id="L216">				createCameraIntent()</span>
+<span class="fc" id="L217">		).requestCode(REQUEST_CODE_CAMERA);</span>
 	}
 
 	/**
@@ -223,11 +223,11 @@ import java.io.File;
 	 */
 	@Override
 	public VideoIntent input(@Nullable Uri uri) {
-<span class="nc" id="L226">		super.input(uri);</span>
-<span class="nc bnc" id="L227" title="All 2 branches missed.">		if (uri != null) {</span>
-<span class="nc" id="L228">			this.mDataType = MimeType.VIDEO;</span>
+<span class="fc" id="L226">		super.input(uri);</span>
+<span class="fc bfc" id="L227" title="All 2 branches covered.">		if (uri != null) {</span>
+<span class="fc" id="L228">			this.mDataType = MimeType.VIDEO;</span>
 		}
-<span class="nc" id="L230">		return this;</span>
+<span class="fc" id="L230">		return this;</span>
 	}
 
 	/**
@@ -243,15 +243,15 @@ import java.io.File;
 	 */
 	@Override
 	public VideoIntent output(@Nullable final Uri uri) {
-<span class="nc" id="L246">		super.output(uri);</span>
-<span class="nc bnc" id="L247" title="All 2 branches missed.">		if (mCameraHandler != null) {</span>
-<span class="nc bnc" id="L248" title="All 2 branches missed.">			if (mUri == null) {</span>
-<span class="nc" id="L249">				mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);</span>
+<span class="fc" id="L246">		super.output(uri);</span>
+<span class="fc bfc" id="L247" title="All 2 branches covered.">		if (mCameraHandler != null) {</span>
+<span class="fc bfc" id="L248" title="All 2 branches covered.">			if (mUri == null) {</span>
+<span class="fc" id="L249">				mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);</span>
 			} else {
-<span class="nc" id="L251">				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);</span>
+<span class="fc" id="L251">				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);</span>
 			}
 		}
-<span class="nc" id="L254">		return this;</span>
+<span class="fc" id="L254">		return this;</span>
 	}
 
 	/*
