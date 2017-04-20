@@ -23,7 +23,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 
@@ -343,7 +342,7 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 				mIntent.startWith(mockStarter);
 			}
 		});
-		InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+		waitForIdleSync();
 		verify(mockStarter, times(0)).startIntent(any(Intent.class));
 	}
 
@@ -359,7 +358,7 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 				mIntent.onShowChooserDialog(IntentStarters.activityStarter(ACTIVITY_RULE.getActivity()));
 			}
 		});
-		InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+		waitForIdleSync();
 		onView(withText("Test Dialog")).check(matches(isDisplayed()));
 		onView(withText("TestHandler1")).check(matches(isDisplayed()));
 		onView(withText("TestHandler2")).check(matches(isDisplayed()));
@@ -379,7 +378,7 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 				mIntent.onShowChooserDialog(mockStarter);
 			}
 		});
-		InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+		waitForIdleSync();
 		onView(withText("TestHandler1")).perform(click());
 		verify(mockStarter, times(1)).startIntent(intent);
 	}
@@ -398,7 +397,7 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 				mIntent.onShowChooserDialog(mockStarter);
 			}
 		});
-		InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+		waitForIdleSync();
 		onView(withText("TestHandler1")).perform(click());
 		verify(mockStarter, times(1)).startIntentForResult(intent, 1000);
 	}

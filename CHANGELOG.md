@@ -1,8 +1,8 @@
 Change-Log
 ===============
 
-### Release 1.0.2 ###
-> --.04.2017
+### [Release 1.0.2](https://github.com/universum-studios/android_intents/releases/tag/1.0.2) ###
+> 19.04.2017
 
 - Deprecated `IntentsConfig` class as it was not used across the library.
 - Default type of `CalendarIntent` has been changed from `CalendarIntent.TYPE_INSERT_EVENT` to 
