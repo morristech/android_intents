@@ -34,6 +34,9 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 import universum.studios.android.test.BaseInstrumentedTest;
 import universum.studios.android.test.TestActivity;
 import universum.studios.android.test.TestCompatActivity;
@@ -61,6 +64,18 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 
 	@Rule public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
 	@Rule public ActivityTestRule<TestCompatActivity> ACTIVITY_COMPAT_RULE = new ActivityTestRule<>(TestCompatActivity.class);
+
+	@Test(expected = IllegalAccessException.class)
+	public void testInstantiation() throws Exception {
+		IntentStarters.class.newInstance();
+	}
+
+	@Test(expected = InvocationTargetException.class)
+	public void testInstantiationWithAccessibleConstructor() throws Exception {
+		final Constructor<IntentStarters> constructor = IntentStarters.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
+	}
 
     @Test
 	public void testActivityStarter() {
