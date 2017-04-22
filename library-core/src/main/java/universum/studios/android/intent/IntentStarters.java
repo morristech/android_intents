@@ -71,6 +71,7 @@ public final class IntentStarters {
 	 */
 	private IntentStarters() {
 		// Not allowed to be instantiated publicly.
+		throw new UnsupportedOperationException();
 	}
 
 	/*
