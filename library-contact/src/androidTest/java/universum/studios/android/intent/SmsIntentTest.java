@@ -42,57 +42,47 @@ public final class SmsIntentTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unused")
 	private static final String TAG = "SmsIntentTest";
 
-	private SmsIntent mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new SmsIntent();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@Test
 	public void testUriScheme() {
 		assertThat(SmsIntent.URI_SCHEME, is("sms"));
 	}
 
 	@Test
-	public void testDefaultPhoneNumber() {
-		assertThat(mIntent.phoneNumber(), is(""));
+	public void testPhoneNumberDefault() {
+		assertThat(new SmsIntent().phoneNumber(), is(""));
 	}
 
 	@Test
 	public void testPhoneNumber() {
-		mIntent.phoneNumber("00124456");
-		assertThat(mIntent.phoneNumber(), is("00124456"));
+		final SmsIntent intent = new SmsIntent();
+		intent.phoneNumber("00124456");
+		assertThat(intent.phoneNumber(), is("00124456"));
 	}
 
 	@Test
-	public void testDefaultBody() {
-		assertThat(mIntent.body().toString(), is(""));
+	public void testBodyDefault() {
+		assertThat(new SmsIntent().body().toString(), is(""));
 	}
 
 	@Test
 	public void testBody() {
-		mIntent.body("Sms body.");
-		assertThat(mIntent.body().toString(), is("Sms body."));
+		final SmsIntent intent = new SmsIntent();
+		intent.body("Sms body.");
+		assertThat(intent.body().toString(), is("Sms body."));
 	}
 
 	@Test
 	public void testNullBody() {
-		mIntent.body(null);
-		assertThat(mIntent.body().toString(), is(""));
+		final SmsIntent intent = new SmsIntent();
+		intent.body(null);
+		assertThat(intent.body().toString(), is(""));
 	}
 
 	@Test
 	public void testBuild() {
-		mIntent.phoneNumber("02644569874");
-		final Intent intent = mIntent.build(mContext);
+		final SmsIntent smsIntent = new SmsIntent();
+		smsIntent.phoneNumber("02644569874");
+		final Intent intent = smsIntent.build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("sms:02644569874")));
@@ -100,9 +90,10 @@ public final class SmsIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithBody() {
-		mIntent.phoneNumber("02644569874");
-		mIntent.body("Sms body content.");
-		final Intent intent = mIntent.build(mContext);
+		final SmsIntent smsIntent = new SmsIntent();
+		smsIntent.phoneNumber("02644569874");
+		smsIntent.body("Sms body content.");
+		final Intent intent = smsIntent.build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("sms:02644569874")));
@@ -113,7 +104,7 @@ public final class SmsIntentTest extends BaseInstrumentedTest {
 	public void testBuildWithoutNumber() {
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				new SmsIntent(),
 				"No phone number specified."
 		);
 	}

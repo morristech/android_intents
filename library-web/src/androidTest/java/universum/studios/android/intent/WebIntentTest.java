@@ -43,48 +43,39 @@ public final class WebIntentTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unused")
 	private static final String TAG = "WebIntentTest";
 
-	private WebIntent mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new WebIntent();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@Test
 	public void testDefaultUrl() {
-		assertThat(mIntent.url(), is(not(nullValue())));
-		assertThat(mIntent.url().length(), is(0));
+		final WebIntent intent = new WebIntent();
+		assertThat(intent.url(), is(not(nullValue())));
+		assertThat(intent.url().length(), is(0));
 	}
 
 	@Test
 	public void testUrlText() {
-		mIntent.url("http://www.google.com");
-		assertThat(mIntent.url(), is("http://www.google.com"));
+		final WebIntent intent = new WebIntent();
+		intent.url("http://www.google.com");
+		assertThat(intent.url(), is("http://www.google.com"));
 	}
 
 	@Test
 	public void testUrlTextWithoutPrefix() {
-		mIntent.url("www.google.com");
-		assertThat(mIntent.url(), is("http://www.google.com"));
+		final WebIntent intent = new WebIntent();
+		intent.url("www.google.com");
+		assertThat(intent.url(), is("http://www.google.com"));
 	}
 
 	@Test
 	public void testUrlTextWithInvalidValue() {
-		mIntent.url("google");
-		assertThat(mIntent.url(), is(""));
+		final WebIntent intent = new WebIntent();
+		intent.url("google");
+		assertThat(intent.url(), is(""));
 	}
 
 	@Test
 	public void testBuild() {
-		mIntent.url("inbox.google.com");
-		final Intent intent = mIntent.build(mContext);
+		final WebIntent webIntent = new WebIntent();
+		webIntent.url("inbox.google.com");
+		final Intent intent = webIntent.build(mContext);
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("http://inbox.google.com")));
@@ -94,7 +85,7 @@ public final class WebIntentTest extends BaseInstrumentedTest {
 	public void testBuildWithoutUrl() {
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				new WebIntent(),
 				"No or invalid URL specified."
 		);
 	}

@@ -50,56 +50,45 @@ public final class ShareIntentTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unused")
 	private static final String TAG = "ShareIntentTest";
 
-	private ShareIntent mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new ShareIntent();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@Test
-	public void testDefaultContent() {
-		assertThat(mIntent.content(), is(not(nullValue())));
-		assertThat(mIntent.content().length(), is(0));
+	public void testContentDefault() {
+		final ShareIntent intent = new ShareIntent();
+		assertThat(intent.content(), is(not(nullValue())));
+		assertThat(intent.content().length(), is(0));
 	}
 
 	@Test
 	public void testContent() {
-		mIntent.content("Sharing content.");
-		assertThat(mIntent.content().toString(), is("Sharing content."));
+		final ShareIntent intent = new ShareIntent();
+		intent.content("Sharing content.");
+		assertThat(intent.content().toString(), is("Sharing content."));
 	}
 
 	@Test
-	public void testDefaultUri() {
-		assertThat(mIntent.uri(), is(nullValue()));
+	public void testUriDefault() {
+		assertThat(new ShareIntent().uri(), is(nullValue()));
 	}
 
 	@Test
 	public void testUri() {
-		mIntent.uri(Uri.parse("content://android/data/images/leopard.png"));
-		assertThat(mIntent.uri(), is(Uri.parse("content://android/data/images/leopard.png")));
+		final ShareIntent intent = new ShareIntent();
+		intent.uri(Uri.parse("content://android/data/images/leopard.png"));
+		assertThat(intent.uri(), is(Uri.parse("content://android/data/images/leopard.png")));
 	}
 
 	@Test
-	public void testDefaultUris() {
-		assertThat(mIntent.uris(), is(Collections.EMPTY_LIST));
+	public void testUrisDefault() {
+		assertThat(new ShareIntent().uris(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testUris() {
-		mIntent.uris(
+		final ShareIntent intent = new ShareIntent();
+		intent.uris(
 				Uri.parse("content://android/data/video/nature.avi"),
 				Uri.parse("content://android/data/audio/ocean.mp3")
 		);
-
-		final List<Uri> uris = mIntent.uris();
+		final List<Uri> uris = intent.uris();
 		assertThat(uris, is(not(nullValue())));
 		assertThat(uris.size(), is(2));
 		assertThat(uris.get(0), is(Uri.parse("content://android/data/video/nature.avi")));
@@ -107,32 +96,36 @@ public final class ShareIntentTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testDefaultTitle() {
-		assertThat(mIntent.title(), is(not(nullValue())));
-		assertThat(mIntent.title().length(), is(0));
+	public void testTitleDefault() {
+		final ShareIntent intent = new ShareIntent();
+		assertThat(intent.title(), is(not(nullValue())));
+		assertThat(intent.title().length(), is(0));
 	}
 
 	@Test
 	public void testTitle() {
-		mIntent.title("Title");
-		assertThat(mIntent.title().toString(), is("Title"));
+		final ShareIntent intent = new ShareIntent();
+		intent.title("Title");
+		assertThat(intent.title().toString(), is("Title"));
 	}
 
 	@Test
-	public void testDefaultMimeType() {
-		assertThat(mIntent.mimeType(), is(MimeType.TEXT));
+	public void testMimeTypeDefault() {
+		assertThat(new ShareIntent().mimeType(), is(MimeType.TEXT));
 	}
 
 	@Test
 	public void testMimeType() {
-		mIntent.mimeType(MimeType.AUDIO);
-		assertThat(mIntent.mimeType(), is(MimeType.AUDIO));
+		final ShareIntent intent = new ShareIntent();
+		intent.mimeType(MimeType.AUDIO);
+		assertThat(intent.mimeType(), is(MimeType.AUDIO));
 	}
 
 	@Test
 	public void testBuildWithTextContent() {
-		mIntent.content("Text to share.");
-		final Intent intent = mIntent.build(mContext);
+		final ShareIntent shareIntent = new ShareIntent();
+		shareIntent.content("Text to share.");
+		final Intent intent = shareIntent.build(mContext);
 		assertThat(intent.getAction(), is(Intent.ACTION_SEND));
 		assertThat(intent.getData(), is(nullValue()));
 		assertThat(intent.getStringExtra(Intent.EXTRA_TEXT), is("Text to share."));
@@ -140,9 +133,10 @@ public final class ShareIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithUriContent() {
-		mIntent.uri(Uri.parse("content://android/data/images/lion.png"));
-		mIntent.title("Beautiful Lion");
-		final Intent intent = mIntent.build(mContext);
+		final ShareIntent shareIntent = new ShareIntent();
+		shareIntent.uri(Uri.parse("content://android/data/images/lion.png"));
+		shareIntent.title("Beautiful Lion");
+		final Intent intent = shareIntent.build(mContext);
 		assertThat(intent.getAction(), is(Intent.ACTION_SEND));
 		assertThat(intent.getCharSequenceExtra(Intent.EXTRA_TITLE).toString(), is("Beautiful Lion"));
 		assertThat(intent.getCharSequenceExtra(Intent.EXTRA_TEXT), is(nullValue()));
@@ -151,11 +145,12 @@ public final class ShareIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithUrisContent() {
-		mIntent.uris(
+		final ShareIntent shareIntent = new ShareIntent();
+		shareIntent.uris(
 				Uri.parse("content://android/data/images/lion.png"),
 				Uri.parse("content://android/data/images/elephant.png")
 		);
-		final Intent intent = mIntent.build(mContext);
+		final Intent intent = shareIntent.build(mContext);
 		assertThat(intent.getAction(), is(Intent.ACTION_SEND_MULTIPLE));
 		assertThat(intent.getCharSequenceExtra(Intent.EXTRA_TITLE), is(nullValue()));
 		assertThat(intent.getCharSequenceExtra(Intent.EXTRA_TEXT), is(nullValue()));
@@ -170,28 +165,30 @@ public final class ShareIntentTest extends BaseInstrumentedTest {
 	public void testBuildWithoutContent() {
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				new ShareIntent(),
 				"No content to share specified."
 		);
 	}
 
 	@Test
 	public void testBuildWithoutMimeType() {
-		mIntent.content("Content to share");
-		mIntent.mimeType("");
+		final ShareIntent intent = new ShareIntent();
+		intent.content("Content to share");
+		intent.mimeType("");
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				intent,
 				"No content's MIME type specified."
 		);
 	}
 
 	@Test
 	public void testOnStartWith() {
-		mIntent.content("Text to share.");
-		final Intent intent = mIntent.build(mContext);
+		final ShareIntent shareIntent = new ShareIntent();
+		shareIntent.content("Text to share.");
+		final Intent intent = shareIntent.build(mContext);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		mIntent.onStartWith(mockStarter, intent);
+		shareIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(any(Intent.class));
 	}
 }

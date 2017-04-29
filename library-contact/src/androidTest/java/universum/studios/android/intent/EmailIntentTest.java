@@ -50,47 +50,35 @@ public final class EmailIntentTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unused")
 	private static final String TAG = "EmailIntentTest";
 
-	private EmailIntent mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new EmailIntent();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@Test
 	public void testUriScheme() {
 		assertThat(EmailIntent.URI_SCHEME, is("mailto"));
 	}
 
 	@Test
-	public void testDefaultAddresses() {
-		assertThat(mIntent.addresses(), is(Collections.EMPTY_LIST));
+	public void testAddressesDefault() {
+		assertThat(new EmailIntent().addresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testToSingle() {
-		mIntent.to("test1@android.com");
-		mIntent.to("test2@android.com");
-		final List<String> emailAddresses = mIntent.addresses();
+		final EmailIntent intent = new EmailIntent();
+		intent.to("test1@android.com");
+		intent.to("test2@android.com");
+		final List<String> emailAddresses = intent.addresses();
 		assertThat(emailAddresses.size(), is(2));
 		assertThat(emailAddresses.get(0), is("test1@android.com"));
 		assertThat(emailAddresses.get(1), is("test2@android.com"));
-		assertThat(mIntent.ccAddresses(), is(Collections.EMPTY_LIST));
-		assertThat(mIntent.bccAddresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.ccAddresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testToMultiple() {
-		mIntent.to("test1@android.com", "test2@android.com");
-		mIntent.to("test3@android.com", "test4@android.com");
-		final List<String> emailAddresses = mIntent.addresses();
+		final EmailIntent intent = new EmailIntent();
+		intent.to("test1@android.com", "test2@android.com");
+		intent.to("test3@android.com", "test4@android.com");
+		final List<String> emailAddresses = intent.addresses();
 		assertThat(emailAddresses.size(), is(4));
 		assertThat(emailAddresses.get(0), is("test1@android.com"));
 		assertThat(emailAddresses.get(1), is("test2@android.com"));
@@ -100,45 +88,50 @@ public final class EmailIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testToWithEmptyList() {
-		mIntent.to(new ArrayList<String>(0));
-		assertThat(mIntent.addresses(), is(Collections.EMPTY_LIST));
+		final EmailIntent intent = new EmailIntent();
+		intent.to(new ArrayList<String>(0));
+		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testToWithNullList() {
-		mIntent.to("test1@android.com", "test2@android.com");
-		mIntent.to((List<String>) null);
-		assertThat(mIntent.addresses(), is(Collections.EMPTY_LIST));
+		final EmailIntent intent = new EmailIntent();
+		intent.to("test1@android.com", "test2@android.com");
+		intent.to((List<String>) null);
+		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testToWithWrongAddress() {
-		mIntent.to("test@android");
-		assertThat(mIntent.addresses(), is(Collections.EMPTY_LIST));
+		final EmailIntent intent = new EmailIntent();
+		intent.to("test@android");
+		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
-	public void testDefaultCcAddresses() {
-		assertThat(mIntent.ccAddresses(), is(Collections.EMPTY_LIST));
+	public void testCcAddressesDefault() {
+		assertThat(new EmailIntent().ccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testCcSingle() {
-		mIntent.cc("test1.cc@android.com");
-		mIntent.cc("test2.cc@android.com");
-		final List<String> ccEmailAddresses = mIntent.ccAddresses();
+		final EmailIntent intent = new EmailIntent();
+		intent.cc("test1.cc@android.com");
+		intent.cc("test2.cc@android.com");
+		final List<String> ccEmailAddresses = intent.ccAddresses();
 		assertThat(ccEmailAddresses.size(), is(2));
 		assertThat(ccEmailAddresses.get(0), is("test1.cc@android.com"));
 		assertThat(ccEmailAddresses.get(1), is("test2.cc@android.com"));
-		assertThat(mIntent.addresses(), is(Collections.EMPTY_LIST));
-		assertThat(mIntent.bccAddresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testCcMultiple() {
-		mIntent.cc("test.cc1@android.com", "test.cc2@android.com");
-		mIntent.cc("test.cc3@android.com", "test.cc4@android.com");
-		final List<String> ccEmailAddresses = mIntent.ccAddresses();
+		final EmailIntent intent = new EmailIntent();
+		intent.cc("test.cc1@android.com", "test.cc2@android.com");
+		intent.cc("test.cc3@android.com", "test.cc4@android.com");
+		final List<String> ccEmailAddresses = intent.ccAddresses();
 		assertThat(ccEmailAddresses.size(), is(4));
 		assertThat(ccEmailAddresses.get(0), is("test.cc1@android.com"));
 		assertThat(ccEmailAddresses.get(1), is("test.cc2@android.com"));
@@ -148,39 +141,43 @@ public final class EmailIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testCcWithEmptyList() {
-		mIntent.cc(new ArrayList<String>(0));
-		assertThat(mIntent.ccAddresses(), is(Collections.EMPTY_LIST));
+		final EmailIntent intent = new EmailIntent();
+		intent.cc(new ArrayList<String>(0));
+		assertThat(intent.ccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testCcWithNullList() {
-		mIntent.cc("test.cc1@android.com", "test.cc2@android.com");
-		mIntent.cc((List<String>) null);
-		assertThat(mIntent.ccAddresses(), is(Collections.EMPTY_LIST));
+		final EmailIntent intent = new EmailIntent();
+		intent.cc("test.cc1@android.com", "test.cc2@android.com");
+		intent.cc((List<String>) null);
+		assertThat(intent.ccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
-	public void testDefaultBccAddresses() {
-		assertThat(mIntent.bccAddresses(), is(Collections.EMPTY_LIST));
+	public void testBccAddressesDefault() {
+		assertThat(new EmailIntent().bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testBccSingle() {
-		mIntent.bcc("test1.bcc@android.com");
-		mIntent.bcc("test2.bcc@android.com");
-		final List<String> bccEmailAddresses = mIntent.bccAddresses();
+		final EmailIntent intent = new EmailIntent();
+		intent.bcc("test1.bcc@android.com");
+		intent.bcc("test2.bcc@android.com");
+		final List<String> bccEmailAddresses = intent.bccAddresses();
 		assertThat(bccEmailAddresses.size(), is(2));
 		assertThat(bccEmailAddresses.get(0), is("test1.bcc@android.com"));
 		assertThat(bccEmailAddresses.get(1), is("test2.bcc@android.com"));
-		assertThat(mIntent.addresses(), is(Collections.EMPTY_LIST));
-		assertThat(mIntent.ccAddresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.ccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testBccMultiple() {
-		mIntent.bcc("test.bcc1@android.com", "test.bcc2@android.com");
-		mIntent.bcc("test.bcc3@android.com", "test.bcc4@android.com");
-		final List<String> bccEmailAddresses = mIntent.bccAddresses();
+		final EmailIntent intent = new EmailIntent();
+		intent.bcc("test.bcc1@android.com", "test.bcc2@android.com");
+		intent.bcc("test.bcc3@android.com", "test.bcc4@android.com");
+		final List<String> bccEmailAddresses = intent.bccAddresses();
 		assertThat(bccEmailAddresses.size(), is(4));
 		assertThat(bccEmailAddresses.get(0), is("test.bcc1@android.com"));
 		assertThat(bccEmailAddresses.get(1), is("test.bcc2@android.com"));
@@ -190,47 +187,54 @@ public final class EmailIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBccWithEmptyList() {
-		mIntent.bcc(new ArrayList<String>(0));
-		assertThat(mIntent.bccAddresses(), is(Collections.EMPTY_LIST));
+		final EmailIntent intent = new EmailIntent();
+		intent.bcc(new ArrayList<String>(0));
+		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testBccWithNullList() {
-		mIntent.bcc("test.bcc1@android.com", "test.bcc2@android.com");
-		mIntent.bcc((List<String>) null);
-		assertThat(mIntent.bccAddresses(), is(Collections.EMPTY_LIST));
+		final EmailIntent intent = new EmailIntent();
+		intent.bcc("test.bcc1@android.com", "test.bcc2@android.com");
+		intent.bcc((List<String>) null);
+		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
-	public void testDefaultSubject() {
-		assertThat(mIntent.subject(), is(not(nullValue())));
-		assertThat(mIntent.subject().length(), is(0));
+	public void testSubjectDefault() {
+		final EmailIntent intent = new EmailIntent();
+		assertThat(intent.subject(), is(not(nullValue())));
+		assertThat(intent.subject().length(), is(0));
 	}
 
 	@Test
 	public void testSubject() {
-		mIntent.subject("Email subject");
-		assertThat(mIntent.subject().toString(), is("Email subject"));
+		final EmailIntent intent = new EmailIntent();
+		intent.subject("Email subject");
+		assertThat(intent.subject().toString(), is("Email subject"));
 	}
 
 	@Test
-	public void testDefaultMessage() {
-		assertThat(mIntent.message(), is(not(nullValue())));
-		assertThat(mIntent.message().length(), is(0));
+	public void testMessageDefault() {
+		final EmailIntent intent = new EmailIntent();
+		assertThat(intent.message(), is(not(nullValue())));
+		assertThat(intent.message().length(), is(0));
 	}
 
 	@Test
 	public void testMessage() {
-		mIntent.message("Email message.");
-		assertThat(mIntent.message().toString(), is("Email message."));
+		final EmailIntent intent = new EmailIntent();
+		intent.message("Email message.");
+		assertThat(intent.message().toString(), is("Email message."));
 	}
 
 	@Test
 	public void testBuild() {
-		mIntent.to("test@android.com");
-		mIntent.subject("Email subject");
-		mIntent.message("Email message.");
-		final Intent intent = mIntent.build(mContext);
+		final EmailIntent emailIntent = new EmailIntent();
+		emailIntent.to("test@android.com");
+		emailIntent.subject("Email subject");
+		emailIntent.message("Email message.");
+		final Intent intent = emailIntent.build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_SENDTO));
 		assertThat(
@@ -247,9 +251,10 @@ public final class EmailIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithCcAddresses() {
-		mIntent.to("test@android.com");
-		mIntent.cc("test.cc1@android.com", "test.cc2@android.com");
-		final Intent intent = mIntent.build(mContext);
+		final EmailIntent emailIntent = new EmailIntent();
+		emailIntent.to("test@android.com");
+		emailIntent.cc("test.cc1@android.com", "test.cc2@android.com");
+		final Intent intent = emailIntent.build(mContext);
 		final String[] ccAddresses = intent.getStringArrayExtra(Intent.EXTRA_CC);
 		assertThat(ccAddresses, is(not(nullValue())));
 		assertThat(ccAddresses.length, is(2));
@@ -260,9 +265,10 @@ public final class EmailIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithBccAddresses() {
-		mIntent.to("test@android.com");
-		mIntent.bcc("test.bcc@android.com");
-		final Intent intent = mIntent.build(mContext);
+		final EmailIntent emailIntent = new EmailIntent();
+		emailIntent.to("test@android.com");
+		emailIntent.bcc("test.bcc@android.com");
+		final Intent intent = emailIntent.build(mContext);
 		final String[] bccAddresses = intent.getStringArrayExtra(Intent.EXTRA_BCC);
 		assertThat(bccAddresses, is(not(nullValue())));
 		assertThat(bccAddresses.length, is(1));
@@ -274,7 +280,7 @@ public final class EmailIntentTest extends BaseInstrumentedTest {
 	public void testBuildWithoutAddresses() {
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				new EmailIntent(),
 				"No e-mail address/-es specified."
 		);
 	}
@@ -323,10 +329,11 @@ public final class EmailIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testOnStartWith() {
-		mIntent.to("test1@android.com");
-		final Intent intent = mIntent.build(mContext);
+		final EmailIntent emailIntent = new EmailIntent();
+		emailIntent.to("test1@android.com");
+		final Intent intent = emailIntent.build(mContext);
 		final IntentStarter mockIntentStarter = mock(IntentStarter.class);
-		mIntent.onStartWith(mockIntentStarter, intent);
+		emailIntent.onStartWith(mockIntentStarter, intent);
 		verify(mockIntentStarter, times(1)).startIntent(any(Intent.class));
 	}
 }

@@ -41,35 +41,21 @@ public final class PlayIntentTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unused")
 	private static final String TAG = "PlayIntentTest";
 
-	private PlayIntent mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new PlayIntent();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@Test
 	public void testPackageName() {
-		mIntent.packageName("com.google.android.inbox");
-		assertThat(mIntent.packageName(), is("com.google.android.inbox"));
+		final PlayIntent intent = new PlayIntent();
+		intent.packageName("com.google.android.inbox");
+		assertThat(intent.packageName(), is("com.google.android.inbox"));
 	}
 
 	@Test
-	public void tesDefaultPackageName() {
-		assertThat(mIntent.packageName(), is(""));
+	public void tesPackageNameDefault() {
+		assertThat(new PlayIntent().packageName(), is(""));
 	}
 
 	@Test
 	public void testBuild() {
-		mIntent.packageName("com.google.android.inbox");
-		final Intent intent = mIntent.build(mContext);
+		final Intent intent = new PlayIntent().packageName("com.google.android.inbox").build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.google.android.inbox")));
@@ -77,7 +63,7 @@ public final class PlayIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithDefaultPackageName() {
-		final Intent intent = mIntent.build(mContext);
+		final Intent intent = new PlayIntent().build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + mContext.getPackageName())));
