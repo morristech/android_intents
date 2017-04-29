@@ -74,20 +74,6 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@Rule public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
 
-	private ContentIntentImpl mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new ContentIntentImpl();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@NonNull
 	static Matcher<File> hasPath(String path) {
 		return new FilePath(TestUtils.STORAGE_BASE_PATH + path);
@@ -138,33 +124,38 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testDefaultHandlers() {
-		assertThat(mIntent.handlers(), is(Collections.EMPTY_LIST));
+	public void testHandlersDefault() {
+		assertThat(new ContentIntentImpl().handlers(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testWithHandlers() {
-		mIntent.withHandlers(
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.withHandlers(
 				new ContentIntent.ContentHandler("TestHandler1", new Intent()),
 				new ContentIntent.ContentHandler("TestHandler2", new Intent())
 		);
-		final List<ContentIntent.ContentHandler> handlers = mIntent.handlers();
+		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(2));
 		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
 		assertThat(handlers.get(1).name().toString(), is("TestHandler2"));
 	}
+
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testWithHandlersMultiple() {
-		mIntent.withHandlers(
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.withHandlers(
 				new ContentIntent.ContentHandler("TestHandler1", new Intent()),
 				new ContentIntent.ContentHandler("TestHandler2", new Intent())
 		);
-		mIntent.withHandlers(
+		intent.withHandlers(
 				new ContentIntent.ContentHandler("TestHandler3", new Intent()),
 				new ContentIntent.ContentHandler("TestHandler4", new Intent())
 		);
-		final List<ContentIntent.ContentHandler> handlers = mIntent.handlers();
+		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(4));
 		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
@@ -175,22 +166,26 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testWithEmptyHandlers() {
-		mIntent.withHandlers(new ArrayList<ContentIntent.ContentHandler>(0));
-		assertThat(mIntent.handlers(), is(Collections.EMPTY_LIST));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.withHandlers(new ArrayList<ContentIntent.ContentHandler>(0));
+		assertThat(intent.handlers(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
 	public void testWithNullHandlers() {
-		mIntent.withHandlers(new ArrayList<ContentIntent.ContentHandler>(0));
-		mIntent.withHandlers((List<ContentIntent.ContentHandler>) null);
-		assertThat(mIntent.handlers(), is(Collections.EMPTY_LIST));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.withHandlers(new ArrayList<ContentIntent.ContentHandler>(0));
+		intent.withHandlers((List<ContentIntent.ContentHandler>) null);
+		assertThat(intent.handlers(), is(Collections.EMPTY_LIST));
 	}
 
 	@Test
+	@SuppressWarnings("unchecked")
 	public void testWithHandler() {
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler2", new Intent()));
-		final List<ContentIntent.ContentHandler> handlers = mIntent.handlers();
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
+		intent.withHandler(new ContentIntent.ContentHandler("TestHandler2", new Intent()));
+		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(2));
 		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
@@ -198,86 +193,96 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testDefaultUri() {
-		assertThat(mIntent.uri(), is(nullValue()));
+	public void testUriDefault() {
+		assertThat(new ContentIntentImpl().uri(), is(nullValue()));
 	}
 
 	@Test
 	public void testInputFile() {
-		mIntent.input(new File("TestFile"));
-		final Uri input = mIntent.uri();
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.input(new File("TestFile"));
+		final Uri input = intent.uri();
 		assertThat(input, is(not(nullValue())));
 		assertThat(input, is(Uri.fromFile(new File("TestFile"))));
 	}
 
 	@Test
 	public void testInputNullFile() {
-		mIntent.input((File) null);
-		assertThat(mIntent.uri(), is(nullValue()));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.input((File) null);
+		assertThat(intent.uri(), is(nullValue()));
 	}
 
 	@Test
 	public void testInputUri() {
-		mIntent.dataType(MimeType.IMAGE_JPEG);
-		mIntent.input(Uri.parse("content://android/data/images/lion.jpg"));
-		final Uri input = mIntent.uri();
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.dataType(MimeType.IMAGE_JPEG);
+		intent.input(Uri.parse("content://android/data/images/lion.jpg"));
+		final Uri input = intent.uri();
 		assertThat(input, is(not(nullValue())));
 		assertThat(input, is(Uri.parse("content://android/data/images/lion.jpg")));
 		// Data type is null as we did not specify it after the input.
-		assertThat(mIntent.dataType(), is(nullValue()));
+		assertThat(intent.dataType(), is(nullValue()));
 	}
 
 	@Test
 	public void testInputNullUri() {
-		mIntent.input((Uri) null);
-		assertThat(mIntent.uri(), is(nullValue()));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.input((Uri) null);
+		assertThat(intent.uri(), is(nullValue()));
 	}
 
 	@Test
 	public void testOutputFile() {
-		mIntent.output(new File("TestFile"));
-		final Uri output = mIntent.uri();
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.output(new File("TestFile"));
+		final Uri output = intent.uri();
 		assertThat(output, is(not(nullValue())));
 		assertThat(output, is(Uri.fromFile(new File("TestFile"))));
 	}
 
 	@Test
 	public void testOutputNullFile() {
-		mIntent.output((File) null);
-		assertThat(mIntent.uri(), is(nullValue()));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.output((File) null);
+		assertThat(intent.uri(), is(nullValue()));
 	}
 
 	@Test
 	public void testOutputUri() {
-		mIntent.output(Uri.parse("content://android/data/images/lion.jpg"));
-		final Uri output = mIntent.uri();
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.output(Uri.parse("content://android/data/images/lion.jpg"));
+		final Uri output = intent.uri();
 		assertThat(output, is(not(nullValue())));
 		assertThat(output, is(Uri.parse("content://android/data/images/lion.jpg")));
-		assertThat(mIntent.dataType(), is(nullValue()));
+		assertThat(intent.dataType(), is(nullValue()));
 	}
 
 	@Test
 	public void testOutputNullUri() {
-		mIntent.output((Uri) null);
-		assertThat(mIntent.uri(), is(nullValue()));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.output((Uri) null);
+		assertThat(intent.uri(), is(nullValue()));
 	}
 
 	@Test
-	public void testDefaultDataType() {
-		assertThat(mIntent.dataType(), is(nullValue()));
+	public void testDataTypeDefault() {
+		assertThat(new ContentIntentImpl().dataType(), is(nullValue()));
 	}
 
 	@Test
 	public void testDataType() {
-		mIntent.dataType(MimeType.AUDIO_MP3);
-		assertThat(mIntent.dataType(), is(MimeType.AUDIO_MP3));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.dataType(MimeType.AUDIO_MP3);
+		assertThat(intent.dataType(), is(MimeType.AUDIO_MP3));
 	}
 
 	@Test
 	public void testBuildWithInputUri() {
-		mIntent.input(Uri.parse("content://android/data/images/lion.jpg"));
-		mIntent.dataType(MimeType.IMAGE_JPEG);
-		final Intent intent = mIntent.build(mContext);
+		final ContentIntent contentIntent = new ContentIntentImpl();
+		contentIntent.input(Uri.parse("content://android/data/images/lion.jpg"));
+		contentIntent.dataType(MimeType.IMAGE_JPEG);
+		final Intent intent = contentIntent.build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("content://android/data/images/lion.jpg")));
@@ -286,10 +291,11 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithOutputUri() {
-		mIntent.output(Uri.parse("content://android/data/images/lion.jpg"));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.output(Uri.parse("content://android/data/images/lion.jpg"));
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				intent,
 				"No input Uri specified."
 		);
 	}
@@ -298,48 +304,52 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 	public void testBuildWithoutUri() {
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				new ContentIntentImpl(),
 				"No input Uri specified."
 		);
 	}
 
 	@Test
 	public void testBuildWithoutDataType() {
-		mIntent.input(Uri.parse("content://android/data/images/lion.jpg"));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.input(Uri.parse("content://android/data/images/lion.jpg"));
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				intent,
 				"No MIME type specified for input Uri."
 		);
 	}
 
 	@Test(expected = IllegalStateException.class)
 	public void testBuildWithHandlers() {
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
-		mIntent.build(mContext);
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
+		intent.build(mContext);
 	}
 
 	@Test
 	public void testStartWith() {
-		mIntent.input(Uri.EMPTY);
-		mIntent.dataType(MimeType.TEXT_HTML);
-		assumeTrue(BaseIntent.isActivityForIntentAvailable(mContext, mIntent.build(mContext)));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.input(Uri.EMPTY);
+		intent.dataType(MimeType.TEXT_HTML);
+		assumeTrue(BaseIntent.isActivityForIntentAvailable(mContext, intent.build(mContext)));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(mContext);
-		mIntent.startWith(mockStarter);
+		intent.startWith(mockStarter);
 		verify(mockStarter, times(1)).startIntent(any(Intent.class));
 	}
 
 	@Test
 	public void testStartWithWithHandlers() throws Throwable {
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(ACTIVITY_RULE.getActivity());
 		ACTIVITY_RULE.runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
-				mIntent.startWith(mockStarter);
+				intent.startWith(mockStarter);
 			}
 		});
 		waitForIdleSync();
@@ -348,14 +358,15 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testOnShowChooserDialog() throws Throwable {
-		mIntent.dialogTitle("Test Dialog");
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler2", new Intent()));
+		final ContentIntent intent = new ContentIntentImpl();
+		intent.dialogTitle("Test Dialog");
+		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
+		intent.withHandler(new ContentIntent.ContentHandler("TestHandler2", new Intent()));
 		ACTIVITY_RULE.runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
-				mIntent.onShowChooserDialog(IntentStarters.activityStarter(ACTIVITY_RULE.getActivity()));
+				intent.onShowChooserDialog(IntentStarters.activityStarter(ACTIVITY_RULE.getActivity()));
 			}
 		});
 		waitForIdleSync();
@@ -366,16 +377,17 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testChooserDialogOnClickWithoutRequestCode() throws Throwable {
-		mIntent.dialogTitle("Test Dialog");
+		final ContentIntent contentIntent = new ContentIntentImpl();
+		contentIntent.dialogTitle("Test Dialog");
 		final Intent intent = new Intent(Intent.ACTION_VIEW);
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", intent));
+		contentIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", intent));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(ACTIVITY_RULE.getActivity());
 		ACTIVITY_RULE.runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
-				mIntent.onShowChooserDialog(mockStarter);
+				contentIntent.onShowChooserDialog(mockStarter);
 			}
 		});
 		waitForIdleSync();
@@ -385,16 +397,17 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testChooserDialogOnClickWithRequestCode() throws Throwable {
-		mIntent.dialogTitle("Test Dialog");
+		final ContentIntent contentIntent = new ContentIntentImpl();
+		contentIntent.dialogTitle("Test Dialog");
 		final Intent intent = new Intent(Intent.ACTION_VIEW);
-		mIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", intent).requestCode(1000));
+		contentIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", intent).requestCode(1000));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(ACTIVITY_RULE.getActivity());
 		ACTIVITY_RULE.runOnUiThread(new Runnable() {
 
 			@Override
 			public void run() {
-				mIntent.onShowChooserDialog(mockStarter);
+				contentIntent.onShowChooserDialog(mockStarter);
 			}
 		});
 		waitForIdleSync();
@@ -404,11 +417,12 @@ public final class ContentIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testOnStartWith() {
-		mIntent.input(Uri.EMPTY);
-		mIntent.dataType(MimeType.TEXT_HTML);
-		final Intent intent = mIntent.build(mContext);
+		final ContentIntent contentIntent = new ContentIntentImpl();
+		contentIntent.input(Uri.EMPTY);
+		contentIntent.dataType(MimeType.TEXT_HTML);
+		final Intent intent = contentIntent.build(mContext);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		mIntent.onStartWith(mockStarter, intent);
+		contentIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(any(Intent.class));
 	}
 

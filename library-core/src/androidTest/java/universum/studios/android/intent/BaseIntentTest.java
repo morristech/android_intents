@@ -57,20 +57,6 @@ public final class BaseIntentTest extends BaseInstrumentedTest {
 	@Rule
 	public final ActivityTestRule ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
 
-	private IntentImpl mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new IntentImpl();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@Test
 	public void testIsActivityForIntentAvailable() {
 		assertThat(
@@ -96,71 +82,80 @@ public final class BaseIntentTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testDefaultDialogTitle() {
-		assertThat(mIntent.dialogTitle().toString(), is("Choose"));
+	public void testDialogTitleDefault() {
+		assertThat(new IntentImpl().dialogTitle().toString(), is("Choose"));
 	}
 
 	@Test
 	public void testDialogTitle() {
-		mIntent.dialogTitle("Choose provider");
-		assertThat(mIntent.dialogTitle().toString(), is("Choose provider"));
+		final BaseIntent intent = new IntentImpl();
+		intent.dialogTitle("Choose provider");
+		assertThat(intent.dialogTitle().toString(), is("Choose provider"));
 	}
 
 	@Test
 	public void testDialogTitleWithNullValue() {
-		mIntent.dialogTitle(null);
-		assertThat(mIntent.dialogTitle().toString(), is(""));
+		final BaseIntent intent = new IntentImpl();
+		intent.dialogTitle(null);
+		assertThat(intent.dialogTitle().toString(), is(""));
 	}
 
 	@Test
 	public void testActivityNotFoundMessage() {
-		mIntent.activityNotFoundMessage("No activity found to support launched request");
-		assertThat(mIntent.activityNotFoundMessage().toString(), is("No activity found to support launched request"));
+		final BaseIntent intent = new IntentImpl();
+		intent.activityNotFoundMessage("No activity found to support launched request");
+		assertThat(intent.activityNotFoundMessage().toString(), is("No activity found to support launched request"));
 	}
 
 	@Test
 	public void testActivityNotFoundMessageWithNullValue() {
-		mIntent.activityNotFoundMessage(null);
-		assertThat(mIntent.activityNotFoundMessage().toString(), is(""));
+		final BaseIntent intent = new IntentImpl();
+		intent.activityNotFoundMessage(null);
+		assertThat(intent.activityNotFoundMessage().toString(), is(""));
 	}
 
 	@Test
-	public void testDefaultActivityNotFoundMessage() {
-		assertThat(mIntent.activityNotFoundMessage().toString(), is("No application found to handle this action"));
+	public void testActivityNotFoundMessageDefault() {
+		final BaseIntent intent = new IntentImpl();
+		assertThat(intent.activityNotFoundMessage().toString(), is("No application found to handle this action"));
 	}
 
 	@Test
-	public void testDefaultTransitions() {
-		assertThat(mIntent.enterTransition(), is(0));
-		assertThat(mIntent.exitTransition(), is(0));
+	public void testTransitionsDefault() {
+		final BaseIntent intent = new IntentImpl();
+		assertThat(intent.enterTransition(), is(0));
+		assertThat(intent.exitTransition(), is(0));
 	}
 
 	@Test
 	public void testEnterTransition() {
+		final BaseIntent intent = new IntentImpl();
 		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final int animationResource = TestResources.resourceIdentifier(
 				mContext,
 				TestResources.ANIMATION,
 				"test_transition_enter"
 		);
-		mIntent.enterTransition(animationResource);
-		assertThat(mIntent.enterTransition(), is(animationResource));
+		intent.enterTransition(animationResource);
+		assertThat(intent.enterTransition(), is(animationResource));
 	}
 
 	@Test
 	public void testExitTransition() {
+		final BaseIntent intent = new IntentImpl();
 		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final int animationResource = TestResources.resourceIdentifier(
 				mContext,
 				TestResources.ANIMATION,
 				"test_transition_exit"
 		);
-		mIntent.exitTransition(animationResource);
-		assertThat(mIntent.exitTransition(), is(animationResource));
+		intent.exitTransition(animationResource);
+		assertThat(intent.exitTransition(), is(animationResource));
 	}
 
 	@Test
 	public void testTransitions() {
+		final BaseIntent intent = new IntentImpl();
 		assumeTrue(TestUtils.hasLibraryRootPackageName(mContext));
 		final int enterAnimationResource = TestResources.resourceIdentifier(
 				mContext,
@@ -172,47 +167,50 @@ public final class BaseIntentTest extends BaseInstrumentedTest {
 				TestResources.ANIMATION,
 				"test_transition_exit"
 		);
-		mIntent.transitions(enterAnimationResource, exitAnimationResource);
-		assertThat(mIntent.enterTransition(), is(enterAnimationResource));
-		assertThat(mIntent.exitTransition(), is(exitAnimationResource));
+		intent.transitions(enterAnimationResource, exitAnimationResource);
+		assertThat(intent.enterTransition(), is(enterAnimationResource));
+		assertThat(intent.exitTransition(), is(exitAnimationResource));
 	}
 
 	@Test
 	public void testTransitionsWithZeroAnimRes() {
-		mIntent.transitions(0, 0);
-		assertThat(mIntent.enterTransition(), is(0));
-		assertThat(mIntent.exitTransition(), is(0));
+		final BaseIntent intent = new IntentImpl();
+		intent.transitions(0, 0);
+		assertThat(intent.enterTransition(), is(0));
+		assertThat(intent.exitTransition(), is(0));
 	}
 
 	@Test
 	public void testTransitionsWithNegativeAnimRes() {
-		mIntent.transitions(-1, -1);
-		assertThat(mIntent.enterTransition(), is(0));
-		assertThat(mIntent.exitTransition(), is(0));
+		final BaseIntent intent = new IntentImpl();
+		intent.transitions(-1, -1);
+		assertThat(intent.enterTransition(), is(0));
+		assertThat(intent.exitTransition(), is(0));
 	}
 
 	@Test
 	public void testTransitionsWithCombinedAnimRes() {
-		mIntent.transitions(0, -1);
-		assertThat(mIntent.enterTransition(), is(0));
-		assertThat(mIntent.exitTransition(), is(0));
-		mIntent.transitions(-1, 0);
-		assertThat(mIntent.enterTransition(), is(0));
-		assertThat(mIntent.exitTransition(), is(0));
+		final BaseIntent intent = new IntentImpl();
+		intent.transitions(0, -1);
+		assertThat(intent.enterTransition(), is(0));
+		assertThat(intent.exitTransition(), is(0));
+		intent.transitions(-1, 0);
+		assertThat(intent.enterTransition(), is(0));
+		assertThat(intent.exitTransition(), is(0));
 	}
 
 	@Test
 	@UiThreadTest
 	public void testNotifyActivityNotFound() {
 		final Activity activity = ACTIVITY_RULE.getActivity();
-		mIntent.notifyActivityNotFound(activity);
+		new IntentImpl().notifyActivityNotFound(activity);
 	}
 
 	@Test
 	public void testStartWith() {
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(mContext);
-		mIntent.startWith(mockStarter);
+		new IntentImpl().startWith(mockStarter);
 		verify(mockStarter, times(1)).startIntent(any(Intent.class));
 		verify(mockStarter, times(0)).overridePendingTransition(anyInt(), anyInt());
 	}
@@ -236,35 +234,38 @@ public final class BaseIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testOnStartWithEnterTransition() {
-		mIntent.enterTransition(TestResources.resourceIdentifier(
+		final BaseIntent baseIntent = new IntentImpl();
+		baseIntent.enterTransition(TestResources.resourceIdentifier(
 				mContext,
 				TestResources.ANIMATION,
 				"test_transition_enter"
 		));
-		final Intent intent = mIntent.build(mContext);
+		final Intent intent = baseIntent.build(mContext);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		mIntent.onStartWith(mockStarter, intent);
+		baseIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(intent);
-		verify(mockStarter, times(1)).overridePendingTransition(mIntent.enterTransition(), mIntent.exitTransition());
+		verify(mockStarter, times(1)).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
 	}
 
 	@Test
 	public void testOnStartWithExitTransition() {
-		mIntent.exitTransition(TestResources.resourceIdentifier(
+		final BaseIntent baseIntent = new IntentImpl();
+		baseIntent.exitTransition(TestResources.resourceIdentifier(
 				mContext,
 				TestResources.ANIMATION,
 				"test_transition_exit"
 		));
-		final Intent intent = mIntent.build(mContext);
+		final Intent intent = baseIntent.build(mContext);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		mIntent.onStartWith(mockStarter, intent);
+		baseIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(intent);
-		verify(mockStarter, times(1)).overridePendingTransition(mIntent.enterTransition(), mIntent.exitTransition());
+		verify(mockStarter, times(1)).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
 	}
 
 	@Test
 	public void testOnStartWithBothTransitions() {
-		mIntent.transitions(
+		final BaseIntent baseIntent = new IntentImpl();
+		baseIntent.transitions(
 				TestResources.resourceIdentifier(
 						mContext,
 						TestResources.ANIMATION,
@@ -276,11 +277,11 @@ public final class BaseIntentTest extends BaseInstrumentedTest {
 						"test_transition_exit"
 				)
 		);
-		final Intent intent = mIntent.build(mContext);
+		final Intent intent = baseIntent.build(mContext);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		mIntent.onStartWith(mockStarter, intent);
+		baseIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(intent);
-		verify(mockStarter, times(1)).overridePendingTransition(mIntent.enterTransition(), mIntent.exitTransition());
+		verify(mockStarter, times(1)).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
 	}
 
 	static final class IntentImpl extends BaseIntent<IntentImpl> {

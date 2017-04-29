@@ -48,81 +48,73 @@ public final class SimpleIntentTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unused")
 	private static final String TAG = "SimpleIntentTest";
 
-	private SimpleIntent mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new SimpleIntent();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@Test
-	public void testDefaultActivityClass() {
-		assertThat(mIntent.activityClass(), is(nullValue()));
+	public void testActivityClassDefault() {
+		assertThat(new SimpleIntent().activityClass(), is(nullValue()));
 	}
 
 	@Test
 	public void testActivityClass() {
-		mIntent.activityClass(TestActivity.class);
-		assertEquals(TestActivity.class, mIntent.activityClass());
+		final SimpleIntent intent = new SimpleIntent();
+		intent.activityClass(TestActivity.class);
+		assertEquals(TestActivity.class, intent.activityClass());
 	}
 
 	@Test
-	public void testDefaultAction() {
-		assertEquals("", mIntent.action());
+	public void testActionDefault() {
+		assertEquals("", new SimpleIntent().action());
 	}
 
 	@Test
 	public void testAction() {
-		mIntent.action(Intent.ACTION_DIAL);
-		assertEquals(Intent.ACTION_DIAL, mIntent.action());
+		final SimpleIntent intent = new SimpleIntent();
+		intent.action(Intent.ACTION_DIAL);
+		assertEquals(Intent.ACTION_DIAL, intent.action());
 	}
 
 	@Test
-	public void testDefaultFlags() {
-		assertEquals(0, mIntent.flags());
+	public void testFlagsDefault() {
+		assertEquals(0, new SimpleIntent().flags());
 	}
 
 	@Test
 	public void testFlags() {
-		mIntent.flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-		assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK, mIntent.flags());
+		final SimpleIntent intent = new SimpleIntent();
+		intent.flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK, intent.flags());
 	}
 
 	@Test
 	public void testFlag() {
-		mIntent.flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-		mIntent.flag(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		final SimpleIntent intent = new SimpleIntent();
+		intent.flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+		intent.flag(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TASK |
 						Intent.FLAG_ACTIVITY_NEW_TASK |
 						Intent.FLAG_ACTIVITY_NO_ANIMATION,
-				mIntent.flags()
+				intent.flags()
 		);
 	}
 
 	@Test
-	public void testDefaultRequestCode() {
-		assertEquals(-1, mIntent.requestCode());
+	public void testRequestCodeDefault() {
+		assertEquals(-1, new SimpleIntent().requestCode());
 	}
 
 	@Test
 	public void testRequestCode() {
-		mIntent.requestCode(1234);
-		assertEquals(1234, mIntent.requestCode());
-		mIntent.requestCode(-1);
-		assertEquals(-1, mIntent.requestCode());
+		final SimpleIntent intent = new SimpleIntent();
+		intent.requestCode(1234);
+		assertEquals(1234, intent.requestCode());
+		intent.requestCode(-1);
+		assertEquals(-1, intent.requestCode());
 	}
 
 	@Test
 	public void testBuildWithActivityClass() {
-		mIntent.activityClass(TestActivity.class);
-		final Intent intent = mIntent.build(mContext);
+		final SimpleIntent simpleIntent = new SimpleIntent();
+		simpleIntent.activityClass(TestActivity.class);
+		final Intent intent = simpleIntent.build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		final ComponentName componentName = intent.getComponent();
 		assertThat(componentName, is(not(nullValue())));
@@ -132,10 +124,11 @@ public final class SimpleIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithActivityClassAndFlags() {
-		mIntent.activityClass(TestActivity.class);
-		mIntent.flag(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-		mIntent.flag(Intent.FLAG_ACTIVITY_NEW_TASK);
-		final Intent intent = mIntent.build(mContext);
+		final SimpleIntent simpleIntent = new SimpleIntent();
+		simpleIntent.activityClass(TestActivity.class);
+		simpleIntent.flag(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+		simpleIntent.flag(Intent.FLAG_ACTIVITY_NEW_TASK);
+		final Intent intent = simpleIntent.build(mContext);
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getFlags(), is(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 		final ComponentName componentName = intent.getComponent();
@@ -146,9 +139,10 @@ public final class SimpleIntentTest extends BaseInstrumentedTest {
 
 	@Test
 	public void testBuildWithAction() {
-		mIntent.action(Intent.ACTION_SEARCH);
-		mIntent.flags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		final Intent intent = mIntent.build(mContext);
+		final SimpleIntent simpleIntent = new SimpleIntent();
+		simpleIntent.action(Intent.ACTION_SEARCH);
+		simpleIntent.flags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		final Intent intent = simpleIntent.build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_SEARCH));
 		assertThat(intent.getFlags(), is(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -158,7 +152,7 @@ public final class SimpleIntentTest extends BaseInstrumentedTest {
 	public void testBuildWithoutParams() {
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				new SimpleIntent(),
 				"No activity class or action specified."
 		);
 	}
@@ -166,10 +160,11 @@ public final class SimpleIntentTest extends BaseInstrumentedTest {
 	@Test
 	@SuppressWarnings("ConstantConditions")
 	public void testBuildWithInvalidActivityClass() {
-		mIntent.activityClass(null);
+		final SimpleIntent intent = new SimpleIntent();
+		intent.activityClass(null);
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				intent,
 				"No activity class specified."
 		);
 	}
@@ -177,30 +172,33 @@ public final class SimpleIntentTest extends BaseInstrumentedTest {
 	@Test
 	@SuppressWarnings("ConstantConditions")
 	public void testBuildWithInvalidAction() {
-		mIntent.action(null);
+		final SimpleIntent intent = new SimpleIntent();
+		intent.action(null);
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				intent,
 				"No action specified."
 		);
 	}
 
 	@Test
 	public void testOnStartWith() {
-		mIntent.activityClass(TestActivity.class);
-		final Intent intent = mIntent.build(mContext);
+		final SimpleIntent simpleIntent = new SimpleIntent();
+		simpleIntent.activityClass(TestActivity.class);
+		final Intent intent = simpleIntent.build(mContext);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		assertThat(mIntent.onStartWith(mockStarter, intent), is(true));
+		assertThat(simpleIntent.onStartWith(mockStarter, intent), is(true));
 		verify(mockStarter, times(1)).startIntent(intent);
 	}
 
 	@Test
 	public void testOnStartWithForResult() {
-		mIntent.activityClass(TestActivity.class);
-		mIntent.requestCode(1000);
-		final Intent intent = mIntent.build(mContext);
+		final SimpleIntent simpleIntent = new SimpleIntent();
+		simpleIntent.activityClass(TestActivity.class);
+		simpleIntent.requestCode(1000);
+		final Intent intent = simpleIntent.build(mContext);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		assertThat(mIntent.onStartWith(mockStarter, intent), is(true));
+		assertThat(simpleIntent.onStartWith(mockStarter, intent), is(true));
 		verify(mockStarter, times(1)).startIntentForResult(intent, 1000);
 	}
 }

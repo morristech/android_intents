@@ -42,40 +42,28 @@ public final class DialerIntentTest extends BaseInstrumentedTest {
 	@SuppressWarnings("unused")
 	private static final String TAG = "DialerIntentTest";
 
-	private DialerIntent mIntent;
-
-	@Override
-	public void beforeTest() throws Exception {
-		super.beforeTest();
-		this.mIntent = new DialerIntent();
-	}
-
-	@Override
-	public void afterTest() throws Exception {
-		super.afterTest();
-		this.mIntent = null;
-	}
-
 	@Test
 	public void testUriScheme() {
 		assertThat(DialerIntent.URI_SCHEME, is("tel"));
 	}
 
 	@Test
-	public void testDefaultPhoneNumber() {
-		assertThat(mIntent.phoneNumber(), is(""));
+	public void testPhoneNumberDefault() {
+		assertThat(new DialerIntent().phoneNumber(), is(""));
 	}
 
 	@Test
 	public void testPhoneNumber() {
-		mIntent.phoneNumber("00124456");
-		assertThat(mIntent.phoneNumber(), is("00124456"));
+		final DialerIntent intent = new DialerIntent();
+		intent.phoneNumber("00124456");
+		assertThat(intent.phoneNumber(), is("00124456"));
 	}
 
 	@Test
 	public void testBuild() {
-		mIntent.phoneNumber("02644569874");
-		final Intent intent = mIntent.build(mContext);
+		final DialerIntent dialerIntent = new DialerIntent();
+		dialerIntent.phoneNumber("02644569874");
+		final Intent intent = dialerIntent.build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_DIAL));
 		assertThat(intent.getData(), is(Uri.parse("tel:02644569874")));
@@ -85,7 +73,7 @@ public final class DialerIntentTest extends BaseInstrumentedTest {
 	public void testBuildWithoutNumber() {
 		assertThatBuildThrowsExceptionWithMessage(
 				mContext,
-				mIntent,
+				new DialerIntent(),
 				"No phone number specified."
 		);
 	}
