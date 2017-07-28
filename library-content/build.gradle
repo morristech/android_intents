@@ -55,7 +55,8 @@ android {
  * Library dependencies ============================================================================
  */
 repositories {
-    maven { url = repos.project.artifacts }
+    maven { url repos.project.artifacts }
+    mavenLocal()
 }
 
 dependencies {
@@ -78,5 +79,4 @@ dependencies {
     androidTestCompile project(':test-core')
 }
 
-// Apply DEPLOY script.
-apply from: '../deploy/deploy.gradle'
+apply from: "${rootProject.rootDir}/deploy/deploy.gradle"
