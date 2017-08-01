@@ -30,9 +30,9 @@ import android.text.TextUtils;
  * targeting the <b>Android Play Store</b> application.
  * <p>
  * This intent builder does not require any of its parameters to be set. Package name of the
- * application component that starts this intent will be used by default. If this intent is to be
- * started for a specific application, package name of that application may be specified via
- * {@link #packageName(String)}.
+ * application component that starts this intent will be used as application Id by default. If this
+ * intent is to be started for a specific application, id of that application may be specified via
+ * {@link #applicationId(String)}.
  *
  * @author Martin Albedinsky
  */
@@ -66,9 +66,9 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 */
 
 	/**
-	 * Package name of an Android application to view in Play Store.
+	 * Unique ID of an Android application to view in Play Store.
 	 */
-	private String mPackageName;
+	private String mApplicationId;
 
 	/*
 	 * Constructors ================================================================================
@@ -79,27 +79,58 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 */
 
 	/**
+	 * <b>This method has been deprecated and will be removed in the next release.</b>
+	 * <p>
 	 * Sets a package name of an Android application to be viewed in Play Store.
 	 *
 	 * @param packageName Package name of the desired application to view in store. May be {@code null}
 	 *                    to use the current application's package.
 	 * @return This intent builder to allow methods chaining.
 	 * @see #packageName()
+	 * @deprecated Use {@link #applicationId(String)} instead.
 	 */
+	@Deprecated
 	public PlayIntent packageName(@NonNull final String packageName) {
-		this.mPackageName = packageName;
-		return this;
+		return applicationId(packageName);
 	}
 
 	/**
+	 * <b>This method has been deprecated and will be removed in the next release.</b>
+	 * <p>
 	 * Returns the package name of an Android application to be viewed in Play Store.
 	 *
 	 * @return Package name or empty string if not specified yet.
 	 * @see #packageName(String)
+	 * @deprecated Use {@link #applicationId()} instead.
 	 */
 	@NonNull
+	@Deprecated
 	public String packageName() {
-		return mPackageName == null ? "" : mPackageName;
+		return applicationId();
+	}
+
+	/**
+	 * Sets a unique ID of an Android application to be viewed in Play Store.
+	 *
+	 * @param applicationId ID of the desired application to view in store. May be {@code null}
+	 *                      to use the current application's package name.
+	 * @return This intent builder to allow methods chaining.
+	 * @see #applicationId()
+	 */
+	public PlayIntent applicationId(@NonNull final String applicationId) {
+		this.mApplicationId = applicationId;
+		return this;
+	}
+
+	/**
+	 * Returns the unique ID of an Android application to be viewed in Play Store.
+	 *
+	 * @return Application ID or empty string if not specified yet.
+	 * @see #applicationId(String)
+	 */
+	@NonNull
+	public String applicationId() {
+		return mApplicationId == null ? "" : mApplicationId;
 	}
 
 	/**
@@ -108,9 +139,9 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	@Override
 	protected Intent onBuild(@NonNull final Context context) {
 		return new Intent(Intent.ACTION_VIEW).setData(Uri.parse(VIEW_URL_BASE + (
-				TextUtils.isEmpty(mPackageName) ?
+				TextUtils.isEmpty(mApplicationId) ?
 						context.getPackageName() :
-						mPackageName
+						mApplicationId
 		)));
 	}
 
