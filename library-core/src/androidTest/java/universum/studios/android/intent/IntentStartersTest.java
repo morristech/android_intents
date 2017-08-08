@@ -141,7 +141,7 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 
 	@Test
 	@UiThreadTest
-	public void testFragmentStarter() throws Throwable {
+	public void testFragmentStarter() throws IllegalStateException {
 		final Activity activity = ACTIVITY_RULE.getActivity();
 		final FragmentManager fragmentManager = activity.getFragmentManager();
 		final Fragment fragment = new TestFragment();
@@ -192,7 +192,7 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 
 	@Test
 	@UiThreadTest
-	public void testFragmentStarterOverridePendingTransition() throws Throwable {
+	public void testFragmentStarterOverridePendingTransition() throws IllegalStateException {
 		final Activity activity = ACTIVITY_RULE.getActivity();
 		final FragmentManager fragmentManager = activity.getFragmentManager();
 		final Fragment fragment = new TestFragment();
@@ -216,7 +216,7 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 
 	@Test
 	@UiThreadTest
-	public void testSupportFragmentStarter() throws Throwable {
+	public void testSupportFragmentStarter() throws IllegalStateException {
 		final FragmentActivity activity = ACTIVITY_COMPAT_RULE.getActivity();
 		final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		final android.support.v4.app.Fragment fragment = new TestCompatFragment();
@@ -263,7 +263,7 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 
 	@Test
 	@UiThreadTest
-	public void testSupportFragmentStarterOverridePendingTransition() throws Throwable {
+	public void testSupportFragmentStarterOverridePendingTransition() throws IllegalStateException {
 		final FragmentActivity activity = ACTIVITY_COMPAT_RULE.getActivity();
 		final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		final android.support.v4.app.Fragment fragment = new TestCompatFragment();

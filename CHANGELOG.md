@@ -1,8 +1,8 @@
 Change-Log
 ===============
 
-### Release 1.0.3 ###
-> 01.08.2017
+### Release 1.0.4 ###
+> --.08.2017
 
 - **Deprecated** `packageName` attribute of `PlayIntent` and added **better named** alternative `applicationId`.
 
