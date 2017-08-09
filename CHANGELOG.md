@@ -1,8 +1,8 @@
 Change-Log
 ===============
 
-### Release 1.0.4 ###
-> --.08.2017
+### [Release 1.0.4](https://github.com/universum-studios/android_intents/releases/tag/1.0.4) ###
+> 09.08.2017
 
 - **Deprecated** `packageName` attribute of `PlayIntent` and added **better named** alternative `applicationId`.
 
