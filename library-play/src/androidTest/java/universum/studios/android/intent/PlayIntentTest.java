@@ -36,26 +36,47 @@ import static org.hamcrest.core.IsNot.not;
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
+@SuppressWarnings("deprecation")
 public final class PlayIntentTest extends BaseInstrumentedTest {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "PlayIntentTest";
 
 	@Test
-	public void testPackageName() {
+	public void testDeprecatedPackageName() {
 		final PlayIntent intent = new PlayIntent();
 		intent.packageName("com.google.android.inbox");
 		assertThat(intent.packageName(), is("com.google.android.inbox"));
 	}
 
 	@Test
-	public void tesPackageNameDefault() {
+	public void tesDeprecatedPackageNameDefault() {
 		assertThat(new PlayIntent().packageName(), is(""));
 	}
 
 	@Test
-	public void testBuild() {
+	public void testDeprecatedBuild() {
 		final Intent intent = new PlayIntent().packageName("com.google.android.inbox").build(mContext);
+		assertThat(intent, is(not(nullValue())));
+		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
+		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.google.android.inbox")));
+	}
+
+	@Test
+	public void testApplicationId() {
+		final PlayIntent intent = new PlayIntent();
+		intent.applicationId("com.google.android.inbox");
+		assertThat(intent.applicationId(), is("com.google.android.inbox"));
+	}
+
+	@Test
+	public void tesApplicationIdDefault() {
+		assertThat(new PlayIntent().applicationId(), is(""));
+	}
+
+	@Test
+	public void testBuild() {
+		final Intent intent = new PlayIntent().applicationId("com.google.android.inbox").build(mContext);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.google.android.inbox")));

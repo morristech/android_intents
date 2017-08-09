@@ -26,6 +26,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.test.annotation.UiThreadTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.app.FragmentActivity;
@@ -79,10 +80,10 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 
     @Test
 	public void testActivityStarter() {
-	    final Activity mockActivity = mock(Activity.class);
-		final IntentStarter starter = IntentStarters.activityStarter(mockActivity);
+	    final Activity activity = ACTIVITY_RULE.getActivity();
+		final IntentStarter starter = IntentStarters.activityStarter(activity);
 	    assertThat(starter, is(not(nullValue())));
-	    assertThat(starter.getContext(), is((Context) mockActivity));
+	    assertThat(starter.getContext(), is((Context) activity));
 	}
 
 	@Test
@@ -139,23 +140,18 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testFragmentStarter() throws Throwable {
-		ACTIVITY_RULE.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				final Activity activity = ACTIVITY_RULE.getActivity();
-				final FragmentManager fragmentManager = activity.getFragmentManager();
-				final Fragment fragment = new TestFragment();
-				fragmentManager.beginTransaction().add(fragment, null).commit();
-				fragmentManager.executePendingTransactions();
-				final IntentStarter starter = IntentStarters.fragmentStarter(fragment);
-				assertThat(starter, is(not(nullValue())));
-				assertThat(starter.getContext(), is((Context) activity));
-				fragmentManager.beginTransaction().remove(fragment).commit();
-				fragmentManager.executePendingTransactions();
-			}
-		});
+	@UiThreadTest
+	public void testFragmentStarter() throws IllegalStateException {
+		final Activity activity = ACTIVITY_RULE.getActivity();
+		final FragmentManager fragmentManager = activity.getFragmentManager();
+		final Fragment fragment = new TestFragment();
+		fragmentManager.beginTransaction().add(fragment, null).commitAllowingStateLoss();
+		fragmentManager.executePendingTransactions();
+		final IntentStarter starter = IntentStarters.fragmentStarter(fragment);
+		assertThat(starter, is(not(nullValue())));
+		assertThat(starter.getContext(), is((Context) activity));
+		fragmentManager.beginTransaction().remove(fragment).commit();
+		fragmentManager.executePendingTransactions();
 	}
 
 	@Test
@@ -195,52 +191,42 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testFragmentStarterOverridePendingTransition() throws Throwable {
-		ACTIVITY_RULE.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				final Activity activity = ACTIVITY_RULE.getActivity();
-				final FragmentManager fragmentManager = activity.getFragmentManager();
-				final Fragment fragment = new TestFragment();
-				fragmentManager.beginTransaction().add(fragment, null).commit();
-				fragmentManager.executePendingTransactions();
-				IntentStarters.fragmentStarter(fragment).overridePendingTransition(
-						TestResources.resourceIdentifier(
-								mContext,
-								TestResources.ANIMATION,
-								"test_transition_enter"
-						),
-						TestResources.resourceIdentifier(
-								mContext,
-								TestResources.ANIMATION,
-								"test_transition_exit"
-						)
-				);
-				fragmentManager.beginTransaction().remove(fragment).commit();
-				fragmentManager.executePendingTransactions();
-			}
-		});
+	@UiThreadTest
+	public void testFragmentStarterOverridePendingTransition() throws IllegalStateException {
+		final Activity activity = ACTIVITY_RULE.getActivity();
+		final FragmentManager fragmentManager = activity.getFragmentManager();
+		final Fragment fragment = new TestFragment();
+		fragmentManager.beginTransaction().add(fragment, null).commitAllowingStateLoss();
+		fragmentManager.executePendingTransactions();
+		IntentStarters.fragmentStarter(fragment).overridePendingTransition(
+				TestResources.resourceIdentifier(
+						mContext,
+						TestResources.ANIMATION,
+						"test_transition_enter"
+				),
+				TestResources.resourceIdentifier(
+						mContext,
+						TestResources.ANIMATION,
+						"test_transition_exit"
+				)
+		);
+		fragmentManager.beginTransaction().remove(fragment).commit();
+		fragmentManager.executePendingTransactions();
 	}
 
 	@Test
-	public void testSupportFragmentStarter() throws Throwable {
-		ACTIVITY_COMPAT_RULE.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				final FragmentActivity activity = ACTIVITY_COMPAT_RULE.getActivity();
-				final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-				final android.support.v4.app.Fragment fragment = new TestCompatFragment();
-				fragmentManager.beginTransaction().add(fragment, null).commit();
-				fragmentManager.executePendingTransactions();
-				final IntentStarter starter = IntentStarters.supportFragmentStarter(fragment);
-				assertThat(starter, is(not(nullValue())));
-				assertThat(starter.getContext(), is((Context) activity));
-				fragmentManager.beginTransaction().remove(fragment).commit();
-				fragmentManager.executePendingTransactions();
-			}
-		});
+	@UiThreadTest
+	public void testSupportFragmentStarter() throws IllegalStateException {
+		final FragmentActivity activity = ACTIVITY_COMPAT_RULE.getActivity();
+		final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
+		final android.support.v4.app.Fragment fragment = new TestCompatFragment();
+		fragmentManager.beginTransaction().add(fragment, null).commitAllowingStateLoss();
+		fragmentManager.executePendingTransactions();
+		final IntentStarter starter = IntentStarters.supportFragmentStarter(fragment);
+		assertThat(starter, is(not(nullValue())));
+		assertThat(starter.getContext(), is((Context) activity));
+		fragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss();
+		fragmentManager.executePendingTransactions();
 	}
 
 	@Test
@@ -276,31 +262,26 @@ public final class IntentStartersTest extends BaseInstrumentedTest {
 	}
 
 	@Test
-	public void testSupportFragmentStarterOverridePendingTransition() throws Throwable {
-		ACTIVITY_COMPAT_RULE.runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				final FragmentActivity activity = ACTIVITY_COMPAT_RULE.getActivity();
-				final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-				final android.support.v4.app.Fragment fragment = new TestCompatFragment();
-				fragmentManager.beginTransaction().add(fragment, null).commit();
-				fragmentManager.executePendingTransactions();
-				IntentStarters.supportFragmentStarter(fragment).overridePendingTransition(
-						TestResources.resourceIdentifier(
-								mContext,
-								TestResources.ANIMATION,
-								"test_transition_enter"
-						),
-						TestResources.resourceIdentifier(
-								mContext,
-								TestResources.ANIMATION,
-								"test_transition_exit"
-						)
-				);
-				fragmentManager.beginTransaction().remove(fragment).commit();
-				fragmentManager.executePendingTransactions();
-			}
-		});
+	@UiThreadTest
+	public void testSupportFragmentStarterOverridePendingTransition() throws IllegalStateException {
+		final FragmentActivity activity = ACTIVITY_COMPAT_RULE.getActivity();
+		final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
+		final android.support.v4.app.Fragment fragment = new TestCompatFragment();
+		fragmentManager.beginTransaction().add(fragment, null).commitAllowingStateLoss();
+		fragmentManager.executePendingTransactions();
+		IntentStarters.supportFragmentStarter(fragment).overridePendingTransition(
+				TestResources.resourceIdentifier(
+						mContext,
+						TestResources.ANIMATION,
+						"test_transition_enter"
+				),
+				TestResources.resourceIdentifier(
+						mContext,
+						TestResources.ANIMATION,
+						"test_transition_exit"
+				)
+		);
+		fragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss();
+		fragmentManager.executePendingTransactions();
 	}
 }
