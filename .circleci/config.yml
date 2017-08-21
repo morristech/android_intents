@@ -71,6 +71,10 @@ workflows:
     jobs:
       - build:
           context: org-global
+          filters:
+            branches:
+              ignore:
+                - gh-pages
       - test:
           context: org-global
           requires:
