@@ -17,13 +17,16 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
+      - run:
+          name: Grant Permissions
+          command: ./ci/permissions.sh
+      - run:
+          name: Download Dependencies
+          command: ./gradlew dependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
-      - run:
-          name: Grant Permissions
-          command: ./ci/permissions.sh
       - run:
           name: Build Project
           command: ./ci/build.sh
