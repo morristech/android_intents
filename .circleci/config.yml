@@ -26,7 +26,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: "gradle-cache-$CIRCLE_SHA1"
+          key: gradle-cache-${CIRCLE_BUILD_NUM}
       - run:
           name: Build Project
           command: ./ci/build.sh
@@ -42,7 +42,7 @@ jobs:
           name: Grant Permissions
           command: ./ci/permissions.sh
       - restore_cache:
-          key: "gradle-cache-$CIRCLE_SHA1"
+          key: gradle-cache-${CIRCLE_BUILD_NUM}
       - run:
           name: Execute Tests
           command: ./ci/test.sh
@@ -58,7 +58,7 @@ jobs:
           name: Grant Permissions
           command: ./ci/permissions.sh
       - restore_cache:
-          key: "gradle-cache-$CIRCLE_SHA1"
+          key: gradle-cache-${CIRCLE_BUILD_NUM}
       - run:
           name: Deploy Artifacts
           command: ./ci/deploy.sh
