@@ -27,7 +27,7 @@ jobs:
           paths:
             - ~/.gradle
           #key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
-          key: key: "gradle-${CIRCLE_SHA1}"
+          key: "gradle-${CIRCLE_SHA1}"
       - run:
           name: Build Project
           command: ./ci/build.sh
@@ -43,7 +43,7 @@ jobs:
           name: Grant Permissions
           command: ./ci/permissions.sh
       - restore_cache:
-          key: key: "gradle-${CIRCLE_SHA1}"
+          key: "gradle-${CIRCLE_SHA1}"
       - run:
           name: Execute Tests
           command: ./ci/test.sh
