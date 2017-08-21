@@ -26,8 +26,8 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import universum.studios.android.test.BaseInstrumentedTest;
-import universum.studios.android.test.TestActivity;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
+import universum.studios.android.test.instrumented.TestActivity;
 
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
@@ -43,7 +43,7 @@ import static universum.studios.android.intent.CoreTests.assertThatBuildThrowsEx
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class SimpleIntentTest extends BaseInstrumentedTest {
+public final class SimpleIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "SimpleIntentTest";

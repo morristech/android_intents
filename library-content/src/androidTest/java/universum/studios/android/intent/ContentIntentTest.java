@@ -41,9 +41,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import universum.studios.android.test.BaseInstrumentedTest;
-import universum.studios.android.test.TestActivity;
-import universum.studios.android.test.TestUtils;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
+import universum.studios.android.test.instrumented.TestActivity;
+import universum.studios.android.test.instrumented.TestUtils;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
@@ -67,7 +67,7 @@ import static universum.studios.android.intent.ContentTests.assertThatBuildThrow
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class ContentIntentTest extends BaseInstrumentedTest {
+public final class ContentIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "ContentIntentTest";

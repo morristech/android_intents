@@ -1,6 +1,6 @@
 /*
  * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
+ *                             Copyright (C) 2017 Universum Studios
  * =================================================================================================
  *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
  * -------------------------------------------------------------------------------------------------
@@ -31,16 +31,6 @@ android {
         testInstrumentationRunner config.test.instrumentationRunner
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-        debug {
-            minifyEnabled false
-            testCoverageEnabled true
-        }
-    }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
@@ -55,16 +45,11 @@ android {
  * Library dependencies ============================================================================
  */
 dependencies {
-    /*
-     * RELEASE DEPENDENCIES ------------------------------------------------------------------------
-     */
+    // Local JUnit test dependencies.
+    compile deps.test.junit
+    compile deps.test.mockitoCore
+    compile deps.test.mockitoAndroid
+    compile deps.test.robolectric
+    compile deps.test.robolectricShadowsSupportV4
     compile deps.androidSupport.annotations
-    compile deps.androidSupport.v4
-
-    /*
-     * TEST DEPENDENCIES ---------------------------------------------------------------------------
-     */
-    androidTestCompile project(':test-instrumented')
 }
-
-apply from: "${rootProject.rootDir}/deploy/deploy.gradle"

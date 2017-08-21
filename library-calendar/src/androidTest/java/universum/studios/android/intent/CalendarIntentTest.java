@@ -28,7 +28,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
 
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
@@ -42,7 +42,7 @@ import static universum.studios.android.intent.CalendarTests.assertThatBuildThro
  */
 @RunWith(AndroidJUnit4.class)
 @SuppressWarnings("ResourceType")
-public final class CalendarIntentTest extends BaseInstrumentedTest {
+public final class CalendarIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "CalendarIntentTest";

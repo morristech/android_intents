@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
@@ -44,7 +44,7 @@ import static universum.studios.android.intent.ContentIntentTest.hasRelativePath
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class VideoIntentTest extends BaseInstrumentedTest {
+public final class VideoIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "VideoIntentTest";

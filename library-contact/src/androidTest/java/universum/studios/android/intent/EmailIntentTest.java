@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -45,7 +45,7 @@ import static universum.studios.android.intent.ContactTests.assertThatBuildThrow
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class EmailIntentTest extends BaseInstrumentedTest {
+public final class EmailIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "EmailIntentTest";

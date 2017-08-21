@@ -90,13 +90,14 @@ dependencies {
     /*
      * TEST DEPENDENCIES ---------------------------------------------------------------------------
      */
-    androidTestCompile project(':test-core')
+    androidTestCompile project(':test-instrumented')
 }
 
 /**
  * Additional configuration ========================================================================
  */
 apply from: 'analysis/analysis.gradle'
+apply from: 'coverage/jacoco.gradle'
 apply from: 'coverage/codacy.gradle'
 apply from: "${rootProject.rootDir}/deploy/deploy.gradle"
 apply from: 'github/github.gradle'

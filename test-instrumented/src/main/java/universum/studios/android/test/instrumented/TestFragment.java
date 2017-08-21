@@ -16,11 +16,11 @@
 * See the License for the specific language governing permissions and limitations under the License.
 * =================================================================================================
 */
-package universum.studios.android.test;
+package universum.studios.android.test.instrumented;
 
+import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,13 +30,13 @@ import android.view.ViewGroup;
  *
  * @author Martin Albedinsky
  */
-public final class TestCompatFragment extends Fragment {
+public final class TestFragment extends Fragment {
 
 	/**
 	 * Log TAG.
 	 */
 	@SuppressWarnings("unused")
-	private static final String TAG = "TestCompatFragment";
+	private static final String TAG = "TestActivity";
 
 	/**
 	 */

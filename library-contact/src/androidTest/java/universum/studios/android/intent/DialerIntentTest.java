@@ -25,7 +25,7 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.nullValue;
@@ -37,7 +37,7 @@ import static universum.studios.android.intent.ContactTests.assertThatBuildThrow
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class DialerIntentTest extends BaseInstrumentedTest {
+public final class DialerIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "DialerIntentTest";
