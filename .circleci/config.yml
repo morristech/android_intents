@@ -69,8 +69,10 @@ workflows:
   version: 2
   assemble:
     jobs:
-      - build
+      - build:
+          context: org-global
       - test:
+          context: org-global
           requires:
             - build
       - approve-deploy:
@@ -83,5 +85,6 @@ workflows:
                 - /^release.*$/
                 - /^support-release.*$/
       - deploy:
+          context: org-global
           requires:
             - approve-deploy
