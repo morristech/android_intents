@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import java.util.Collections;
 import java.util.List;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -45,7 +45,7 @@ import static universum.studios.android.intent.ContentTests.assertThatBuildThrow
  */
 @RunWith(AndroidJUnit4.class)
 @SuppressWarnings("ResourceType")
-public final class ShareIntentTest extends BaseInstrumentedTest {
+public final class ShareIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "ShareIntentTest";

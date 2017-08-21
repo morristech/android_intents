@@ -26,7 +26,6 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          #key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
           key: gradle-cache-$CIRCLE_SHA1
       - run:
           name: Build Project

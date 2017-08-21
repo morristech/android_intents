@@ -30,7 +30,7 @@ import java.io.File;
 import java.util.Collections;
 import java.util.List;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -44,7 +44,7 @@ import static universum.studios.android.intent.ContentIntentTest.hasRelativePath
  */
 @RunWith(AndroidJUnit4.class)
 @SuppressWarnings("ResultOfMethodCallIgnored")
-public final class ImageIntentTest extends BaseInstrumentedTest {
+public final class ImageIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "ImageIntentTest";

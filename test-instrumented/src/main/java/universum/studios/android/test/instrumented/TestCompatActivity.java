@@ -16,27 +16,27 @@
 * See the License for the specific language governing permissions and limitations under the License.
 * =================================================================================================
 */
-package universum.studios.android.test;
+package universum.studios.android.test.instrumented;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.test.rule.ActivityTestRule;
+import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 /**
- * Simple activity that may be used in <b>Android Instrumented Tests</b> in order to set up
+ * Simple compat activity that may be used in <b>Android Instrumented Tests</b> in order to set up
  * {@link ActivityTestRule}.
  *
  * @author Martin Albedinsky
  */
-public final class TestActivity extends Activity {
+public final class TestCompatActivity extends FragmentActivity {
 
 	/**
 	 * Log TAG.
 	 */
 	@SuppressWarnings("unused")
-	private static final String TAG = "TestActivity";
+	private static final String TAG = "TestCompatActivity";
 
 	/**
 	 */

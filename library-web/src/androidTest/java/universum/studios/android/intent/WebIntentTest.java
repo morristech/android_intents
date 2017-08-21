@@ -26,7 +26,7 @@ import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import universum.studios.android.test.BaseInstrumentedTest;
+import universum.studios.android.test.instrumented.InstrumentedTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -38,7 +38,7 @@ import static universum.studios.android.intent.WebTests.assertThatBuildThrowsExc
  * @author Martin Albedinsky
  */
 @RunWith(AndroidJUnit4.class)
-public final class WebIntentTest extends BaseInstrumentedTest {
+public final class WebIntentTest extends InstrumentedTestCase {
 
 	@SuppressWarnings("unused")
 	private static final String TAG = "WebIntentTest";
