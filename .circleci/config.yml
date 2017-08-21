@@ -38,11 +38,11 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-      - restore_cache:
-          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
       - run:
           name: Grant Permissions
           command: ./ci/permissions.sh
+      - restore_cache:
+          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
       - run:
           name: Execute Tests
           command: ./ci/test.sh
@@ -54,11 +54,11 @@ jobs:
       JVM_OPTS: -Xmx3200m
     steps:
       - checkout
-      - restore_cache:
-          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
       - run:
           name: Grant Permissions
           command: ./ci/permissions.sh
+      - restore_cache:
+          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
       - run:
           name: Deploy Artifacts
           command: ./ci/deploy.sh
