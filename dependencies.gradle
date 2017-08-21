@@ -3,8 +3,6 @@ def versions = [
         androidSupport                : '26.0.0',
         androidSupportTest            : '1.0',
         androidSupportTestEspresso    : '3.0.0',
-        universumStudiosSamples       : '0.1.3',
-        universumStudiosWidgetAdapters: '2.0.0',
         butterknife                   : '8.5.1',
         junit                         : '4.12',
         mockito                       : '2.7.20'
@@ -34,8 +32,8 @@ def test = [
 ]
 
 def universumStudios = [
-        supportSamples: "universum.studios.android.support:support-samples:${versions.universumStudiosSamples}@aar",
-        widgetAdapters: "universum.studios.android:widget-adapters:${versions.universumStudiosWidgetAdapters}@aar"
+        supportSamples: 'universum.studios.android.support:support-samples:0.1.3@aar',
+        widgetAdapters: 'universum.studios.android:widget-adapters:2.0.0@aar'
 ]
 
 def other = [
