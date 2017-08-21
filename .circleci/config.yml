@@ -26,7 +26,8 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
+          #key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
+          key: key: "gradle-${CIRCLE_SHA1}"
       - run:
           name: Build Project
           command: ./ci/build.sh
@@ -42,7 +43,7 @@ jobs:
           name: Grant Permissions
           command: ./ci/permissions.sh
       - restore_cache:
-          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
+          key: key: "gradle-${CIRCLE_SHA1}"
       - run:
           name: Execute Tests
           command: ./ci/test.sh
@@ -58,7 +59,7 @@ jobs:
           name: Grant Permissions
           command: ./ci/permissions.sh
       - restore_cache:
-          key: gradle-{{ checksum "build.gradle" }}-{{ checksum  "dependencies.gradle" }}
+          key: "gradle-${CIRCLE_SHA1}"
       - run:
           name: Deploy Artifacts
           command: ./ci/deploy.sh
