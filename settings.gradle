@@ -1,4 +1,4 @@
 // Gradle project settings. Specifies which modules to include into project.
-include ':library', ':samples', ':test-core'
+include ':library', ':samples', ':test-core', ':test-local'
 include ':library-core', ':library-mimetype'
 include ':library-calendar', ':library-contact', ':library-content', ':library-map', ':library-play', ':library-web'
