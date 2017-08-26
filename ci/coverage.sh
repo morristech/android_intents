@@ -1,4 +1,3 @@
 #!/usr/bin/env bash
 
-#./gradlew uploadCoverageToCodacy
-./gradlew coveralls
+./gradlew :library:jacocoTestReportDebug :library:coveralls
