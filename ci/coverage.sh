@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
 
-./gradlew uploadCoverageToCodacy
+#./gradlew uploadCoverageToCodacy
+./gradlew coveralls
