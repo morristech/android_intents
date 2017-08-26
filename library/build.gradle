@@ -16,9 +16,6 @@
  * See the License for the specific language governing permissions and limitations under the License.
  * =================================================================================================
  */
-plugins {
-    id 'com.github.kt3k.coveralls' version '2.6.3'
-}
 apply plugin: 'com.android.library'
 
 /**
@@ -113,7 +110,6 @@ dependencies {
  */
 apply from: 'analysis/analysis.gradle'
 apply from: 'coverage/jacoco.gradle'
-apply from: 'coverage/coveralls.gradle'
 apply from: 'coverage/codacy.gradle'
 apply from: "${rootProject.rootDir}/deploy/deploy.gradle"
 apply from: 'github/github.gradle'
