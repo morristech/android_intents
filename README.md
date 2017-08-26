@@ -2,7 +2,7 @@ Intents
 ===============
 
 [![CircleCI](https://circleci.com/gh/universum-studios/android_intents.svg?style=svg)](https://circleci.com/gh/universum-studios/android_intents)
-[![Coverage Status](https://coveralls.io/repos/github/universum-studios/android_intents/badge.svg?branch=master)](https://coveralls.io/github/universum-studios/android_intents?branch=master)
+[![codecov](https://codecov.io/gh/universum-studios/android_intents/branch/master/graph/badge.svg)](https://codecov.io/gh/universum-studios/android_intents)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Intents-green.svg?style=flat)](https://android-arsenal.com/details/1/5439)
 
 Simple builders of common intents for the Android platform.

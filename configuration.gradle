@@ -42,17 +42,11 @@ def bintrayConfig = [
         packageVersionTag        : mavenConfig.version
 ]
 
-def codacyConfig = [
-        tokensPath : System.getenv('CODACY_PROJECT_TOKENS'),
-        projectName: "${githubConfig.repository}"
-]
-
 ext.config = [
         "build"  : buildConfig,
         "test"   : testConfig,
         "library": libraryConfig,
         "github" : githubConfig,
         "maven"  : mavenConfig,
-        "bintray": bintrayConfig,
-        "codacy" : codacyConfig
+        "bintray": bintrayConfig
 ]
