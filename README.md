@@ -2,8 +2,8 @@ Intents
 ===============
 
 [![CircleCI](https://circleci.com/gh/universum-studios/android_intents.svg?style=svg)](https://circleci.com/gh/universum-studios/android_intents)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/682a1d82be024161bebc4b8afae1cf9a)](https://www.codacy.com/app/universum-studios/android_intents?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_intents&amp;utm_campaign=Badge_Grade)
-[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/682a1d82be024161bebc4b8afae1cf9a)](https://www.codacy.com/app/universum-studios/android_intents?utm_source=github.com&utm_medium=referral&utm_content=universum-studios/android_intents&utm_campaign=Badge_Coverage)
+[![Codecov](https://codecov.io/gh/universum-studios/android_intents/branch/master/graph/badge.svg)](https://codecov.io/gh/universum-studios/android_intents)
+[![Codacy](https://api.codacy.com/project/badge/Grade/682a1d82be024161bebc4b8afae1cf9a)](https://www.codacy.com/app/universum-studios/android_intents?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=universum-studios/android_intents&amp;utm_campaign=Badge_Grade)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-Intents-green.svg?style=flat)](https://android-arsenal.com/details/1/5439)
 
 Simple builders of common intents for the Android platform.

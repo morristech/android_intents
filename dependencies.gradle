@@ -22,6 +22,7 @@ def androidSupport = [
 
 def test = [
         androidSupportAnnotations  : androidSupport.annotations,
+        androidSupportV4           : androidSupport.v4,
         androidRunner              : "com.android.support.test:runner:${versions.androidSupportTest}",
         androidRules               : "com.android.support.test:rules:${versions.androidSupportTest}",
         androidEspressoCore        : "com.android.support.test.espresso:espresso-core:${versions.androidSupportTestEspresso}",

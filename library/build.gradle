@@ -65,6 +65,17 @@ android {
                 "${rootProject.rootDir}/library-web/src/androidTest/java",
                 "${rootProject.rootDir}/library-mimetype/src/androidTest/java"
         ]
+        test.java.srcDirs = [
+                "${rootProject.rootDir}/library/src/test/java",
+                "${rootProject.rootDir}/library-core/src/test/java",
+                "${rootProject.rootDir}/library-calendar/src/test/java",
+                "${rootProject.rootDir}/library-contact/src/test/java",
+                "${rootProject.rootDir}/library-content/src/test/java",
+                "${rootProject.rootDir}/library-map/src/test/java",
+                "${rootProject.rootDir}/library-play/src/test/java",
+                "${rootProject.rootDir}/library-web/src/test/java",
+                "${rootProject.rootDir}/library-mimetype/src/test/java"
+        ]
     }
 
     compileOptions {
@@ -90,6 +101,7 @@ dependencies {
     /*
      * TEST DEPENDENCIES ---------------------------------------------------------------------------
      */
+    testCompile project(':test-local')
     androidTestCompile project(':test-instrumented')
 }
 
@@ -98,6 +110,5 @@ dependencies {
  */
 apply from: 'analysis/analysis.gradle'
 apply from: 'coverage/jacoco.gradle'
-apply from: 'coverage/codacy.gradle'
 apply from: "${rootProject.rootDir}/deploy/deploy.gradle"
 apply from: 'github/github.gradle'
