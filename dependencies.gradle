@@ -27,13 +27,13 @@ def test = [
         robolectric                : "org.robolectric:robolectric:${versions.robolectric}",
         robolectricMultidex        : "org.robolectric:shadows-multidex:${versions.robolectric}",
         robolectricShadowsSupportV4: "org.robolectric:shadows-support-v4:${versions.robolectric}",
-        androidSupportAnnotations  : androidSupport.annotations,
-        androidSupportV4           : androidSupport.v4,
         androidRunner              : "com.android.support.test:runner:${versions.androidSupportTest}",
         androidRules               : "com.android.support.test:rules:${versions.androidSupportTest}",
         androidEspressoCore        : "com.android.support.test.espresso:espresso-core:${versions.androidSupportTestEspresso}",
         androidEspressoIntents     : "com.android.support.test.espresso:espresso-intents:${versions.androidSupportTestEspresso}",
-        androidEspressoContrib     : "com.android.support.test.espresso:espresso-contrib:${versions.androidSupportTestEspresso}"
+        androidEspressoContrib     : "com.android.support.test.espresso:espresso-contrib:${versions.androidSupportTestEspresso}",
+        androidSupportAnnotations  : androidSupport.annotations,
+        androidSupportV4           : androidSupport.v4
 ]
 
 def universumStudios = [
