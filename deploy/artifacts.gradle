@@ -36,15 +36,15 @@ task generateJavadoc(type: Javadoc) {
         title = "${config.maven.projectName} API"
         header = "Version ${config.maven.version} Documentation"
         links 'http://docs.oracle.com/javase/8/docs/api'
-        linksOffline 'http://developer.android.com/reference', "${android.sdkDirectory}\\docs\\reference"
+        linksOffline 'http://developer.android.com/reference', "${android.sdkDirectory}/docs/reference"
         author = true
         memberLevel = JavadocMemberLevel.PROTECTED
     }
     // Append class path with dependencies.
     classpath += files(
             android.getBootClasspath(),
-            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\support-annotations\\${versions.androidSupport}\\support-annotations-${versions.androidSupport}.jar",
-            "${android.sdkDirectory}\\extras\\android\\m2repository\\com\\android\\support\\support-v4\\${versions.androidSupport}\\support-v4-${versions.androidSupport}-sources.jar"
+            "${android.sdkDirectory}/extras/android/m2repository/com/android/support/support-annotations/${versions.androidSupport}/support-annotations-${versions.androidSupport}.jar",
+            "${android.sdkDirectory}/extras/android/m2repository/com/android/support/support-v4/${versions.androidSupport}/support-v4-${versions.androidSupport}-sources.jar"
     )
     failOnError false
 }

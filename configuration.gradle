@@ -1,7 +1,7 @@
 // Defines configuration used across the library project.
 def libraryConfig = [
         name   : 'intents',
-        version: '1.0.4'
+        version: '1.0.5'
 ]
 
 def buildConfig = [
@@ -25,7 +25,7 @@ def mavenConfig = [
         localUrl                 : System.getenv('MAVEN_URL_LOCAL'),
         groupId                  : 'universum.studios.android',
         artifactId               : libraryConfig.name,
-        version                  : /*libraryConfig.version*/'1.0.5',
+        version                  : libraryConfig.version,
         packaging                : 'pom',
         projectName              : 'Android Intents',
         projectDescription       : 'Simple builders of common intents for the Android platform.',

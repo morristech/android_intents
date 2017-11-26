@@ -40,26 +40,6 @@ public final class PlayIntentTest extends RobolectricTestCase {
 	private static final String TAG = "PlayIntentTest";
 
 	@Test
-	public void testDeprecatedPackageName() {
-		final PlayIntent intent = new PlayIntent();
-		intent.packageName("com.google.android.inbox");
-		assertThat(intent.packageName(), is("com.google.android.inbox"));
-	}
-
-	@Test
-	public void tesDeprecatedPackageNameDefault() {
-		assertThat(new PlayIntent().packageName(), is(""));
-	}
-
-	@Test
-	public void testDeprecatedBuild() {
-		final Intent intent = new PlayIntent().packageName("com.google.android.inbox").build(mApplication);
-		assertThat(intent, is(not(nullValue())));
-		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
-		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.google.android.inbox")));
-	}
-
-	@Test
 	public void testApplicationId() {
 		final PlayIntent intent = new PlayIntent();
 		intent.applicationId("com.google.android.inbox");
