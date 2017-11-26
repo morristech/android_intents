@@ -3,7 +3,7 @@ Change-Log
 
 ## Version 1.x ##
 
-### 1.0.5 ###
+### [1.0.5](https://github.com/universum-studios/android_intents/releases/tag/v1.0.5) ###
 > upcoming
 
 - Removed `components` and `methods` **deprecated** in previous versions.
