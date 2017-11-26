@@ -58,7 +58,7 @@ dependencies {
     debugApi project(':library-core')
 
     // TEST ----------------------------------------------------------------------------------------
-    androidTestImplementation project(':test-instrumented')
+    testImplementation project(':test-local')
 }
 
 apply from: "${rootProject.rootDir}/deploy/deploy.gradle"
