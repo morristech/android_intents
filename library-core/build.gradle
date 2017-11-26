@@ -28,17 +28,7 @@ android {
     defaultConfig {
         minSdkVersion config.build.minSdkVersion
         targetSdkVersion config.build.targetSdkVersion
-        testInstrumentationRunner config.test.instrumentationRunner
-    }
-
-    buildTypes {
-        release {
-            minifyEnabled false
-        }
-        debug {
-            minifyEnabled false
-            testCoverageEnabled true
-        }
+        testInstrumentationRunner config.test.instrumentationRunner.androidJUnit
     }
 
     compileOptions {
@@ -55,16 +45,15 @@ android {
  * Library dependencies ============================================================================
  */
 dependencies {
-    /*
-     * RELEASE DEPENDENCIES ------------------------------------------------------------------------
-     */
-    compile deps.androidSupport.annotations
-    compile deps.androidSupport.v4
+    // PRODUCTION ----------------------------------------------------------------------------------
+    implementation deps.androidSupport.annotations
+    implementation deps.androidSupport.v4
 
-    /*
-     * TEST DEPENDENCIES ---------------------------------------------------------------------------
-     */
-    androidTestCompile project(':test-instrumented')
+    // DEVELOPMENT ---------------------------------------------------------------------------------
+    // None.
+
+    // TEST ----------------------------------------------------------------------------------------
+    androidTestImplementation project(':test-instrumented')
 }
 
 apply from: "${rootProject.rootDir}/deploy/deploy.gradle"

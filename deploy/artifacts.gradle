@@ -21,9 +21,10 @@ final boolean isModule = project.name.startsWith('library-') && !project.name.en
 /**
  * Bundles project's classes into a .jar! file.
  */
-task classesJar(type: Jar) {
-    description 'Bundles classes into a .jar! file'
-    from 'build\\intermediates\\classes\\release'
+task classesJar(type: Jar, dependsOn: ":${project.name}:bundleRelease") {
+    group 'artifact'
+    description "Bundles classes into 'artifact.jar' like file."
+    from "${buildDir}/intermediates/classes/release"
 }
 
 /**
@@ -34,14 +35,10 @@ task generateJavadoc(type: Javadoc) {
     options {
         title = "${config.maven.projectName} API"
         header = "Version ${config.maven.version} Documentation"
-        links "http://docs.oracle.com/javase/8/docs/api/"
-        linksOffline "http://developer.android.com/reference", "${android.sdkDirectory}\\docs\\reference"
+        links 'http://docs.oracle.com/javase/8/docs/api'
+        linksOffline 'http://developer.android.com/reference', "${android.sdkDirectory}\\docs\\reference"
         author = true
         memberLevel = JavadocMemberLevel.PROTECTED
-    }
-    if (JavaVersion.current().isJava8Compatible()) {
-        // Uncomment this when Javadoc tool outputs some (not resolvable) errors like 'reference not found for R.attr#...'.
-        //options.addStringOption('Xdoclint:none', '-quiet')
     }
     // Append class path with dependencies.
     classpath += files(
@@ -56,8 +53,9 @@ task generateJavadoc(type: Javadoc) {
  * Bundles project's Javadoc into a .jar! file.
  */
 task javadocJar(type: Jar) {
+    group 'artifact'
+    description "Bundles Javadoc into 'artifact-javadoc.jar' like file."
     classifier = 'javadoc'
-    description 'Bundles Javadoc into a .jar! file.'
     from generateJavadoc
 }
 
@@ -65,11 +63,10 @@ task javadocJar(type: Jar) {
  * Bundles project's Raw sources into a .jar! file.
  */
 task sourcesJar(type: Jar) {
+    group 'artifact'
+    description "Bundles Raw sources into 'artifact-sources.jar' like file."
     classifier = 'sources'
-    description 'Bundles Raw sources into a .jar! file.'
     from isModule ? android.sourceSets.main.java.sourceFiles : android.sourceSets.release.java.sourceFiles
-    // Uncomment if this project contains res/ folder.
-    // from isModule ? android.sourceSets.main.res.sourceFiles : android.sourceSets.release.res.sourceFiles
 }
 
 /**

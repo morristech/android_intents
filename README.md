@@ -11,13 +11,13 @@ Simple builders of common intents for the Android platform.
 For more information please visit the **[Wiki](https://github.com/universum-studios/android_intents/wiki)**.
 
 ## Download ##
-[![Download](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Aintents/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Aintents/_latestVersion)
+[![Bintray](https://api.bintray.com/packages/universum-studios/android/universum.studios.android%3Aintents/images/download.svg)](https://bintray.com/universum-studios/android/universum.studios.android%3Aintents/_latestVersion)
 
 Download the latest **[release](https://github.com/universum-studios/android_intents/releases "Latest Releases page")** or **add as dependency** in your project via:
 
 ### Gradle ###
 
-    compile "universum.studios.android:intents:${DESIRED_VERSION}@aar"
+    implementation "universum.studios.android:intents:${DESIRED_VERSION}@aar"
 
 ## Modules ##
 

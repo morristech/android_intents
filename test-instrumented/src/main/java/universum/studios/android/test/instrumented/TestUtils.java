@@ -23,14 +23,14 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 
 /**
- * Utility class for tests.
+ * Utility class for instrumented tests.
  *
  * @author Martin Albedinsky
  */
 public final class TestUtils {
 
 	/**
-	 * Name of the library's root package containing tests.
+	 * Name of the library's root package.
 	 */
 	private static final String LIBRARY_ROOT_PACKAGE_NAME = "universum.studios.android.intent.test";
 
