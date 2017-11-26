@@ -57,7 +57,7 @@ import java.lang.annotation.RetentionPolicy;
  * <li>{@link #VIDEO_MPEG}</li>
  * <li>{@link #VIDEO_JPEG}</li>
  * <li>{@link #VIDEO_3GP}</li>
- * <li>{@link #VIDEO_3GP2}</li>
+ * <li>{@link #VIDEO_3GPP2}</li>
  * </ul>
  *
  * @author Martin Albedinsky
@@ -153,12 +153,6 @@ public abstract class MimeType {
 	 * Mime type targeting <b>3GPP2</b> video content.
 	 */
 	public static final String VIDEO_3GPP2 = "video/3gpp2";
-
-	/**
-	 * @deprecated Use {@link #VIDEO_3GPP2} instead.
-	 */
-	@Deprecated
-	public static final String VIDEO_3GP2 = VIDEO_3GPP2;
 
 	/**
 	 * Defines an annotation for determining set of available mime-type values specified in {@link MimeType}.

@@ -79,37 +79,6 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 */
 
 	/**
-	 * <b>This method has been deprecated and will be removed in the next release.</b>
-	 * <p>
-	 * Sets a package name of an Android application to be viewed in Play Store.
-	 *
-	 * @param packageName Package name of the desired application to view in store. May be {@code null}
-	 *                    to use the current application's package.
-	 * @return This intent builder to allow methods chaining.
-	 * @see #packageName()
-	 * @deprecated Use {@link #applicationId(String)} instead.
-	 */
-	@Deprecated
-	public PlayIntent packageName(@NonNull final String packageName) {
-		return applicationId(packageName);
-	}
-
-	/**
-	 * <b>This method has been deprecated and will be removed in the next release.</b>
-	 * <p>
-	 * Returns the package name of an Android application to be viewed in Play Store.
-	 *
-	 * @return Package name or empty string if not specified yet.
-	 * @see #packageName(String)
-	 * @deprecated Use {@link #applicationId()} instead.
-	 */
-	@NonNull
-	@Deprecated
-	public String packageName() {
-		return applicationId();
-	}
-
-	/**
 	 * Sets a unique ID of an Android application to be viewed in Play Store.
 	 *
 	 * @param applicationId ID of the desired application to view in store. May be {@code null}
