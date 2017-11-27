@@ -15,6 +15,10 @@ def testConfig = [
         instrumentationRunner: [androidJUnit: 'android.support.test.runner.AndroidJUnitRunner']
 ]
 
+def javadocConfig = [
+        reference: [online: "https://universum-studios.github.io/android_${libraryConfig.name}/reference/1.x"]
+]
+
 def githubConfig = [
         owner      : 'universum-studios',
         repository : "android_${libraryConfig.name}",
@@ -52,6 +56,7 @@ ext.config = [
         "library": libraryConfig,
         "build"  : buildConfig,
         "test"   : testConfig,
+        "javadoc": javadocConfig,
         "github" : githubConfig,
         "maven"  : mavenConfig,
         "bintray": bintrayConfig,

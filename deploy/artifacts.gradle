@@ -17,6 +17,7 @@
  * =================================================================================================
  */
 final boolean isModule = project.name.startsWith('library-') && !project.name.endsWith('_group')
+final boolean isPrimaryModule = project.name == 'library'
 
 /**
  * Bundles project's classes into a .jar! file.
@@ -31,22 +32,39 @@ task classesJar(type: Jar, dependsOn: ":${project.name}:bundleRelease") {
  * Generates javadoc documentation for the current project.
  */
 task generateJavadoc(type: Javadoc) {
-    source isModule ? android.sourceSets.main.java.sourceFiles : android.sourceSets.release.java.sourceFiles
+    source isModule ? android.sourceSets.main.java.srcDirs : android.sourceSets.release.java.srcDirs
     options {
-        title = "${config.maven.projectName} API"
+        title = createJavadocTitle()
         header = "Version ${config.maven.version} Documentation"
-        links 'http://docs.oracle.com/javase/8/docs/api'
-        linksOffline 'http://developer.android.com/reference', "${android.sdkDirectory}/docs/reference"
         author = true
         memberLevel = JavadocMemberLevel.PROTECTED
+        if (!isPrimaryModule) {
+            links config.javadoc.reference.online
+        }
+        links 'https://docs.oracle.com/javase/8/docs/api'
+        links 'https://developer.android.com/reference'
+        links 'https://developer.android.com/reference/android/support'
     }
     // Append class path with dependencies.
-    classpath += files(
-            android.getBootClasspath(),
-            "${android.sdkDirectory}/extras/android/m2repository/com/android/support/support-annotations/${versions.androidSupport}/support-annotations-${versions.androidSupport}.jar",
-            "${android.sdkDirectory}/extras/android/m2repository/com/android/support/support-v4/${versions.androidSupport}/support-v4-${versions.androidSupport}-sources.jar"
-    )
+    classpath += files(android.getBootClasspath().join(File.pathSeparator))
+    android.libraryVariants.all { variant ->
+        if (variant.buildType.name == 'release') classpath += variant.getCompileClasspath(null)
+    }
     failOnError false
+}
+
+/**
+ * Function which creates title for Javadoc document specific for the current project module.
+ *
+ * @return Project specific Javadoc title.
+ */
+def createJavadocTitle() {
+    def moduleName = project.name
+    if (moduleName.startsWith("library")) {
+        if (moduleName == 'library') return "${config.maven.projectName} API"
+        else return "${config.maven.projectName} (${moduleName.replace("library-", "").replace("_group", "")}) API"
+    }
+    return "Documentation"
 }
 
 /**
@@ -66,7 +84,7 @@ task sourcesJar(type: Jar) {
     group 'artifact'
     description "Bundles Raw sources into 'artifact-sources.jar' like file."
     classifier = 'sources'
-    from isModule ? android.sourceSets.main.java.sourceFiles : android.sourceSets.release.java.sourceFiles
+    from isModule ? android.sourceSets.main.java.srcDirs : android.sourceSets.release.java.srcDirs
 }
 
 /**
