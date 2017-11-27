@@ -4,6 +4,6 @@ Release patch.
 
 ### Changes ###
 
-- **Deprecated** `packageName` attribute of `PlayIntent` and added **better named** alternative `applicationId`.
+- Updated **dependencies** versions and _Gradle_ configuration.
 
-> See **[CHANGELOG](https://github.com/universum-studios/android_intents/blob/master/CHANGELOG.md)** for complete list of changes.
+> See **[CHANGELOG](https://github.com/universum-studios/android_intents/blob/master/CHANGELOG.md#105)** for complete list of changes.

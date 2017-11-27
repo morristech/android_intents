@@ -22,11 +22,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.app.FragmentActivity;
-import android.view.View;
+import android.widget.FrameLayout;
 
 /**
- * Simple compat activity that may be used in <b>Android Instrumented Tests</b> in order to set up
- * {@link ActivityTestRule}.
+ * Simple compatibility activity that may be used in <b>Android instrumented tests</b> in order to
+ * set up {@link ActivityTestRule}.
  *
  * @author Martin Albedinsky
  */
@@ -39,10 +39,17 @@ public final class TestCompatActivity extends FragmentActivity {
 	private static final String TAG = "TestCompatActivity";
 
 	/**
+	 * Id of the TestActivity's content view.
+	 */
+	public static final int CONTENT_VIEW_ID = android.R.id.custom;
+
+	/**
 	 */
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(new View(this));
+		final FrameLayout contentView = new FrameLayout(this);
+		contentView.setId(CONTENT_VIEW_ID);
+		setContentView(contentView);
 	}
 }
