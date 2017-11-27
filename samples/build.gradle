@@ -33,10 +33,9 @@ android {
         targetSdkVersion config.build.targetSdkVersion
     }
 
-    final String keystoreDirPath = System.getenv('ANDROID_UNIVERSUM_KEYSTORE')
-    final String keyDirPath = keystoreDirPath + "samples/"
-    final File keyFile = file(keyDirPath + "release.jks")
-    final File keyPropertiesFile = file(keyDirPath + "key.properties")
+    final String keyDirPath = "${System.getenv('ANDROID_UNIVERSUM_KEYSTORE')}/samples"
+    final File keyFile = file("${keyDirPath}/release.jks")
+    final File keyPropertiesFile = file("${keyDirPath}/key.properties")
     if (keyFile.exists() && keyPropertiesFile.exists()) {
         final Properties signingProperties = new Properties()
         signingProperties.load(new FileInputStream(keyPropertiesFile))
