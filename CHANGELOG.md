@@ -4,7 +4,7 @@ Change-Log
 ## Version 1.x ##
 
 ### [1.0.5](https://github.com/universum-studios/android_intents/releases/tag/v1.0.5) ###
-> upcoming
+> 27.11.2017
 
 - Removed `components` and `methods` **deprecated** in previous versions.
 - **Updated** to the latest _Android Gradle Plugin (3.0.0)_ and _Gradle (4.1)_ versions.
