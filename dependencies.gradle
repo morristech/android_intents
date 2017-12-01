@@ -6,8 +6,9 @@ def versions = [
         butterknife               : '8.8.1',
         junit                     : '4.12',
         mockito                   : '2.11.0',
-        robolectric               : '3.5'
+        robolectric               : '3.5.1'
 ]
+
 ext.versions = versions
 
 def androidSupport = [
