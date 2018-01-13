@@ -1,4 +1,4 @@
-Intents
+Android Intents
 ===============
 
 [![CircleCI](https://circleci.com/gh/universum-studios/android_intents.svg?style=svg)](https://circleci.com/gh/universum-studios/android_intents)
