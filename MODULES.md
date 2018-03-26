@@ -21,7 +21,7 @@ as usually.
     }
 
 ## Available modules ##
-> Following modules are available in the [latest](https://github.com/universum-studios/android_intents/releases "Latest Releases page") stable release.
+> Following modules are available in the [latest](https://github.com/universum-studios/android_intents/releases "Releases page") stable release.
 
 - **[Core](https://github.com/universum-studios/android_intents/tree/master/library-core)**
 - **[Calendar](https://github.com/universum-studios/android_intents/tree/master/library-calendar)**
