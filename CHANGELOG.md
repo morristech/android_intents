@@ -6,6 +6,11 @@ More **detailed changelog** for each respective version may be viewed by pressin
 
 ## Version 1.x ##
 
+### 1.1.0 ###
+> ...
+
+- Small updates and improvements.
+
 ### [1.0.5](https://github.com/universum-studios/android_intents/releases/tag/v1.0.5) ###
 > 27.11.2017
 

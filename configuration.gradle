@@ -20,8 +20,8 @@
 def libraryConfig = [
         name   : 'intents',
         version: [
-                production : '1.0.5',
-                development: '1.0.5'
+                production : '1.1.0',
+                development: '1.1.0'
         ]
 ]
 
@@ -97,7 +97,7 @@ def bintrayConfig = [
                 vcsUrl            : "${pomConfig.project.url}.git",
                 labels            : ['android', 'intent', 'builder'],
                 versionName       : pomConfig.version,
-                versionDescription: 'Release patch.',
+                versionDescription: 'Minor release.',
                 versionTag        : "v${pomConfig.version}"
         ]
 ]

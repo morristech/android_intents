@@ -1,7 +1,9 @@
 ### Overview ###
 
-Release patch.
+Minor release.
 
 ### Changes ###
 
-- Small updates and improvements.
+- `MimeType` class has been made **final** with **private** constructor. This change is **not compatible**
+  with previous versions.
+- Updated **Copyright**, **code style**, **test style**.
