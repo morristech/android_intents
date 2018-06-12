@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -226,7 +226,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		final ContentIntent contentIntent = new ContentIntentImpl();
 		contentIntent.input(Uri.parse("content://android/data/images/lion.jpg"));
 		contentIntent.dataType(MimeType.IMAGE_JPEG);
-		final Intent intent = contentIntent.build(mApplication);
+		final Intent intent = contentIntent.build(application);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("content://android/data/images/lion.jpg")));
@@ -238,7 +238,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.output(Uri.parse("content://android/data/images/lion.jpg"));
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				intent,
 				"No input Uri specified."
 		);
@@ -247,7 +247,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 	@Test
 	public void testBuildWithoutUri() {
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				new ContentIntentImpl(),
 				"No input Uri specified."
 		);
@@ -258,7 +258,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.input(Uri.parse("content://android/data/images/lion.jpg"));
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				intent,
 				"No MIME type specified for input Uri."
 		);
@@ -268,7 +268,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 	public void testBuildWithHandlers() {
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
-		intent.build(mApplication);
+		intent.build(application);
 	}
 
 	@Test
@@ -276,7 +276,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		when(mockStarter.getContext()).thenReturn(mApplication);
+		when(mockStarter.getContext()).thenReturn(application);
 		intent.startWith(mockStarter);
 		verify(mockStarter, times(0)).startIntent(any(Intent.class));
 	}
@@ -286,7 +286,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		final ContentIntent contentIntent = new ContentIntentImpl();
 		contentIntent.input(Uri.EMPTY);
 		contentIntent.dataType(MimeType.TEXT_HTML);
-		final Intent intent = contentIntent.build(mApplication);
+		final Intent intent = contentIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		contentIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(any(Intent.class));

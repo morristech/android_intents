@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -151,7 +151,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 	@Test
 	public void testStartWithUnavailableActivity() {
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		when(mockStarter.getContext()).thenReturn(mApplication);
+		when(mockStarter.getContext()).thenReturn(application);
 		new BaseIntent() {
 
 			@NonNull
@@ -168,7 +168,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 	public void testOnStartWithEnterTransition() {
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.enterTransition(android.R.anim.fade_in);
-		final Intent intent = baseIntent.build(mApplication);
+		final Intent intent = baseIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		baseIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(intent);
@@ -179,7 +179,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 	public void testOnStartWithExitTransition() {
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.exitTransition(android.R.anim.fade_out);
-		final Intent intent = baseIntent.build(mApplication);
+		final Intent intent = baseIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		baseIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(intent);
@@ -190,7 +190,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 	public void testOnStartWithBothTransitions() {
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.transitions(android.R.anim.fade_in, android.R.anim.fade_out);
-		final Intent intent = baseIntent.build(mApplication);
+		final Intent intent = baseIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		baseIntent.onStartWith(mockStarter, intent);
 		verify(mockStarter, times(1)).startIntent(intent);

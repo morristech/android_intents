@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -118,7 +118,7 @@ public final class MapIntentTest extends RobolectricTestCase {
 
 	@Test
 	public void testBuildWithLocation() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).build(mApplication);
+		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).build(application);
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -128,7 +128,7 @@ public final class MapIntentTest extends RobolectricTestCase {
 
 	@Test
 	public void testBuildWithLocationAndZoom() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).zoomLevel(10).build(mApplication);
+		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).zoomLevel(10).build(application);
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -138,7 +138,7 @@ public final class MapIntentTest extends RobolectricTestCase {
 
 	@Test
 	public void testBuildWithLocationAndLocationQuery() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).locationQuery("restaurants").build(mApplication);
+		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).locationQuery("restaurants").build(application);
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -148,7 +148,7 @@ public final class MapIntentTest extends RobolectricTestCase {
 
 	@Test
 	public void testBuildWithLocationZoomAndLocationQuery() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).zoomLevel(10).locationQuery("restaurants").build(mApplication);
+		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).zoomLevel(10).locationQuery("restaurants").build(application);
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -158,7 +158,7 @@ public final class MapIntentTest extends RobolectricTestCase {
 
 	@Test
 	public void testBuildWithLocationAndLabel() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).label("New York City").build(mApplication);
+		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).label("New York City").build(application);
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -170,7 +170,7 @@ public final class MapIntentTest extends RobolectricTestCase {
 	public void testBuildWithLocationQuery() {
 		final MapIntent mapIntent = new MapIntent();
 		mapIntent.locationQuery("Rome, Italy");
-		final Intent intent = mapIntent.build(mApplication);
+		final Intent intent = mapIntent.build(application);
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -183,7 +183,7 @@ public final class MapIntentTest extends RobolectricTestCase {
 		final MapIntent mapIntent = new MapIntent();
 		mapIntent.locationQuery("Rome, Italy");
 		mapIntent.label("Rome");
-		final Intent intent = mapIntent.build(mApplication);
+		final Intent intent = mapIntent.build(application);
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -200,7 +200,7 @@ public final class MapIntentTest extends RobolectricTestCase {
 	@Test
 	public void testBuildWithoutParams() {
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				new MapIntent(),
 				"No latitude and longitude nor location query specified."
 		);

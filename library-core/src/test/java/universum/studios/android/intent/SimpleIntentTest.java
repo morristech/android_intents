@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -109,12 +109,12 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 	public void testBuildWithActivityClass() {
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.activityClass(TestActivity.class);
-		final Intent intent = simpleIntent.build(mApplication);
+		final Intent intent = simpleIntent.build(application);
 		assertThat(intent, is(not(nullValue())));
 		final ComponentName componentName = intent.getComponent();
 		assertThat(componentName, is(not(nullValue())));
 		assertThat(componentName.getClassName(), is(TestActivity.class.getName()));
-		assertThat(componentName.getPackageName(), is(mApplication.getPackageName()));
+		assertThat(componentName.getPackageName(), is(application.getPackageName()));
 	}
 
 	@Test
@@ -124,13 +124,13 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		simpleIntent.activityClass(TestActivity.class);
 		simpleIntent.flag(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		simpleIntent.flag(Intent.FLAG_ACTIVITY_NEW_TASK);
-		final Intent intent = simpleIntent.build(mApplication);
+		final Intent intent = simpleIntent.build(application);
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getFlags(), is(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 		final ComponentName componentName = intent.getComponent();
 		assertThat(componentName, is(not(nullValue())));
 		assertThat(componentName.getClassName(), is(TestActivity.class.getName()));
-		assertThat(componentName.getPackageName(), is(mApplication.getPackageName()));
+		assertThat(componentName.getPackageName(), is(application.getPackageName()));
 	}
 
 	@Test
@@ -138,7 +138,7 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.action(Intent.ACTION_SEARCH);
 		simpleIntent.flags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		final Intent intent = simpleIntent.build(mApplication);
+		final Intent intent = simpleIntent.build(application);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_SEARCH));
 		assertThat(intent.getFlags(), is(Intent.FLAG_ACTIVITY_CLEAR_TOP));
@@ -147,7 +147,7 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 	@Test
 	public void testBuildWithoutParams() {
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				new SimpleIntent(),
 				"No activity class or action specified."
 		);
@@ -159,7 +159,7 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		final SimpleIntent intent = new SimpleIntent();
 		intent.activityClass(null);
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				intent,
 				"No activity class specified."
 		);
@@ -171,7 +171,7 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		final SimpleIntent intent = new SimpleIntent();
 		intent.action(null);
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				intent,
 				"No action specified."
 		);
@@ -181,7 +181,7 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 	public void testOnStartWith() {
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.activityClass(TestActivity.class);
-		final Intent intent = simpleIntent.build(mApplication);
+		final Intent intent = simpleIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		assertThat(simpleIntent.onStartWith(mockStarter, intent), is(true));
 		verify(mockStarter, times(1)).startIntent(intent);
@@ -192,7 +192,7 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.activityClass(TestActivity.class);
 		simpleIntent.requestCode(1000);
-		final Intent intent = simpleIntent.build(mApplication);
+		final Intent intent = simpleIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		assertThat(simpleIntent.onStartWith(mockStarter, intent), is(true));
 		verify(mockStarter, times(1)).startIntentForResult(intent, 1000);

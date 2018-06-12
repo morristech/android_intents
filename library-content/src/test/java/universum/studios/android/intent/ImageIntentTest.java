@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -85,7 +85,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 	public void testWithDefaultHandlers() {
 		final ImageIntent intent = new ImageIntent();
 		assertThat(intent.handlers(), is(Collections.EMPTY_LIST));
-		intent.withDefaultHandlers(mApplication);
+		intent.withDefaultHandlers(application);
 		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(2));
@@ -119,7 +119,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 	public void testOutputBeforeWithDefaultHandlers() {
 		final ImageIntent intent = new ImageIntent();
 		intent.output(new File("file.tmp"));
-		intent.withDefaultHandlers(mApplication);
+		intent.withDefaultHandlers(application);
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		assertThat(cameraHandler.intent().<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("file.tmp"))));
 	}
@@ -127,7 +127,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 	@Test
 	public void testOutputAfterWithDefaultHandlers() {
 		final ImageIntent intent = new ImageIntent();
-		intent.withDefaultHandlers(mApplication);
+		intent.withDefaultHandlers(application);
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		final Intent cameraIntent = cameraHandler.intent();
 		assertThat(cameraIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
@@ -138,7 +138,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 	@Test
 	public void testNullOutputAfterWithDefaultHandlers() {
 		final ImageIntent intent = new ImageIntent();
-		intent.withDefaultHandlers(mApplication);
+		intent.withDefaultHandlers(application);
 		intent.output(new File("file.tmp"));
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		final Intent cameraIntent = cameraHandler.intent();

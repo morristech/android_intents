@@ -69,7 +69,7 @@ public final class WebIntentTest extends RobolectricTestCase {
 	public void testBuild() {
 		final WebIntent webIntent = new WebIntent();
 		webIntent.url("inbox.google.com");
-		final Intent intent = webIntent.build(mApplication);
+		final Intent intent = webIntent.build(application);
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("http://inbox.google.com")));
@@ -78,7 +78,7 @@ public final class WebIntentTest extends RobolectricTestCase {
 	@Test
 	public void testBuildWithoutUrl() {
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				new WebIntent(),
 				"No or invalid URL specified."
 		);

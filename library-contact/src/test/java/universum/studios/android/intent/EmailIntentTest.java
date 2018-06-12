@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -228,7 +228,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		emailIntent.to("test@android.com");
 		emailIntent.subject("Email subject");
 		emailIntent.message("Email message.");
-		final Intent intent = emailIntent.build(mApplication);
+		final Intent intent = emailIntent.build(application);
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_SENDTO));
 		assertThat(
@@ -248,7 +248,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		final EmailIntent emailIntent = new EmailIntent();
 		emailIntent.to("test@android.com");
 		emailIntent.cc("test.cc1@android.com", "test.cc2@android.com");
-		final Intent intent = emailIntent.build(mApplication);
+		final Intent intent = emailIntent.build(application);
 		final String[] ccAddresses = intent.getStringArrayExtra(Intent.EXTRA_CC);
 		assertThat(ccAddresses, is(not(nullValue())));
 		assertThat(ccAddresses.length, is(2));
@@ -262,7 +262,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		final EmailIntent emailIntent = new EmailIntent();
 		emailIntent.to("test@android.com");
 		emailIntent.bcc("test.bcc@android.com");
-		final Intent intent = emailIntent.build(mApplication);
+		final Intent intent = emailIntent.build(application);
 		final String[] bccAddresses = intent.getStringArrayExtra(Intent.EXTRA_BCC);
 		assertThat(bccAddresses, is(not(nullValue())));
 		assertThat(bccAddresses.length, is(1));
@@ -273,7 +273,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 	@Test
 	public void testBuildWithoutAddresses() {
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				new EmailIntent(),
 				"No e-mail address/-es specified."
 		);
@@ -325,7 +325,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 	public void testOnStartWith() {
 		final EmailIntent emailIntent = new EmailIntent();
 		emailIntent.to("test1@android.com");
-		final Intent intent = emailIntent.build(mApplication);
+		final Intent intent = emailIntent.build(application);
 		final IntentStarter mockIntentStarter = mock(IntentStarter.class);
 		emailIntent.onStartWith(mockIntentStarter, intent);
 		verify(mockIntentStarter, times(1)).startIntent(any(Intent.class));
