@@ -41,134 +41,124 @@ import static universum.studios.android.intent.CalendarTests.assertThatBuildThro
 @SuppressWarnings("ResourceType")
 public final class CalendarIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testTypeDefault() {
-		assertThat(new CalendarIntent().type(), is(CalendarIntent.TYPE_VIEW));
+	@Test public void testInstantiation() {
+		// Arrange:
+		final long currentTime = System.currentTimeMillis();
+		// Act:
+		final CalendarIntent intent = new CalendarIntent();
+		// Assert:
+		assertThat(intent.type(), is(CalendarIntent.TYPE_VIEW));
+		assertThat(intent.eventId(), is(-1L));
+		assertThatTimeIsInRange(intent.time(), currentTime, currentTime + 10);
+		assertThatTimeIsInRange(intent.beginTime(), currentTime, currentTime + 10);
+		assertThatTimeIsInRange(intent.endTime(), currentTime + 1, currentTime + 11);
+		assertThat(intent.title().toString(), is(""));
+		assertThat(intent.description().toString(), is(""));
+		assertThat(intent.location().toString(), is(""));
+		assertThat(intent.availability(), is(CalendarIntent.AVAILABILITY_BUSY));
 	}
 
-	@Test
-	public void testType() {
+	@Test public void testType() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.type(CalendarIntent.TYPE_EDIT_EVENT);
+		// Assert:
 		assertThat(intent.type(), is(CalendarIntent.TYPE_EDIT_EVENT));
 	}
 
-	@Test
-	public void testEventIdDefault() {
-		assertThat(new CalendarIntent().eventId(), is(-1L));
-	}
-
-	@Test
-	public void testEventId() {
+	@Test public void testEventId() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.eventId(123523);
+		// Assert:
 		assertThat(intent.eventId(), is(123523L));
 	}
 
-	@Test
-	public void testTimeDefault() {
-		final long currentTime = System.currentTimeMillis();
-		assertThatTimeIsInRange(new CalendarIntent().time(), currentTime, currentTime + 10);
-	}
-
-	@Test
-	public void testTime() {
+	@Test public void testTime() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.time(3232);
+		// Assert:
 		assertThat(intent.time(), is(3232L));
 	}
 
-	@Test
-	public void testBeginTimeDefault() {
-		final long currentTime = System.currentTimeMillis();
-		assertThatTimeIsInRange(new CalendarIntent().beginTime(), currentTime, currentTime + 10);
-	}
-
-	@Test
-	public void testBeginTime() {
+	@Test public void testBeginTime() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.beginTime(20);
+		// Assert:
 		assertThat(intent.beginTime(), is(20L));
 	}
 
-	@Test
-	public void testDEndTimeDefault() {
-		final long currentTime = System.currentTimeMillis();
-		assertThatTimeIsInRange(new CalendarIntent().endTime(), currentTime + 1, currentTime + 11);
-	}
-
-	@Test
-	public void testEndTime() {
+	@Test public void testEndTime() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.endTime(13);
+		// Assert:
 		assertThat(intent.endTime(), is(13L));
 	}
 
-	@Test
-	public void testTitleDefault() {
-		assertThat(new CalendarIntent().title().toString(), is(""));
-	}
-
-	@Test
-	public void testTitle() {
+	@Test public void testTitle() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.title("New event");
+		// Assert:
 		assertThat(intent.title().toString(), is("New event"));
 	}
 
-	@Test
-	public void testDescriptionDefault() {
-		assertThat(new CalendarIntent().description().toString(), is(""));
-	}
-
-	@Test
-	public void testDescription() {
+	@Test public void testDescription() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.description("Event's description text.");
+		// Assert:
 		assertThat(intent.description().toString(), is("Event's description text."));
 	}
 
-	@Test
-	public void testLocationDefault() {
-		assertThat(new CalendarIntent().location().toString(), is(""));
-	}
-
-	@Test
-	public void testLocation() {
+	@Test public void testLocation() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.location("Rome");
+		// Assert:
 		assertThat(intent.location().toString(), is("Rome"));
 	}
 
-	@Test
-	public void testAvailabilityDefault() {
-		assertThat(new CalendarIntent().availability(), is(CalendarIntent.AVAILABILITY_BUSY));
-	}
-
-	@Test
-	public void testAvailability() {
+	@Test public void testAvailability() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
+		// Act:
 		intent.availability(CalendarIntent.AVAILABILITY_FREE);
+		// Assert:
 		assertThat(intent.availability(), is(CalendarIntent.AVAILABILITY_FREE));
 	}
 
-	@Test
-	public void testBuildTypeOfView() {
+	@Test public void testBuildTypeOfView() {
+		// Arrange:
 		final long currentTime = System.currentTimeMillis();
 		final CalendarIntent calendarIntent = new CalendarIntent();
 		calendarIntent.type(CalendarIntent.TYPE_VIEW);
 		final long time = currentTime - 1000 * 60 * 60 * 24;
 		calendarIntent.time(time);
+		// Act:
 		final Intent intent = calendarIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getData(), is(Uri.parse("content://" + CalendarContract.AUTHORITY + "/time/" + Long.toString(time))));
 	}
 
-	@Test
-	public void testBuildTypeOfViewWithInvalidTime() {
+	@Test public void testBuildTypeOfViewWithInvalidTime() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
 		intent.type(CalendarIntent.TYPE_VIEW);
 		intent.time(-1000);
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				intent,
@@ -176,8 +166,8 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildTypeOfInsertEvent() {
+	@Test public void testBuildTypeOfInsertEvent() {
+		// Arrange:
 		final long currentTime = System.currentTimeMillis();
 		final CalendarIntent calendarIntent = new CalendarIntent();
 		// INSERT EVENT type is the default one.
@@ -190,7 +180,9 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 				.location("Location of the event")
 				.beginTime(beginTime).endTime(endTime)
 				.availability(CalendarIntent.AVAILABILITY_FREE);
+		// Act:
 		final Intent intent = calendarIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getLongExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, -1), is(beginTime));
 		assertThat(intent.getLongExtra(CalendarContract.EXTRA_EVENT_END_TIME, -1), is(endTime));
@@ -200,11 +192,12 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		assertThat(intent.getIntExtra(CalendarContract.Events.AVAILABILITY, -1), is(CalendarIntent.AVAILABILITY_FREE));
 	}
 
-	@Test
-	public void testBuildTypeOfInsertEventWithInvalidBeginTime() {
+	@Test public void testBuildTypeOfInsertEventWithInvalidBeginTime() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
 		intent.type(CalendarIntent.TYPE_INSERT_EVENT);
 		intent.beginTime(-1);
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				intent,
@@ -212,11 +205,12 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildTypeOfInsertEventWithInvalidEndTime() {
+	@Test public void testBuildTypeOfInsertEventWithInvalidEndTime() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
 		intent.type(CalendarIntent.TYPE_INSERT_EVENT);
 		intent.endTime(-5);
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				intent,
@@ -224,14 +218,16 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildTypeOfInsertEventWithInvalidEndVsBeginTime() {
+	@Test public void testBuildTypeOfInsertEventWithInvalidEndVsBeginTime() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
 		intent.type(CalendarIntent.TYPE_INSERT_EVENT);
 		intent.endTime(0);
 		try {
+			// Act:
 			intent.build(application);
 		} catch (IllegalArgumentException e) {
+			// Assert:
 			final String message = "Cannot build " + intent.getClass().getSimpleName() + ". Specified end time(0) is before/at begin";
 			final String eMessage = e.getMessage();
 			if (!eMessage.startsWith(message)) {
@@ -245,35 +241,40 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		throw new AssertionError("No exception has been thrown while building intent(" + intentName + ").");
 	}
 
-	@Test
-	public void testBuildTypeOfEditEvent() {
+	@Test public void testBuildTypeOfEditEvent() {
+		// Arrange:
 		final CalendarIntent calendarIntent = new CalendarIntent();
 		calendarIntent.type(CalendarIntent.TYPE_EDIT_EVENT);
 		calendarIntent.eventId(123);
 		calendarIntent.title("New event title");
+		// Act:
 		final Intent intent = calendarIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_EDIT));
 		assertThat(intent.getData(), is(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 123)));
 		assertThat(intent.getCharSequenceExtra(CalendarContract.Events.TITLE).toString(), is("New event title"));
 	}
 
-	@Test
-	public void testBuildTypeOfEditEventWithoutTitle() {
+	@Test public void testBuildTypeOfEditEventWithoutTitle() {
+		// Arrange:
 		final CalendarIntent calendarIntent = new CalendarIntent();
 		calendarIntent.type(CalendarIntent.TYPE_EDIT_EVENT);
 		calendarIntent.eventId(123);
+		// Act:
 		final Intent intent = calendarIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_EDIT));
 		assertThat(intent.getData(), is(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 123)));
 	}
 
-	@Test
-	public void testBuildTypeOfEditEventWithInvalidEventId() {
+	@Test public void testBuildTypeOfEditEventWithInvalidEventId() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
 		intent.type(CalendarIntent.TYPE_EDIT_EVENT);
 		intent.eventId(-123);
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				intent,
@@ -281,22 +282,25 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildTypeOfViewEvent() {
+	@Test public void testBuildTypeOfViewEvent() {
+		// Arrange:
 		final CalendarIntent calendarIntent = new CalendarIntent();
 		calendarIntent.type(CalendarIntent.TYPE_VIEW_EVENT);
 		calendarIntent.eventId(123);
+		// Act:
 		final Intent intent = calendarIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 123)));
 	}
 
-	@Test
-	public void testBuildTypeOfViewEventWithInvalidEventId() {
+	@Test public void testBuildTypeOfViewEventWithInvalidEventId() {
+		// Arrange:
 		final CalendarIntent intent = new CalendarIntent();
 		intent.type(CalendarIntent.TYPE_VIEW_EVENT);
 		intent.eventId(-123);
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				intent,

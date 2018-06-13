@@ -113,8 +113,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 */
 	@Retention(RetentionPolicy.SOURCE)
 	@IntDef({TYPE_VIEW, TYPE_INSERT_EVENT, TYPE_EDIT_EVENT, TYPE_VIEW_EVENT})
-	public @interface Type {
-	}
+	public @interface Type {}
 
 	/**
 	 * Flag to identify BUSY availability for the newly creating calendar event.
@@ -139,8 +138,7 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 */
 	@Retention(RetentionPolicy.SOURCE)
 	@IntDef({AVAILABILITY_BUSY, AVAILABILITY_FREE, AVAILABILITY_TENTATIVE})
-	public @interface Availability {
-	}
+	public @interface Availability {}
 
 	/*
 	 * Interface ===================================================================================
@@ -157,37 +155,42 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	/**
 	 * Type of intent that to be created by this builder.
 	 */
-	private int mType = TYPE_VIEW;
+	private int type = TYPE_VIEW;
 
 	/**
 	 * Id of newly creating or already existing calendar event.
 	 */
-	private long mEventId = -1;
+	private long eventId = -1;
 
 	/**
-	 * Time for newly creating calendar event.
+	 * Begin time for newly creating calendar event.
 	 */
-	private long mBeginTime, mEndTime;
+	private long beginTime;
+
+	/**
+	 * End time for newly creating calendar event.
+	 */
+	private long endTime;
 
 	/**
 	 * Title for newly creating calendar event.
 	 */
-	private CharSequence mTitle;
+	private CharSequence title;
 
 	/**
 	 * Description for newly creating calendar event.
 	 */
-	private CharSequence mDescription;
+	private CharSequence description;
 
 	/**
 	 * Location for newly creating calendar event.
 	 */
-	private CharSequence mLocation;
+	private CharSequence location;
 
 	/**
 	 * Availability for newly creating calendar event.
 	 */
-	private int mAvailability = AVAILABILITY_BUSY;
+	private int availability = AVAILABILITY_BUSY;
 
 	/*
 	 * Constructors ================================================================================
@@ -203,8 +206,8 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 */
 	public CalendarIntent() {
 		super();
-		this.mBeginTime = System.currentTimeMillis();
-		this.mEndTime = mBeginTime + 1;
+		this.beginTime = System.currentTimeMillis();
+		this.endTime = beginTime + 1;
 	}
 
 	/*
@@ -219,10 +222,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * @param type One of {@link #TYPE_VIEW}, {@link #TYPE_INSERT_EVENT}, {@link #TYPE_EDIT_EVENT},
 	 *             {@link #TYPE_VIEW_EVENT}.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #type()
 	 */
 	public CalendarIntent type(@Type final int type) {
-		this.mType = type;
+		this.type = type;
 		return this;
 	}
 
@@ -231,11 +235,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @return One of {@link #TYPE_VIEW}, {@link #TYPE_INSERT_EVENT}, {@link #TYPE_EDIT_EVENT},
 	 * {@link #TYPE_VIEW_EVENT}.
+	 *
 	 * @see #type(int)
 	 */
-	@Type
-	public int type() {
-		return mType;
+	@Type public int type() {
+		return type;
 	}
 
 	/**
@@ -246,11 +250,12 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @param eventId Id of the desired calendar event (to edit or view).
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #eventId()
 	 * @see #type(int)
 	 */
-	public CalendarIntent eventId(@IntRange(from = 1, to = Long.MAX_VALUE) final long eventId) {
-		this.mEventId = eventId;
+	public CalendarIntent eventId(@IntRange(from = 1) final long eventId) {
+		this.eventId = eventId;
 		return this;
 	}
 
@@ -258,10 +263,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * Returns the id of the event to edit or view within calendar.
 	 *
 	 * @return Event id.
+	 *
 	 * @see #eventId(long)
 	 */
 	public long eventId() {
-		return mEventId;
+		return eventId;
 	}
 
 	/**
@@ -272,10 +278,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @param time The desired time where to open the calendar.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #time()
 	 */
-	public CalendarIntent time(@IntRange(from = 0, to = Long.MAX_VALUE) final long time) {
-		this.mBeginTime = time;
+	public CalendarIntent time(@IntRange(from = 0) final long time) {
+		this.beginTime = time;
 		return this;
 	}
 
@@ -283,10 +290,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * Returns the time determining where to open the calendar for view.
 	 *
 	 * @return Time for calendar in milliseconds.
+	 *
 	 * @see #time(long)
 	 */
 	public long time() {
-		return mBeginTime;
+		return beginTime;
 	}
 
 	/**
@@ -297,12 +305,13 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @param beginTime The desired begin time for the new event in milliseconds.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #endTime(long)
 	 * @see #type(int)
 	 * @see #beginTime()
 	 */
-	public CalendarIntent beginTime(@IntRange(from = 0, to = Long.MAX_VALUE) final long beginTime) {
-		this.mBeginTime = beginTime;
+	public CalendarIntent beginTime(@IntRange(from = 0) final long beginTime) {
+		this.beginTime = beginTime;
 		return this;
 	}
 
@@ -310,11 +319,12 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * Returns the begin time for the new calendar event.
 	 *
 	 * @return Begin time for calendar event in milliseconds.
+	 *
 	 * @see #beginTime(long)
 	 * @see #endTime(long)
 	 */
 	public long beginTime() {
-		return mBeginTime;
+		return beginTime;
 	}
 
 	/**
@@ -325,12 +335,13 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @param endTime The desired end time for the new event in milliseconds.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #beginTime(long)
 	 * @see #type(int)
 	 * @see #endTime()
 	 */
-	public CalendarIntent endTime(@IntRange(from = 0, to = Long.MAX_VALUE) final long endTime) {
-		this.mEndTime = endTime;
+	public CalendarIntent endTime(@IntRange(from = 0) final long endTime) {
+		this.endTime = endTime;
 		return this;
 	}
 
@@ -338,11 +349,12 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * Returns the end time for the new calendar event.
 	 *
 	 * @return End time for calendar event in milliseconds.
+	 *
 	 * @see #endTime(long)
 	 * @see #beginTime(long)
 	 */
 	public long endTime() {
-		return mEndTime;
+		return endTime;
 	}
 
 	/**
@@ -351,10 +363,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @param title The desired title text. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #title()
 	 */
 	public CalendarIntent title(@Nullable final CharSequence title) {
-		this.mTitle = title;
+		this.title = title;
 		return this;
 	}
 
@@ -362,11 +375,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * Returns the title for the new calendar event.
 	 *
 	 * @return Title text for calendar event.
+	 *
 	 * @see #title(CharSequence)
 	 */
-	@NonNull
-	public CharSequence title() {
-		return mTitle == null ? "" : mTitle;
+	@NonNull public CharSequence title() {
+		return title == null ? "" : title;
 	}
 
 	/**
@@ -375,10 +388,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @param description The desired description text. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #description()
 	 */
 	public CalendarIntent description(@Nullable final CharSequence description) {
-		this.mDescription = description;
+		this.description = description;
 		return this;
 	}
 
@@ -386,11 +400,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * Returns the description for the new calendar event.
 	 *
 	 * @return Description text for calendar event.
+	 *
 	 * @see #description(CharSequence)
 	 */
-	@NonNull
-	public CharSequence description() {
-		return mDescription == null ? "" : mDescription;
+	@NonNull public CharSequence description() {
+		return description == null ? "" : description;
 	}
 
 	/**
@@ -399,10 +413,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @param location The desired location text. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #location()
 	 */
 	public CalendarIntent location(@Nullable final CharSequence location) {
-		this.mLocation = location;
+		this.location = location;
 		return this;
 	}
 
@@ -410,11 +425,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 * Returns the location for the new calendar event.
 	 *
 	 * @return Location text for calendar event.
+	 *
 	 * @see #location(CharSequence)
 	 */
-	@NonNull
-	public CharSequence location() {
-		return mLocation == null ? "" : mLocation;
+	@NonNull public CharSequence location() {
+		return location == null ? "" : location;
 	}
 
 	/**
@@ -425,10 +440,11 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @param availability One of {@link #AVAILABILITY_BUSY}, {@link #AVAILABILITY_FREE} or {@link #AVAILABILITY_TENTATIVE}.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #availability()
 	 */
 	public CalendarIntent availability(@Availability final int availability) {
-		this.mAvailability = availability;
+		this.availability = availability;
 		return this;
 	}
 
@@ -439,43 +455,42 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 	 *
 	 * @return Availability flag. One of {@link #AVAILABILITY_BUSY}, {@link #AVAILABILITY_FREE} or
 	 * {@link #AVAILABILITY_TENTATIVE}.
+	 *
 	 * @see #availability(int)
 	 */
-	@Availability
-	public int availability() {
-		return mAvailability;
+	@Availability public int availability() {
+		return availability;
 	}
 
 	/**
 	 */
-	@Override
-	protected void ensureCanBuildOrThrow() {
+	@Override protected void ensureCanBuildOrThrow() {
 		super.ensureCanBuildOrThrow();
-		switch (mType) {
+		switch (type) {
 			case TYPE_VIEW:
-				if (mBeginTime < 0) {
+				if (beginTime < 0) {
 					throw cannotBuildIntentException(
-							"Specified invalid time(" + mBeginTime + ") where to open calendar for view. " +
+							"Specified invalid time(" + beginTime + ") where to open calendar for view. " +
 									"Must be none-negative time value."
 					);
 				}
 				break;
 			case TYPE_INSERT_EVENT:
-				if (mBeginTime < 0) {
+				if (beginTime < 0) {
 					throw cannotBuildIntentException(
-							"Specified invalid begin time(" + mBeginTime + "). " +
+							"Specified invalid begin time(" + beginTime + "). " +
 									"Must be none-negative time value."
 					);
 				}
-				if (mEndTime < 0) {
+				if (endTime < 0) {
 					throw cannotBuildIntentException(
-							"Specified invalid end time(" + mEndTime + "). " +
+							"Specified invalid end time(" + endTime + "). " +
 									"Must be none-negative time value."
 					);
 				}
-				if (mEndTime <= mBeginTime) {
+				if (endTime <= beginTime) {
 					throw cannotBuildIntentException(
-							"Specified end time(" + mEndTime + ") is before/at begin time(" + mBeginTime + "). " +
+							"Specified end time(" + endTime + ") is before/at begin time(" + beginTime + "). " +
 									"Must be greater than the begin time."
 					);
 				}
@@ -483,8 +498,8 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 			case TYPE_EDIT_EVENT:
 			case TYPE_VIEW_EVENT:
 			default:
-				if (mEventId <= 0) {
-					throw cannotBuildIntentException("Specified invalid event id(" + mEventId + ").");
+				if (eventId <= 0) {
+					throw cannotBuildIntentException("Specified invalid event id(" + eventId + ").");
 				}
 				break;
 		}
@@ -492,35 +507,33 @@ public class CalendarIntent extends BaseIntent<CalendarIntent> {
 
 	/**
 	 */
-	@NonNull
-	@Override
 	@SuppressWarnings("ConstantConditions")
-	protected Intent onBuild(@NonNull final Context context) {
-		switch (mType) {
+	@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
+		switch (type) {
 			case TYPE_VIEW:
 				final Uri.Builder builder = CalendarContract.CONTENT_URI.buildUpon();
 				builder.appendPath("time");
-				ContentUris.appendId(builder, mBeginTime);
+				ContentUris.appendId(builder, beginTime);
 				return new Intent(Intent.ACTION_VIEW).setData(builder.build());
 			case TYPE_INSERT_EVENT:
 				return new Intent(Intent.ACTION_INSERT)
 						.setData(CalendarContract.Events.CONTENT_URI)
-						.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, mBeginTime)
-						.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, mEndTime)
-						.putExtra(CalendarContract.Events.TITLE, mTitle)
-						.putExtra(CalendarContract.Events.DESCRIPTION, mDescription)
-						.putExtra(CalendarContract.Events.EVENT_LOCATION, mLocation)
-						.putExtra(CalendarContract.Events.AVAILABILITY, mAvailability);
+						.putExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, beginTime)
+						.putExtra(CalendarContract.EXTRA_EVENT_END_TIME, endTime)
+						.putExtra(CalendarContract.Events.TITLE, title)
+						.putExtra(CalendarContract.Events.DESCRIPTION, description)
+						.putExtra(CalendarContract.Events.EVENT_LOCATION, location)
+						.putExtra(CalendarContract.Events.AVAILABILITY, availability);
 			case TYPE_EDIT_EVENT:
 				final Intent intent = new Intent(Intent.ACTION_EDIT);
-				intent.setData(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, mEventId));
-				if (!TextUtils.isEmpty(mTitle)) {
-					intent.putExtra(CalendarContract.Events.TITLE, mTitle);
+				intent.setData(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId));
+				if (!TextUtils.isEmpty(title)) {
+					intent.putExtra(CalendarContract.Events.TITLE, title);
 				}
 				return intent;
 			default:
 				return new Intent(Intent.ACTION_VIEW).setData(
-						ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, mEventId)
+						ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, eventId)
 				);
 		}
 	}

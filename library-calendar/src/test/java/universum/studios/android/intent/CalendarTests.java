@@ -26,7 +26,7 @@ import android.support.annotation.NonNull;
  */
 final class CalendarTests {
 
-	static void assertThatBuildThrowsExceptionWithMessage(@NonNull Context context, @NonNull BaseIntent intent, @NonNull String exceptionMessage) {
+	static void assertThatBuildThrowsExceptionWithMessage(@NonNull final Context context, @NonNull final BaseIntent intent, @NonNull final String exceptionMessage) {
 		try {
 			intent.build(context);
 		} catch (IllegalArgumentException e) {
