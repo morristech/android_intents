@@ -36,29 +36,39 @@ import static org.hamcrest.core.IsNot.not;
 @SuppressWarnings("deprecation")
 public final class PlayIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testApplicationId() {
+	@Test public void tesInstantiation() {
+		// Act:
 		final PlayIntent intent = new PlayIntent();
+		// Assert:
+		assertThat(intent.applicationId(), is(""));
+	}
+
+	@Test public void testApplicationId() {
+		// Arrange:
+		final PlayIntent intent = new PlayIntent();
+		// Act:
 		intent.applicationId("com.google.android.inbox");
+		// Assert:
 		assertThat(intent.applicationId(), is("com.google.android.inbox"));
 	}
 
-	@Test
-	public void tesApplicationIdDefault() {
-		assertThat(new PlayIntent().applicationId(), is(""));
-	}
-
-	@Test
-	public void testBuild() {
-		final Intent intent = new PlayIntent().applicationId("com.google.android.inbox").build(application);
+	@Test public void testBuild() {
+		// Arrange:
+		final PlayIntent playIntent = new PlayIntent().applicationId("com.android.inbox");
+		// Act:
+		final Intent intent = playIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
-		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.google.android.inbox")));
+		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.android.inbox")));
 	}
 
-	@Test
-	public void testBuildWithDefaultPackageName() {
-		final Intent intent = new PlayIntent().build(application);
+	@Test public void testBuildWithDefaultPackageName() {
+		// Arrange:
+		final PlayIntent playIntent = new PlayIntent();
+		// Act:
+		final Intent intent = playIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + application.getPackageName())));

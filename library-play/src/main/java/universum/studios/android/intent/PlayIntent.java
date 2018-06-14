@@ -84,6 +84,7 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 * @param applicationId ID of the desired application to view in store. May be {@code null}
 	 *                      to use the current application's package name.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #applicationId()
 	 */
 	public PlayIntent applicationId(@NonNull final String applicationId) {
@@ -95,18 +96,16 @@ public final class PlayIntent extends BaseIntent<PlayIntent> {
 	 * Returns the unique ID of an Android application to be viewed in Play Store.
 	 *
 	 * @return Application ID or empty string if not specified yet.
+	 *
 	 * @see #applicationId(String)
 	 */
-	@NonNull
-	public String applicationId() {
+	@NonNull public String applicationId() {
 		return applicationId == null ? "" : applicationId;
 	}
 
 	/**
 	 */
-	@NonNull
-	@Override
-	protected Intent onBuild(@NonNull final Context context) {
+	@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
 		return new Intent(Intent.ACTION_VIEW).setData(Uri.parse(VIEW_URL_BASE + (
 				TextUtils.isEmpty(applicationId) ?
 						context.getPackageName() :

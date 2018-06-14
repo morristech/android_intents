@@ -36,35 +36,40 @@ import static universum.studios.android.intent.ContactTests.assertThatBuildThrow
  */
 public final class DialerIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testUriScheme() {
+	@Test public void testUriScheme() {
+		// Assert:
 		assertThat(DialerIntent.URI_SCHEME, is("tel"));
 	}
 
-	@Test
-	public void testPhoneNumberDefault() {
-		assertThat(new DialerIntent().phoneNumber(), is(""));
+	@Test public void testInstantiation() {
+		// Act:
+		final DialerIntent intent = new DialerIntent();
+		// Assert:
+		assertThat(intent.phoneNumber(), is(""));
 	}
 
-	@Test
-	public void testPhoneNumber() {
+	@Test public void testPhoneNumber() {
+		// Arrange:
 		final DialerIntent intent = new DialerIntent();
+		// Act:
 		intent.phoneNumber("00124456");
+		// Assert:
 		assertThat(intent.phoneNumber(), is("00124456"));
 	}
 
-	@Test
-	public void testBuild() {
+	@Test public void testBuild() {
+		// Arrange:
 		final DialerIntent dialerIntent = new DialerIntent();
 		dialerIntent.phoneNumber("02644569874");
+		// Act:
 		final Intent intent = dialerIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_DIAL));
 		assertThat(intent.getData(), is(Uri.parse("tel:02644569874")));
 	}
 
-	@Test
-	public void testBuildWithoutNumber() {
+	@Test public void testBuildWithoutNumber() {
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				new DialerIntent(),

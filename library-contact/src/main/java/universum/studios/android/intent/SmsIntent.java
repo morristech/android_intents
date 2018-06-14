@@ -69,12 +69,12 @@ public final class SmsIntent extends BaseIntent {
 	/**
 	 * Phone number to send SMS to.
 	 */
-	private String mPhoneNumber;
+	private String phoneNumber;
 
 	/**
 	 * Body of an SMS to send.
 	 */
-	private CharSequence mBody;
+	private CharSequence body;
 
 	/*
 	 * Constructors ================================================================================
@@ -89,10 +89,11 @@ public final class SmsIntent extends BaseIntent {
 	 *
 	 * @param number The desired phone number. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #phoneNumber()
 	 */
 	public SmsIntent phoneNumber(@Nullable final String number) {
-		this.mPhoneNumber = number;
+		this.phoneNumber = number;
 		return this;
 	}
 
@@ -100,11 +101,11 @@ public final class SmsIntent extends BaseIntent {
 	 * Returns the phone number that will be passed to the SMS application.
 	 *
 	 * @return Phone number or empty string if not specified yet.
+	 *
 	 * @see #phoneNumber(String)
 	 */
-	@NonNull
-	public String phoneNumber() {
-		return mPhoneNumber == null ? "" : mPhoneNumber;
+	@NonNull public String phoneNumber() {
+		return phoneNumber == null ? "" : phoneNumber;
 	}
 
 	/**
@@ -112,10 +113,11 @@ public final class SmsIntent extends BaseIntent {
 	 *
 	 * @param body The desired body text. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #body()
 	 */
 	public SmsIntent body(@Nullable final CharSequence body) {
-		this.mBody = body;
+		this.body = body;
 		return this;
 	}
 
@@ -123,31 +125,28 @@ public final class SmsIntent extends BaseIntent {
 	 * Returns the body for SMS to send.
 	 *
 	 * @return Message of SMS or empty text if not specified yet.
+	 *
 	 * @see #body(CharSequence)
 	 */
-	@NonNull
-	public CharSequence body() {
-		return mBody == null ? "" : mBody;
+	@NonNull public CharSequence body() {
+		return body == null ? "" : body;
 	}
 
 	/**
 	 */
-	@Override
-	protected void ensureCanBuildOrThrow() {
+	@Override protected void ensureCanBuildOrThrow() {
 		super.ensureCanBuildOrThrow();
-		if (TextUtils.isEmpty(mPhoneNumber)) {
+		if (TextUtils.isEmpty(phoneNumber)) {
 			throw cannotBuildIntentException("No phone number specified.");
 		}
 	}
 
 	/**
 	 */
-	@NonNull
-	@Override
-	protected Intent onBuild(@NonNull final Context context) {
-		final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromParts(URI_SCHEME, mPhoneNumber, null));
-		if (!TextUtils.isEmpty(mBody)) {
-			intent.putExtra("sms_body", mBody);
+	@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
+		final Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromParts(URI_SCHEME, phoneNumber, null));
+		if (!TextUtils.isEmpty(body)) {
+			intent.putExtra("sms_body", body);
 		}
 		return intent;
 	}

@@ -37,31 +37,35 @@ import static universum.studios.android.intent.MapTests.assertThatBuildThrowsExc
 @SuppressWarnings("ResourceType")
 public final class MapIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testUriScheme() {
+	@Test public void testUriScheme() {
+		// Assert:
 		assertThat(MapIntent.URI_SCHEME, is("geo"));
 	}
 
-	@Test
-	public void testLatDefault() {
-		assertThat(new MapIntent().lat(), is(0d));
-	}
-
-	@Test
-	public void testLngDefault() {
-		assertThat(new MapIntent().lng(), is(0d));
-	}
-
-	@Test
-	public void testLocation() {
+	@Test public void testInstantiation() {
+		// Act:
 		final MapIntent intent = new MapIntent();
+		// Assert:
+		assertThat(intent.lat(), is(0d));
+		assertThat(intent.lng(), is(0d));
+		assertThat(intent.locationQuery(), is(""));
+		assertThat(intent.zoomLevel(), is(0));
+		assertThat(intent.label(), is(""));
+	}
+
+	@Test public void testLocation() {
+		// Arrange:
+		final MapIntent intent = new MapIntent();
+		// Act:
 		intent.location(24.16546d, 135.154d);
+		// Assert:
 		assertThat(intent.lat(), is(24.16546d));
 		assertThat(intent.lng(), is(135.154d));
 	}
 
-	@Test
-	public void testLocationOutOfRange() {
+	@Test public void testLocationOutOfRange() {
+		// Arrange:
+		// Act + Assert:
 		final MapIntent intent = new MapIntent();
 		intent.location(91.07d, 194.77d);
 		assertThat(intent.lat(), is(MapIntent.LAT_MAX));
@@ -71,54 +75,49 @@ public final class MapIntentTest extends RobolectricTestCase {
 		assertThat(intent.lng(), is(MapIntent.LNG_MIN));
 	}
 
-	@Test
-	public void testLocationQueryDefault() {
-		assertThat(new MapIntent().locationQuery(), is(""));
-	}
-
-	@Test
-	public void testLocationQueryText() {
+	@Test public void testLocationQueryText() {
+		// Arrange:
 		final MapIntent intent = new MapIntent();
+		// Act:
 		intent.locationQuery("Iceland");
+		// Assert:
 		assertThat(intent.locationQuery(), is("Iceland"));
 	}
 
-	@Test
-	public void testZoomLevelDefault() {
-		assertThat(new MapIntent().zoomLevel(), is(0));
-	}
-
-	@Test
-	public void testZoomLevel() {
+	@Test public void testZoomLevel() {
+		// Arrange:
 		final MapIntent intent = new MapIntent();
+		// Act:
 		intent.zoomLevel(12);
+		// Assert:
 		assertThat(intent.zoomLevel(), is(12));
 	}
 
-	@Test
-	public void testZoomLevelOutOfRange() {
+	@Test public void testZoomLevelOutOfRange() {
+		// Arrange:
 		final MapIntent intent = new MapIntent();
+		// Act + Assert:
 		intent.zoomLevel(-3);
 		assertThat(intent.zoomLevel(), is(MapIntent.ZOOM_LEVEL_MIN));
 		intent.zoomLevel(50);
 		assertThat(intent.zoomLevel(), is(MapIntent.ZOOM_LEVEL_MAX));
 	}
 
-	@Test
-	public void testLabelDefault() {
-		assertThat(new MapIntent().label(), is(""));
-	}
-
-	@Test
-	public void testLabelText() {
+	@Test public void testLabel() {
+		// Arrange:
 		final MapIntent intent = new MapIntent();
+		// Act:
 		intent.label("Venice");
+		// Assert:
 		assertThat(intent.label(), is("Venice"));
 	}
 
-	@Test
-	public void testBuildWithLocation() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).build(application);
+	@Test public void testBuildWithLocation() {
+		// Arrange:
+		final MapIntent mapIntent = new MapIntent().location(40.7141667, -74.0063889);
+		// Act:
+		final Intent intent = mapIntent.build(application);
+		// Assert:
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -126,9 +125,12 @@ public final class MapIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildWithLocationAndZoom() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).zoomLevel(10).build(application);
+	@Test public void testBuildWithLocationAndZoom() {
+		// Arrange:
+		final MapIntent mapIntent = new MapIntent().location(40.7141667, -74.0063889).zoomLevel(10);
+		// Act:
+		final Intent intent = mapIntent.build(application);
+		// Assert:
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -136,9 +138,12 @@ public final class MapIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildWithLocationAndLocationQuery() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).locationQuery("restaurants").build(application);
+	@Test public void testBuildWithLocationAndLocationQuery() {
+		// Arrange:
+		final MapIntent mapIntent = new MapIntent().location(40.7141667, -74.0063889).locationQuery("restaurants");
+		// Act:
+		final Intent intent = mapIntent.build(application);
+		// Assert:
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -146,9 +151,12 @@ public final class MapIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildWithLocationZoomAndLocationQuery() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).zoomLevel(10).locationQuery("restaurants").build(application);
+	@Test public void testBuildWithLocationZoomAndLocationQuery() {
+		// Arrange:
+		final MapIntent mapIntent = new MapIntent().location(40.7141667, -74.0063889).zoomLevel(10).locationQuery("restaurants");
+		// Act:
+		final Intent intent = mapIntent.build(application);
+		// Assert:
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -156,9 +164,12 @@ public final class MapIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildWithLocationAndLabel() {
-		final Intent intent = new MapIntent().location(40.7141667, -74.0063889).label("New York City").build(application);
+	@Test public void testBuildWithLocationAndLabel() {
+		// Arrange:
+		final MapIntent mapIntent = new MapIntent().location(40.7141667, -74.0063889).label("New York City");
+		// Act:
+		final Intent intent = mapIntent.build(application);
+		// Assert:
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -166,11 +177,13 @@ public final class MapIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildWithLocationQuery() {
+	@Test public void testBuildWithLocationQuery() {
+		// Arrange:
 		final MapIntent mapIntent = new MapIntent();
 		mapIntent.locationQuery("Rome, Italy");
+		// Act:
 		final Intent intent = mapIntent.build(application);
+		// Assert:
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -178,12 +191,14 @@ public final class MapIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testBuildWithLocationQueryAndLabel() {
+	@Test public void testBuildWithLocationQueryAndLabel() {
+		// Arrange:
 		final MapIntent mapIntent = new MapIntent();
 		mapIntent.locationQuery("Rome, Italy");
 		mapIntent.label("Rome");
+		// Act:
 		final Intent intent = mapIntent.build(application);
+		// Assert:
 		assertThatIntentIsValid(intent);
 		assertThat(
 				intent.getData(),
@@ -191,14 +206,14 @@ public final class MapIntentTest extends RobolectricTestCase {
 		);
 	}
 
+	@SuppressWarnings("ConstantConditions")
 	private static void assertThatIntentIsValid(Intent intent) {
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData().getScheme(), is(MapIntent.URI_SCHEME));
 	}
 
-	@Test
-	public void testBuildWithoutParams() {
+	@Test public void testBuildWithoutParams() {
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				new MapIntent(),

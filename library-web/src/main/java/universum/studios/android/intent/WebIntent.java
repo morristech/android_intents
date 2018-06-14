@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -66,15 +66,15 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	public static final Matcher WEB_URL_MATCHER = Patterns.WEB_URL.matcher("");
 
 	/**
+	 * HTTP prefix for the valid web URL which does not contain a protocol part.
+	 */
+	@VisibleForTesting static final String HTTP_PREFIX = "http://";
+
+	/**
 	 * Matcher for valid HTTP format. Checks for the "http://" or "https://" prefix at the begin of
 	 * the specified web URL.
 	 */
 	@VisibleForTesting static final Matcher HTTP_FORMAT_MATCHER = Pattern.compile("^(http|https):\\/\\/(.+)").matcher("");
-
-	/**
-	 * HTTP prefix for the valid web URL which does not contain a protocol part.
-	 */
-	@VisibleForTesting static final String HTTP_PREFIX = "http://";
 
 	/*
 	 * Members =====================================================================================
@@ -83,7 +83,7 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	/**
 	 * URL to show in a web browser.
 	 */
-	private String mUrl;
+	private String url;
 
 	/*
 	 * Constructors ================================================================================
@@ -102,14 +102,15 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 *
 	 * @param url The desired URL to load into web browser.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #url()
 	 */
 	public WebIntent url(@NonNull final String url) {
 		if (WEB_URL_MATCHER.reset(url).matches()) {
 			if (HTTP_FORMAT_MATCHER.reset(url).matches()) {
-				this.mUrl = url;
+				this.url = url;
 			} else {
-				this.mUrl = HTTP_PREFIX + url;
+				this.url = HTTP_PREFIX + url;
 			}
 		}
 		return this;
@@ -119,29 +120,26 @@ public class WebIntent extends BaseIntent<WebIntent> {
 	 * Returns the web URL to be loaded into web browser.
 	 *
 	 * @return Valid URL or empty string if not specified yet.
+	 *
 	 * @see #url(String)
 	 */
-	@NonNull
-	public String url() {
-		return mUrl == null ? "" : mUrl;
+	@NonNull public String url() {
+		return url == null ? "" : url;
 	}
 
 	/**
 	 */
-	@Override
-	protected void ensureCanBuildOrThrow() {
+	@Override protected void ensureCanBuildOrThrow() {
 		super.ensureCanBuildOrThrow();
-		if (TextUtils.isEmpty(mUrl)) {
+		if (TextUtils.isEmpty(url)) {
 			throw cannotBuildIntentException("No or invalid URL specified.");
 		}
 	}
 
 	/**
 	 */
-	@NonNull
-	@Override
-	protected Intent onBuild(@NonNull final Context context) {
-		return new Intent(Intent.ACTION_VIEW, Uri.parse(mUrl));
+	@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
+		return new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 	}
 
 	/*

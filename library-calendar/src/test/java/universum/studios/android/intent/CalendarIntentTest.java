@@ -52,9 +52,9 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		assertThatTimeIsInRange(intent.time(), currentTime, currentTime + 10);
 		assertThatTimeIsInRange(intent.beginTime(), currentTime, currentTime + 10);
 		assertThatTimeIsInRange(intent.endTime(), currentTime + 1, currentTime + 11);
-		assertThat(intent.title().toString(), is(""));
-		assertThat(intent.description().toString(), is(""));
-		assertThat(intent.location().toString(), is(""));
+		assertThat(intent.title(), is((CharSequence) ""));
+		assertThat(intent.description(), is((CharSequence) ""));
+		assertThat(intent.location(), is((CharSequence) ""));
 		assertThat(intent.availability(), is(CalendarIntent.AVAILABILITY_BUSY));
 	}
 

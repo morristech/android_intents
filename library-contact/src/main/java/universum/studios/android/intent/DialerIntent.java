@@ -69,7 +69,7 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	/**
 	 * Phone number to dial via dialer.
 	 */
-	private String mPhoneNumber;
+	private String phoneNumber;
 
 	/*
 	 * Constructors ================================================================================
@@ -84,10 +84,11 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	 *
 	 * @param number The desired phone number. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #phoneNumber()
 	 */
 	public DialerIntent phoneNumber(@Nullable final String number) {
-		this.mPhoneNumber = number;
+		this.phoneNumber = number;
 		return this;
 	}
 
@@ -95,29 +96,26 @@ public class DialerIntent extends BaseIntent<DialerIntent> {
 	 * Returns the phone number that will be passed to the dialer application.
 	 *
 	 * @return Phone number or empty string if not specified yet.
+	 *
 	 * @see #phoneNumber(String)
 	 */
-	@NonNull
-	public String phoneNumber() {
-		return mPhoneNumber == null ? "" : mPhoneNumber;
+	@NonNull public String phoneNumber() {
+		return phoneNumber == null ? "" : phoneNumber;
 	}
 
 	/**
 	 */
-	@Override
-	protected void ensureCanBuildOrThrow() {
+	@Override protected void ensureCanBuildOrThrow() {
 		super.ensureCanBuildOrThrow();
-		if (TextUtils.isEmpty(mPhoneNumber)) {
+		if (TextUtils.isEmpty(phoneNumber)) {
 			throw cannotBuildIntentException("No phone number specified.");
 		}
 	}
 
 	/**
 	 */
-	@NonNull
-	@Override
-	protected Intent onBuild(@NonNull final Context context) {
-		return new Intent(Intent.ACTION_DIAL, Uri.fromParts(URI_SCHEME, mPhoneNumber, null));
+	@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
+		return new Intent(Intent.ACTION_DIAL, Uri.fromParts(URI_SCHEME, phoneNumber, null));
 	}
 
 	/*
