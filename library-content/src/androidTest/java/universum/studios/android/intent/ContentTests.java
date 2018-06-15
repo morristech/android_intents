@@ -34,14 +34,12 @@ import universum.studios.android.test.instrumented.TestUtils;
  */
 final class ContentTests {
 
-	@NonNull
-	static Matcher<File> hasPath(String path) {
-		return new FilePath(TestUtils.STORAGE_BASE_PATH + path);
+	@NonNull static Matcher<File> hasPath(@NonNull final String path) {
+		return new FileHasPath(TestUtils.STORAGE_BASE_PATH + path);
 	}
 
-	@NonNull
-	static Matcher<File> hasRelativePath(String path) {
-		return new FileRelativePath(TestUtils.STORAGE_BASE_PATH + path);
+	@NonNull static Matcher<File> hasRelativePath(@NonNull final String path) {
+		return new FileHasRelativePath(TestUtils.STORAGE_BASE_PATH + path);
 	}
 
 	static void assertThatBuildThrowsExceptionWithMessage(@NonNull Context context, @NonNull BaseIntent intent, @NonNull String exceptionMessage) {
@@ -62,41 +60,33 @@ final class ContentTests {
 	}
 
 
-	private static final class FilePath extends TypeSafeMatcher<File> {
+	private static final class FileHasPath extends TypeSafeMatcher<File> {
 
 		private final String expected;
 
-		FilePath(String expected) {
+		FileHasPath(final String expected) {
 			this.expected = expected;
 		}
 
-		@Override
-		protected boolean matchesSafely(File item) {
+		@Override protected boolean matchesSafely(@NonNull final File item) {
 			return expected.equals(item.getPath());
 		}
 
-		@Override
-		public void describeTo(Description description) {
-			// Ignored.
-		}
+		@Override public void describeTo(Description description) {}
 	}
 
-	private static final class FileRelativePath extends TypeSafeMatcher<File> {
+	private static final class FileHasRelativePath extends TypeSafeMatcher<File> {
 
 		private final String expected;
 
-		FileRelativePath(String expected) {
+		FileHasRelativePath(final String expected) {
 			this.expected = expected;
 		}
 
-		@Override
-		protected boolean matchesSafely(File item) {
+		@Override protected boolean matchesSafely(@NonNull final File item) {
 			return expected.equals(item.getPath().replace(item.getName(), ""));
 		}
 
-		@Override
-		public void describeTo(Description description) {
-			// Ignored
-		}
+		@Override public void describeTo(Description description) {}
 	}
 }

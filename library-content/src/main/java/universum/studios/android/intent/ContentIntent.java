@@ -87,23 +87,23 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	/**
 	 * Uri to content.
 	 */
-	Uri mUri;
+	Uri uri;
 
 	/**
-	 * Data type of content pointed by {@link #mUri}.
+	 * Data type of content pointed by {@link #uri}.
 	 */
-	String mDataType;
+	String dataType;
 
 	/**
-	 * Flag indicating whether {@link #mUri} has been specified as input uri via {@link #input(Uri)}
+	 * Flag indicating whether {@link #uri} has been specified as input uri via {@link #input(Uri)}
 	 * or not.
 	 */
-	private boolean mHasInputUri;
+	private boolean hasInputUri;
 
 	/**
 	 * Set of content handlers that will be used to create a chooser dialog (if there are any).
 	 */
-	private List<ContentHandler> mHandlers;
+	private List<ContentHandler> handlers;
 
 	/*
 	 * Constructors ================================================================================
@@ -119,8 +119,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @return String representation of the current time stamp.
 	 */
-	@NonNull
-	public static String createContentFileTimeStamp() {
+	@NonNull public static String createContentFileTimeStamp() {
 		return new SimpleDateFormat(CONTENT_FILE_TIME_STAMP_FORMAT, Locale.getDefault()).format(new Date());
 	}
 
@@ -133,8 +132,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @param externalDirectoryType One of {@link Environment#DIRECTORY_PICTURES}, {@link Environment#DIRECTORY_MOVIES},
 	 *                              ..., external directory types.
 	 */
-	@Nullable
-	public static File createContentFile(@NonNull final String fileName, @NonNull final String externalDirectoryType) {
+	@Nullable public static File createContentFile(@NonNull final String fileName, @NonNull final String externalDirectoryType) {
 		return createContentFile(fileName, Environment.getExternalStoragePublicDirectory(externalDirectoryType));
 	}
 
@@ -146,10 +144,10 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * @param directory The directory within which should be the requested file created.
 	 * @return New instance of the desired file or {@code null} if some IO error occurs during its
 	 * creation process.
+	 *
 	 * @see #createContentFile(String, String)
 	 */
-	@Nullable
-	public static File createContentFile(@NonNull final String fileName, @NonNull final File directory) {
+	@Nullable public static File createContentFile(@NonNull final String fileName, @NonNull final File directory) {
 		try {
 			final File file = new File(directory.getPath() + File.separator + fileName);
 			return file.createNewFile() ? file : null;
@@ -181,7 +179,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @return This intent builder to allow methods chaining.
 	 */
-	public abstract ContentIntent withDefaultHandlers(@NonNull final Context context);
+	public abstract ContentIntent withDefaultHandlers(@NonNull Context context);
 
 	/**
 	 * Same as {@link #withHandlers(List)} for variable array of ContentHandlers.
@@ -202,12 +200,12 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	@SuppressWarnings("unchecked")
 	public I withHandlers(@Nullable final List<ContentHandler> handlers) {
 		if (handlers == null) {
-			this.mHandlers = null;
+			this.handlers = null;
 		} else if (!handlers.isEmpty()) {
-			if (mHandlers == null) {
-				this.mHandlers = new ArrayList<>(handlers.size());
+			if (this.handlers == null) {
+				this.handlers = new ArrayList<>(handlers.size());
 			}
-			mHandlers.addAll(handlers);
+			this.handlers.addAll(handlers);
 		}
 		return (I) this;
 	}
@@ -221,14 +219,15 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @param handler The desired handler item to add.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #withHandlers(ContentHandler...)
 	 * @see #withDefaultHandlers(Context)
 	 * @see #handlers()
 	 */
 	@SuppressWarnings("unchecked")
 	public I withHandler(@NonNull final ContentHandler handler) {
-		if (mHandlers == null) this.mHandlers = new ArrayList<>(1);
-		mHandlers.add(handler);
+		if (handlers == null) this.handlers = new ArrayList<>(1);
+		handlers.add(handler);
 		return (I) this;
 	}
 
@@ -237,14 +236,14 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @return List of handlers or {@link Collections#EMPTY_LIST} if no content handlers has been
 	 * added yet.
+	 *
 	 * @see #withHandler(ContentHandler)
 	 * @see #withHandlers(List)
 	 * @see #withDefaultHandlers(Context)
 	 */
-	@NonNull
 	@SuppressWarnings("unchecked")
-	public List<ContentHandler> handlers() {
-		return mHandlers == null ? Collections.EMPTY_LIST : new ArrayList<>(mHandlers);
+	@NonNull public List<ContentHandler> handlers() {
+		return handlers == null ? Collections.EMPTY_LIST : new ArrayList<>(handlers);
 	}
 
 	/**
@@ -278,9 +277,9 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 */
 	@SuppressWarnings("unchecked")
 	public I input(@Nullable final Uri uri) {
-		this.mUri = uri;
-		this.mDataType = null;
-		this.mHasInputUri = uri != null;
+		this.uri = uri;
+		this.dataType = null;
+		this.hasInputUri = uri != null;
 		return (I) this;
 	}
 
@@ -305,13 +304,14 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @param uri The desired uri. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #uri()
 	 */
 	@SuppressWarnings("unchecked")
 	public I output(@Nullable final Uri uri) {
-		this.mUri = uri;
-		this.mDataType = null;
-		this.mHasInputUri = false;
+		this.uri = uri;
+		this.dataType = null;
+		this.hasInputUri = false;
 		return (I) this;
 	}
 
@@ -320,9 +320,8 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @return Current uri or {@code null} if there was no uri specified yet.
 	 */
-	@Nullable
-	public Uri uri() {
-		return mUri;
+	@Nullable public Uri uri() {
+		return uri;
 	}
 
 	/**
@@ -330,11 +329,12 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @param type The desired MIME type for the uri specified via {@link #input(Uri)}.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #dataType()
 	 */
 	@SuppressWarnings("unchecked")
 	public I dataType(@NonNull @MimeType.Value final String type) {
-		this.mDataType = type;
+		this.dataType = type;
 		return (I) this;
 	}
 
@@ -343,20 +343,18 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *
 	 * @return MIME type for the uri specified via {@link #input(Uri)} or {@code null} if no data
 	 * type has been specified yet.
+	 *
 	 * @see #dataType(String)
 	 */
-	@Nullable
-	@MimeType.Value
-	public String dataType() {
-		return mDataType;
+	@Nullable @MimeType.Value public String dataType() {
+		return dataType;
 	}
 
 	/**
 	 */
-	@Override
-	public boolean startWith(@NonNull final IntentStarter starter) {
+	@Override public boolean startWith(@NonNull final IntentStarter starter) {
 		final Context context = starter.getContext();
-		if (mHandlers == null) {
+		if (handlers == null) {
 			final Intent intent = build(context);
 			if (isActivityForIntentAvailable(context, intent)) {
 				return onStartWith(starter, intent);
@@ -376,10 +374,10 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 *                for a selected content handler from the chooser dialog.
 	 */
 	protected void onShowChooserDialog(@NonNull final IntentStarter starter) {
-		final int n = mHandlers.size();
+		final int n = handlers.size();
 		final CharSequence[] providerNames = new CharSequence[n];
 		for (int i = 0; i < n; i++) {
-			providerNames[i] = mHandlers.get(i).name;
+			providerNames[i] = handlers.get(i).name;
 		}
 		final AlertDialog.Builder builder = new AlertDialog.Builder(starter.getContext());
 		builder.setTitle(mDialogTitle);
@@ -387,9 +385,8 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 
 			/**
 			 */
-			@Override
-			public void onClick(@NonNull final DialogInterface dialog, final int which) {
-				final ContentHandler handler = mHandlers.get(which);
+			@Override public void onClick(@NonNull final DialogInterface dialog, final int which) {
+				final ContentHandler handler = handlers.get(which);
 				if (handler.requestCode < 0) starter.startIntent(handler.intent);
 				else starter.startIntentForResult(handler.intent, handler.requestCode);
 			}
@@ -400,10 +397,8 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	/**
 	 * @throws IllegalStateException If there is at least one {@link ContentHandler} attached.
 	 */
-	@NonNull
-	@Override
-	public Intent build(@NonNull final Context context) {
-		if (mHandlers == null) {
+	@Override @NonNull public Intent build(@NonNull final Context context) {
+		if (handlers == null) {
 			return super.build(context);
 		}
 		throw new IllegalStateException("Cannot build intent for set of ContentHandlers.");
@@ -411,11 +406,10 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 
 	/**
 	 */
-	@Override
-	protected void ensureCanBuildOrThrow() {
+	@Override protected void ensureCanBuildOrThrow() {
 		super.ensureCanBuildOrThrow();
-		if (mHasInputUri) {
-			if (TextUtils.isEmpty(mDataType)) {
+		if (hasInputUri) {
+			if (TextUtils.isEmpty(dataType)) {
 				throw cannotBuildIntentException("No MIME type specified for input Uri.");
 			}
 		} else {
@@ -426,16 +420,13 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	/**
 	 * Will be invoked only if there are no content handlers assigned to this intent builder.
 	 */
-	@NonNull
-	@Override
-	protected Intent onBuild(@NonNull final Context context) {
-		return new Intent(Intent.ACTION_VIEW).setDataAndType(mUri, mDataType);
+	@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
+		return new Intent(Intent.ACTION_VIEW).setDataAndType(uri, dataType);
 	}
 
 	/**
 	 */
-	@Override
-	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
+	@Override protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
 		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));
 	}
 
@@ -451,6 +442,8 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	 * handler is clicked.
 	 *
 	 * @author Martin Albedinsky
+	 * @since 1.0
+	 *
 	 * @see ContentHandler#ContentHandler(CharSequence, Intent)
 	 */
 	public static class ContentHandler {
@@ -492,8 +485,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 		 *
 		 * @return This handlers's name.
 		 */
-		@NonNull
-		public CharSequence name() {
+		@NonNull public CharSequence name() {
 			return name;
 		}
 
@@ -502,8 +494,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 		 *
 		 * @return This handler's intent.
 		 */
-		@NonNull
-		public Intent intent() {
+		@NonNull public Intent intent() {
 			return intent;
 		}
 
@@ -515,6 +506,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 		 *             {@link Fragment#onActivityResult(int, int, Intent)}, depends on from within
 		 *             which context has been {@link ContentIntent} started.
 		 * @return This handler to allow methods chaining.
+		 *
 		 * @see #requestCode()
 		 */
 		public ContentHandler requestCode(final int code) {
@@ -526,6 +518,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 		 * Returns the request code specified for this handler.
 		 *
 		 * @return This handler's request code.
+		 *
 		 * @see #requestCode(int)
 		 */
 		public int requestCode() {

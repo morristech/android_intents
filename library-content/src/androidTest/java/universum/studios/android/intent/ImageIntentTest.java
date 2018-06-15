@@ -35,10 +35,10 @@ import static universum.studios.android.intent.ContentTests.hasRelativePath;
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public final class ImageIntentTest extends InstrumentedTestCase {
 
-	@Test
-	@SuppressWarnings("ConstantConditions")
-	public void testCreateImageFile() {
+	@Test public void testCreateImageFile() {
+		// Act:
 		final File file = ImageIntent.createImageFile();
+		// Assert:
 		if (file != null) {
 			assertThat(file.exists(), is(true));
 			assertThat(file, hasRelativePath("/Pictures/"));
@@ -46,10 +46,10 @@ public final class ImageIntentTest extends InstrumentedTestCase {
 		}
 	}
 
-	@Test
-	@SuppressWarnings("ConstantConditions")
-	public void testCreateImageFileName() {
+	@Test public void testCreateImageFileName() {
+		// Act:
 		final File file = ImageIntent.createImageFile("zebra-image");
+		// Assert:
 		if (file != null) {
 			assertThat(file.exists(), is(true));
 			assertThat(file, hasPath("/Pictures/zebra-image.jpg"));

@@ -34,10 +34,10 @@ import static universum.studios.android.intent.ContentTests.hasRelativePath;
  */
 public final class VideoIntentTest extends InstrumentedTestCase {
 
-	@Test
-	@SuppressWarnings("ConstantConditions")
-	public void testCreateVideoFile() {
+	@Test public void testCreateVideoFile() {
+		// Act:
 		final File file = VideoIntent.createVideoFile();
+		// Assert:
 		if (file != null) {
 			assertThat(file.exists(), is(true));
 			assertThat(file, hasRelativePath("/Movies/"));
@@ -45,9 +45,7 @@ public final class VideoIntentTest extends InstrumentedTestCase {
 		}
 	}
 
-	@Test
-	@SuppressWarnings("ConstantConditions")
-	public void testCreateVideoFileName() {
+	@Test public void testCreateVideoFileName() {
 		final File file = VideoIntent.createVideoFile("elephant-video");
 		if (file != null) {
 			assertThat(file.exists(), is(true));

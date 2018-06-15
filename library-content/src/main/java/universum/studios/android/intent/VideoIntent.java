@@ -35,6 +35,7 @@ import java.io.File;
  * or preview a video content.
  *
  * @author Martin Albedinsky
+ * @since 1.0
  */
 public class VideoIntent extends ContentIntent<VideoIntent> {
 
@@ -79,7 +80,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	/**
 	 * Camera intent handler.
 	 */
-	private ContentHandler mCameraHandler;
+	private ContentHandler cameraHandler;
 
 	/*
 	 * Constructors ================================================================================
@@ -96,8 +97,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 *
 	 * @return New gallery intent instance.
 	 */
-	@NonNull
-	public static Intent createGalleryIntent() {
+	@NonNull public static Intent createGalleryIntent() {
 		return new Intent(Intent.ACTION_GET_CONTENT).setType(MimeType.VIDEO);
 	}
 
@@ -105,8 +105,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * Same as {@link #createCameraIntent(File)} with {@code null} for <var>outputFile</var>
 	 * parameter.
 	 */
-	@NonNull
-	public static Intent createCameraIntent() {
+	@NonNull public static Intent createCameraIntent() {
 		return createCameraIntent((Uri) null);
 	}
 
@@ -115,10 +114,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * <var>outputFile</var> if not {@code null}.
 	 *
 	 * @param outputFile The desired file used to crate the output Uri.
+	 *
 	 * @see #createCameraIntent()
 	 */
-	@NonNull
-	public static Intent createCameraIntent(@Nullable final File outputFile) {
+	@NonNull public static Intent createCameraIntent(@Nullable final File outputFile) {
 		return createCameraIntent(outputFile == null ? null : Uri.fromFile(outputFile));
 	}
 
@@ -131,10 +130,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 *                  the <var>outputUri</var> will address to a file which contains the currently
 	 *                  captured video.
 	 * @return New camera intent instance.
+	 *
 	 * @see #createCameraIntent(File)
 	 */
-	@NonNull
-	public static Intent createCameraIntent(@Nullable final Uri outputUri) {
+	@NonNull public static Intent createCameraIntent(@Nullable final Uri outputUri) {
 		final Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
 		if (outputUri != null) {
 			intent.putExtra(MediaStore.EXTRA_OUTPUT, outputUri);
@@ -146,8 +145,7 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * Same as {@link #createVideoFile(String)} with <var>fileName</var> in {@link #VIDEO_FILE_NAME_FORMAT}
 	 * format with the current time stamp provided by {@link #createContentFileTimeStamp() }.
 	 */
-	@Nullable
-	public static File createVideoFile() {
+	@Nullable public static File createVideoFile() {
 		return createVideoFile(String.format(VIDEO_FILE_NAME_FORMAT, createContentFileTimeStamp()));
 	}
 
@@ -157,10 +155,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * <var>externalDirectoryType</var>.
 	 *
 	 * @param fileName The desired name for the video file.
+	 *
 	 * @see #createVideoFile()
 	 */
-	@Nullable
-	public static File createVideoFile(@NonNull final String fileName) {
+	@Nullable public static File createVideoFile(@NonNull final String fileName) {
 		return createContentFile(appendDefaultFileSuffixIfNotPresented(fileName, ".mp4"), Environment.DIRECTORY_MOVIES);
 	}
 
@@ -168,17 +166,16 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * Adds two default {@link ContentHandler}s. One for {@link #REQUEST_CODE_GALLERY} and second one
 	 * for {@link #REQUEST_CODE_CAMERA}.
 	 */
-	@Override
 	@SuppressWarnings("ConstantConditions")
-	public VideoIntent withDefaultHandlers(@NonNull final Context context) {
+	@Override public VideoIntent withDefaultHandlers(@NonNull final Context context) {
 		withHandlers(
 				onCreateGalleryHandler(context.getResources()),
-				mCameraHandler = onCreateCameraHandler(context.getResources())
+				cameraHandler = onCreateCameraHandler(context.getResources())
 		);
-		if (mUri == null) {
-			mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);
+		if (uri == null) {
+			cameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);
 		} else {
-			mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+			cameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, uri);
 		}
 		return this;
 	}
@@ -190,10 +187,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 *
 	 * @param resources Application resources.
 	 * @return Content handler with gallery intent.
+	 *
 	 * @see #onCreateCameraHandler(Resources)
 	 */
-	@NonNull
-	protected ContentHandler onCreateGalleryHandler(@NonNull final Resources resources) {
+	@NonNull protected ContentHandler onCreateGalleryHandler(@NonNull final Resources resources) {
 		return new ContentHandler(
 				"Gallery",
 				createGalleryIntent()
@@ -207,10 +204,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 *
 	 * @param resources Application resources.
 	 * @return Content handler with camera intent.
+	 *
 	 * @see #onCreateGalleryHandler(Resources)
 	 */
-	@NonNull
-	protected ContentHandler onCreateCameraHandler(@NonNull final Resources resources) {
+	@NonNull protected ContentHandler onCreateCameraHandler(@NonNull final Resources resources) {
 		return new ContentHandler(
 				"Camera",
 				createCameraIntent()
@@ -221,11 +218,10 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 * If the passed <var>uri</var> is not {@code null}, the current data (MIME) type will be by
 	 * default set to {@link MimeType#VIDEO}.
 	 */
-	@Override
-	public VideoIntent input(@Nullable Uri uri) {
+	@Override public VideoIntent input(@Nullable final Uri uri) {
 		super.input(uri);
 		if (uri != null) {
-			this.mDataType = MimeType.VIDEO;
+			this.dataType = MimeType.VIDEO;
 		}
 		return this;
 	}
@@ -241,14 +237,13 @@ public class VideoIntent extends ContentIntent<VideoIntent> {
 	 *            captured video.
 	 * @return This intent builder to allow methods chaining.
 	 */
-	@Override
-	public VideoIntent output(@Nullable final Uri uri) {
+	@Override public VideoIntent output(@Nullable final Uri uri) {
 		super.output(uri);
-		if (mCameraHandler != null) {
-			if (mUri == null) {
-				mCameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);
+		if (cameraHandler != null) {
+			if (this.uri == null) {
+				cameraHandler.intent.removeExtra(MediaStore.EXTRA_OUTPUT);
 			} else {
-				mCameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, mUri);
+				cameraHandler.intent.putExtra(MediaStore.EXTRA_OUTPUT, this.uri);
 			}
 		}
 		return this;
