@@ -1,22 +1,22 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 library,universum.studios.android.intent,ContentIntent,50,259,5,27,11,57,5,33,2,20
 library,universum.studios.android.intent,IntentStarters.ActivityStarter,0,45,2,2,0,16,2,7,0,7
-library,universum.studios.android.intent,MimeType,0,3,0,0,0,2,0,1,0,1
+library,universum.studios.android.intent,MimeType,0,6,0,0,0,2,0,1,0,1
 library,universum.studios.android.intent,SmsIntent,0,62,0,8,0,15,0,11,0,7
 library,universum.studios.android.intent,ContentIntent.ContentHandler,0,26,0,0,0,10,0,5,0,5
 library,universum.studios.android.intent,IntentStarters.SupportFragmentStarter,0,41,0,0,0,14,0,7,0,7
 library,universum.studios.android.intent,WebIntent,0,66,0,8,0,14,0,10,0,6
 library,universum.studios.android.intent,IntentStarters,0,21,0,0,0,5,0,4,0,4
 library,universum.studios.android.intent,CalendarIntent,0,303,0,25,0,67,0,35,0,21
-library,universum.studios.android.intent,BaseIntent,7,143,2,12,1,33,2,22,0,17
+library,universum.studios.android.intent,BaseIntent,7,139,2,12,1,33,2,22,0,17
 library,universum.studios.android.intent,DialerIntent,0,37,0,4,0,9,0,7,0,5
 library,universum.studios.android.intent,PlayIntent,0,39,0,4,0,7,0,6,0,4
 library,universum.studios.android.intent,ContentIntent.new DialogInterface.OnClickListener() {...},24,9,2,0,4,1,2,1,1,1
 library,universum.studios.android.intent,ImageIntent,137,130,17,12,32,31,12,16,3,10
 library,universum.studios.android.intent,VideoIntent,16,130,0,12,2,31,2,16,2,10
-library,universum.studios.android.intent,EmailIntent,0,348,0,46,0,73,0,48,0,25
+library,universum.studios.android.intent,EmailIntent,0,348,0,46,0,76,0,48,0,25
 library,universum.studios.android.intent,ImageIntent.ImageOptions,11,0,0,0,4,0,2,0,2,0
-library,universum.studios.android.intent,SimpleIntent,0,125,0,15,0,33,0,21,0,13
+library,universum.studios.android.intent,SimpleIntent,0,125,0,15,0,34,0,21,0,13
 library,universum.studios.android.intent,IntentStarters.FragmentStarter,0,47,2,2,0,16,2,7,0,7
 library,universum.studios.android.intent,ShareIntent,0,160,0,22,0,37,0,26,0,15
 library,universum.studios.android.intent,MapIntent,0,206,0,20,0,46,0,24,0,14
