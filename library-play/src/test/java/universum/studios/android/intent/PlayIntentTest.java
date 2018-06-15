@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -36,34 +36,41 @@ import static org.hamcrest.core.IsNot.not;
 @SuppressWarnings("deprecation")
 public final class PlayIntentTest extends RobolectricTestCase {
 
-	@SuppressWarnings("unused")
-	private static final String TAG = "PlayIntentTest";
-
-	@Test
-	public void testApplicationId() {
+	@Test public void tesInstantiation() {
+		// Act:
 		final PlayIntent intent = new PlayIntent();
+		// Assert:
+		assertThat(intent.applicationId(), is(""));
+	}
+
+	@Test public void testApplicationId() {
+		// Arrange:
+		final PlayIntent intent = new PlayIntent();
+		// Act:
 		intent.applicationId("com.google.android.inbox");
+		// Assert:
 		assertThat(intent.applicationId(), is("com.google.android.inbox"));
 	}
 
-	@Test
-	public void tesApplicationIdDefault() {
-		assertThat(new PlayIntent().applicationId(), is(""));
-	}
-
-	@Test
-	public void testBuild() {
-		final Intent intent = new PlayIntent().applicationId("com.google.android.inbox").build(mApplication);
+	@Test public void testBuild() {
+		// Arrange:
+		final PlayIntent playIntent = new PlayIntent().applicationId("com.android.inbox");
+		// Act:
+		final Intent intent = playIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
-		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.google.android.inbox")));
+		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.android.inbox")));
 	}
 
-	@Test
-	public void testBuildWithDefaultPackageName() {
-		final Intent intent = new PlayIntent().build(mApplication);
+	@Test public void testBuildWithDefaultPackageName() {
+		// Arrange:
+		final PlayIntent playIntent = new PlayIntent();
+		// Act:
+		final Intent intent = playIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
-		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + mApplication.getPackageName())));
+		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + application.getPackageName())));
 	}
 }

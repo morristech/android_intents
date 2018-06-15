@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -55,12 +55,13 @@ public final class ContentIntentTest extends InstrumentedTestCase {
 
 	@Rule public ActivityTestRule<TestActivity> ACTIVITY_RULE = new ActivityTestRule<>(TestActivity.class);
 
-	@Test
-	@SuppressWarnings("ConstantConditions")
-	public void testCreateContentFileNameInDirectory() {
-		final File externalFilesDir = mContext.getExternalFilesDir(null);
+	@Test public void testCreateContentFileNameInDirectory() {
+		// Arrange:
+		final File externalFilesDir = context.getExternalFilesDir(null);
 		if (externalFilesDir != null) {
+			// Act:
 			final File file = ContentIntent.createContentFile("test-file.tmp", externalFilesDir);
+			// Assert:
 			if (file != null) {
 				assertThat(file.exists(), is(true));
 				assertThat(file, hasRelativePath("/Android/data/universum.studios.android.intent.test/files/"));
@@ -69,83 +70,88 @@ public final class ContentIntentTest extends InstrumentedTestCase {
 		}
 	}
 
-	@Test
-	@SuppressWarnings("ConstantConditions")
-	public void testCreateContentFileNameInExternalDirectory() {
+	@Test public void testCreateContentFileNameInExternalDirectory() {
+		// Act:
 		final File file = ContentIntent.createContentFile("test-file.tmp", Environment.DIRECTORY_DOWNLOADS);
 		if (file != null) {
+			// Assert:
 			assertThat(file.exists(), is(true));
 			assertThat(file, hasRelativePath("/Download/"));
 			assertThat(file.delete(), is(true));
 		}
 	}
 
-	@Test
-	public void testStartWith() {
+	@Test public void testStartWith() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.input(Uri.EMPTY);
 		intent.dataType(MimeType.TEXT_HTML);
-		assumeTrue(BaseIntent.isActivityForIntentAvailable(mContext, intent.build(mContext)));
+		assumeTrue(BaseIntent.isActivityForIntentAvailable(context, intent.build(context)));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		when(mockStarter.getContext()).thenReturn(mContext);
+		when(mockStarter.getContext()).thenReturn(context);
+		// Act:
 		intent.startWith(mockStarter);
-		verify(mockStarter, times(1)).startIntent(any(Intent.class));
+		// Assert:
+		verify(mockStarter).startIntent(any(Intent.class));
 	}
 
-	@Test
-	public void testOnShowChooserDialog() throws Throwable {
+	@Test public void testOnShowChooserDialog() throws Throwable {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.dialogTitle("Test Dialog");
 		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
 		intent.withHandler(new ContentIntent.ContentHandler("TestHandler2", new Intent()));
+		// Act:
 		ACTIVITY_RULE.runOnUiThread(new Runnable() {
 
-			@Override
-			public void run() {
+			@Override public void run() {
 				intent.onShowChooserDialog(IntentStarters.activityStarter(ACTIVITY_RULE.getActivity()));
 			}
 		});
+		// Assert:
 		waitForIdleSync();
 		onView(withText("Test Dialog")).check(matches(isDisplayed()));
 		onView(withText("TestHandler1")).check(matches(isDisplayed()));
 		onView(withText("TestHandler2")).check(matches(isDisplayed()));
 	}
 
-	@Test
-	public void testChooserDialogOnClickWithoutRequestCode() throws Throwable {
+	@Test public void testChooserDialogOnClickWithoutRequestCode() throws Throwable {
+		// Arrange:
 		final ContentIntent contentIntent = new ContentIntentImpl();
 		contentIntent.dialogTitle("Test Dialog");
 		final Intent intent = new Intent(Intent.ACTION_VIEW);
 		contentIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", intent));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(ACTIVITY_RULE.getActivity());
+		// Act:
 		ACTIVITY_RULE.runOnUiThread(new Runnable() {
 
-			@Override
-			public void run() {
+			@Override public void run() {
 				contentIntent.onShowChooserDialog(mockStarter);
 			}
 		});
+		// Assert:
 		waitForIdleSync();
 		onView(withText("TestHandler1")).perform(click());
-		verify(mockStarter, times(1)).startIntent(intent);
+		verify(mockStarter).startIntent(intent);
 	}
 
-	@Test
-	public void testChooserDialogOnClickWithRequestCode() throws Throwable {
+	@Test public void testChooserDialogOnClickWithRequestCode() throws Throwable {
+		// Arrange:
 		final ContentIntent contentIntent = new ContentIntentImpl();
 		contentIntent.dialogTitle("Test Dialog");
 		final Intent intent = new Intent(Intent.ACTION_VIEW);
 		contentIntent.withHandler(new ContentIntent.ContentHandler("TestHandler1", intent).requestCode(1000));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(ACTIVITY_RULE.getActivity());
+		// Act:
 		ACTIVITY_RULE.runOnUiThread(new Runnable() {
 
-			@Override
-			public void run() {
+			@Override public void run() {
 				contentIntent.onShowChooserDialog(mockStarter);
 			}
 		});
+		// Assert:
 		waitForIdleSync();
 		onView(withText("TestHandler1")).perform(click());
 		verify(mockStarter, times(1)).startIntentForResult(intent, 1000);
@@ -153,8 +159,7 @@ public final class ContentIntentTest extends InstrumentedTestCase {
 
 	static final class ContentIntentImpl extends ContentIntent<ContentIntentImpl> {
 
-		@Override
-		public ContentIntentImpl withDefaultHandlers(@NonNull Context context) {
+		@Override public ContentIntentImpl withDefaultHandlers(@NonNull Context context) {
 			return this;
 		}
 	}

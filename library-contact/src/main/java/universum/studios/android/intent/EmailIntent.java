@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -42,6 +42,7 @@ import java.util.regex.Matcher;
  * or {@link #bcc(String...)}.
  *
  * @author Martin Albedinsky
+ * @since 1.0
  */
 public class EmailIntent extends BaseIntent<EmailIntent> {
 
@@ -83,27 +84,27 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	/**
 	 * Subject of an email to send.
 	 */
-	private CharSequence mSubject;
+	private CharSequence subject;
 
 	/**
 	 * Message of an email to send.
 	 */
-	private CharSequence mMessage;
+	private CharSequence message;
 
 	/**
 	 * Array with e-mail addresses to send e-mail to.
 	 */
-	private List<String> mAddresses;
+	private List<String> addresses;
 
 	/**
 	 * Array with e-mail addresses for carbon copy to send e-mail to.
 	 */
-	private List<String> mCcAddresses;
+	private List<String> ccAddresses;
 
 	/**
 	 * Array with e-mail addresses for blind carbon copy to send e-mail to.
 	 */
-	private List<String> mBccAddresses;
+	private List<String> bccAddresses;
 
 	/*
 	 * Constructors ================================================================================
@@ -121,12 +122,15 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @param address The desired e-mail address to add.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #to(String...)
 	 * @see #addresses()
 	 */
 	public EmailIntent to(@NonNull final String address) {
-		if (mAddresses == null) this.mAddresses = new ArrayList<>(1);
-		appendEmailAddress(mAddresses, address);
+		if (addresses == null) {
+			this.addresses = new ArrayList<>(1);
+		}
+		appendEmailAddress(addresses, address);
 		return this;
 	}
 
@@ -148,16 +152,17 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param addresses The desired set of e-mail addresses to add. May be {@code null} to clear the
 	 *                  current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #addresses()
 	 */
 	public EmailIntent to(@Nullable final List<String> addresses) {
 		if (addresses == null) {
-			this.mAddresses = null;
+			this.addresses = null;
 		} else {
-			if (mAddresses == null) {
-				this.mAddresses = new ArrayList<>(addresses.size());
+			if (this.addresses == null) {
+				this.addresses = new ArrayList<>(addresses.size());
 			}
-			appendEmailAddresses(mAddresses, addresses);
+			appendEmailAddresses(this.addresses, addresses);
 		}
 		return this;
 	}
@@ -167,14 +172,13 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @return List with e-mail addresses specified via one of <b>to(...)</b> methods or
 	 * {@link Collections#EMPTY_LIST} if there were no addresses specified yet.
+	 *
 	 * @see #to(String)
 	 * @see #to(String...)
 	 * @see #to(List)
 	 */
-	@NonNull
-	@SuppressWarnings("unchecked")
-	public List<String> addresses() {
-		return mAddresses == null ? Collections.EMPTY_LIST : new ArrayList<>(mAddresses);
+	@NonNull public List<String> addresses() {
+		return addresses == null ? Collections.<String>emptyList() : new ArrayList<>(addresses);
 	}
 
 	/**
@@ -185,12 +189,15 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @param address The desired e-mail address to add.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #cc(String...)
 	 * @see #ccAddresses()
 	 */
 	public EmailIntent cc(@NonNull final String address) {
-		if (mCcAddresses == null) this.mCcAddresses = new ArrayList<>(1);
-		appendEmailAddress(mCcAddresses, address);
+		if (ccAddresses == null){
+			this.ccAddresses = new ArrayList<>(1);
+		}
+		appendEmailAddress(ccAddresses, address);
 		return this;
 	}
 
@@ -212,18 +219,19 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param addresses The desired list of e-mail addresses to add. May be {@code null} to clear
 	 *                  the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #cc(String)
 	 * @see #cc(String...)
 	 * @see #ccAddresses()
 	 */
 	public EmailIntent cc(@Nullable final List<String> addresses) {
 		if (addresses == null) {
-			this.mCcAddresses = null;
+			this.ccAddresses = null;
 		} else {
-			if (mCcAddresses == null) {
-				this.mCcAddresses = new ArrayList<>(addresses.size());
+			if (ccAddresses == null) {
+				this.ccAddresses = new ArrayList<>(addresses.size());
 			}
-			appendEmailAddresses(mCcAddresses, addresses);
+			appendEmailAddresses(ccAddresses, addresses);
 		}
 		return this;
 	}
@@ -233,14 +241,13 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @return List with e-mail addresses specified via one of <b>cc(...)</b> methods or
 	 * {@link Collections#EMPTY_LIST} if there were no addresses specified yet.
+	 *
 	 * @see #cc(String)
 	 * @see #cc(String...)
 	 * @see #cc(List)
 	 */
-	@NonNull
-	@SuppressWarnings("unchecked")
-	public List<String> ccAddresses() {
-		return mCcAddresses == null ? Collections.EMPTY_LIST : new ArrayList<>(mCcAddresses);
+	@NonNull public List<String> ccAddresses() {
+		return ccAddresses == null ? Collections.<String>emptyList() : new ArrayList<>(ccAddresses);
 	}
 
 	/**
@@ -251,12 +258,15 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @param address The desired e-mail address to add.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #bcc(String...)
 	 * @see #bccAddresses()
 	 */
 	public EmailIntent bcc(@NonNull final String address) {
-		if (mBccAddresses == null) this.mBccAddresses = new ArrayList<>(1);
-		appendEmailAddress(mBccAddresses, address);
+		if (bccAddresses == null) {
+			this.bccAddresses = new ArrayList<>(1);
+		}
+		appendEmailAddress(bccAddresses, address);
 		return this;
 	}
 
@@ -278,18 +288,19 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @param addresses The desired list of e-mail addresses to add. May be {@code null} to clear
 	 *                  the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #bcc(String)
 	 * @see #bcc(String...)
 	 * @see #bccAddresses()
 	 */
 	public EmailIntent bcc(@Nullable final List<String> addresses) {
 		if (addresses == null) {
-			this.mBccAddresses = null;
+			this.bccAddresses = null;
 		} else {
-			if (mBccAddresses == null) {
-				this.mBccAddresses = new ArrayList<>(addresses.size());
+			if (bccAddresses == null) {
+				this.bccAddresses = new ArrayList<>(addresses.size());
 			}
-			appendEmailAddresses(mBccAddresses, addresses);
+			appendEmailAddresses(bccAddresses, addresses);
 		}
 		return this;
 	}
@@ -299,25 +310,25 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @return List with e-mail addresses specified via one of <b>bcc(...)</b> methods or
 	 * {@link Collections#EMPTY_LIST} if there were no addresses specified yet.
+	 *
 	 * @see #bcc(String)
 	 * @see #bcc(String...)
 	 * @see #bcc(List)
 	 */
-	@NonNull
-	@SuppressWarnings("unchecked")
-	public List<String> bccAddresses() {
-		return mBccAddresses == null ? Collections.EMPTY_LIST : new ArrayList<>(mBccAddresses);
+	@NonNull public List<String> bccAddresses() {
+		return bccAddresses == null ? Collections.<String>emptyList() : new ArrayList<>(bccAddresses);
 	}
 
 	/**
 	 * Set a subject for e-mail to send. See {@link Intent#EXTRA_SUBJECT} for more info.
 	 *
 	 * @param subject The desired subject text. May be {@code null} to clear the current one.
-	 * @return This intent builder to allow methods chaining.en
+	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #subject()
 	 */
 	public EmailIntent subject(@NonNull final CharSequence subject) {
-		this.mSubject = subject;
+		this.subject = subject;
 		return this;
 	}
 
@@ -325,11 +336,11 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * Returns the subject for e-mail to send.
 	 *
 	 * @return Subject of e-mail or empty text if not specified yet.
+	 *
 	 * @see #subject(CharSequence)
 	 */
-	@NonNull
-	public CharSequence subject() {
-		return mSubject == null ? "" : mSubject;
+	@NonNull public CharSequence subject() {
+		return subject == null ? "" : subject;
 	}
 
 	/**
@@ -337,10 +348,11 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 *
 	 * @param message The desired message text. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #message()
 	 */
 	public EmailIntent message(@NonNull final CharSequence message) {
-		this.mMessage = message;
+		this.message = message;
 		return this;
 	}
 
@@ -348,36 +360,33 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * Returns the message for e-mail to send.
 	 *
 	 * @return Message of e-mail or empty text if not specified yet.
+	 *
 	 * @see #message(CharSequence)
 	 */
-	@NonNull
-	public CharSequence message() {
-		return mMessage == null ? "" : mMessage;
+	@NonNull public CharSequence message() {
+		return message == null ? "" : message;
 	}
 
 	/**
 	 */
-	@Override
-	protected void ensureCanBuildOrThrow() {
+	@Override protected void ensureCanBuildOrThrow() {
 		super.ensureCanBuildOrThrow();
-		if (mAddresses == null) {
+		if (addresses == null) {
 			throw cannotBuildIntentException("No e-mail address/-es specified.");
 		}
 	}
 
 	/**
 	 */
-	@NonNull
-	@Override
-	protected Intent onBuild(@NonNull final Context context) {
-		final Intent intent = new Intent(Intent.ACTION_SENDTO, createUri(mAddresses));
-		intent.putExtra(Intent.EXTRA_SUBJECT, mSubject);
-		intent.putExtra(Intent.EXTRA_TEXT, mMessage);
-		if (mCcAddresses != null) {
-			intent.putExtra(Intent.EXTRA_CC, addressesToArray(mCcAddresses));
+	@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
+		final Intent intent = new Intent(Intent.ACTION_SENDTO, createUri(addresses));
+		intent.putExtra(Intent.EXTRA_SUBJECT, subject);
+		intent.putExtra(Intent.EXTRA_TEXT, message);
+		if (ccAddresses != null) {
+			intent.putExtra(Intent.EXTRA_CC, addressesToArray(ccAddresses));
 		}
-		if (mBccAddresses != null) {
-			intent.putExtra(Intent.EXTRA_BCC, addressesToArray(mBccAddresses));
+		if (bccAddresses != null) {
+			intent.putExtra(Intent.EXTRA_BCC, addressesToArray(bccAddresses));
 		}
 		return intent;
 	}
@@ -390,8 +399,7 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 	 * @return Created Uri containing the specified addresses or {@code null} if the given list of
 	 * addresses is empty.
 	 */
-	@Nullable
-	public static Uri createUri(@NonNull final List<String> addresses) {
+	@Nullable public static Uri createUri(@NonNull final List<String> addresses) {
 		final int n = addresses.size();
 		if (n == 0) {
 			return null;
@@ -420,9 +428,8 @@ public class EmailIntent extends BaseIntent<EmailIntent> {
 
 	/**
 	 */
-	@Override
-	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
-		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));
+	@Override protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
+		return super.onStartWith(starter, Intent.createChooser(intent, dialogTitle));
 	}
 
 	/**

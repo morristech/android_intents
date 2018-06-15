@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -43,165 +43,172 @@ import static org.mockito.Mockito.when;
  */
 public final class BaseIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testDialogTitleDefault() {
-		assertThat(new IntentImpl().dialogTitle().toString(), is("Choose"));
-	}
-
-	@Test
-	public void testDialogTitle() {
+	@Test public void testInstantiation() {
+		// Act:
 		final BaseIntent intent = new IntentImpl();
-		intent.dialogTitle("Choose provider");
-		assertThat(intent.dialogTitle().toString(), is("Choose provider"));
-	}
-
-	@Test
-	public void testDialogTitleWithNullValue() {
-		final BaseIntent intent = new IntentImpl();
-		intent.dialogTitle(null);
-		assertThat(intent.dialogTitle().toString(), is(""));
-	}
-
-	@Test
-	public void testActivityNotFoundMessage() {
-		final BaseIntent intent = new IntentImpl();
-		intent.activityNotFoundMessage("No activity found to support launched request");
-		assertThat(intent.activityNotFoundMessage().toString(), is("No activity found to support launched request"));
-	}
-
-	@Test
-	public void testActivityNotFoundMessageWithNullValue() {
-		final BaseIntent intent = new IntentImpl();
-		intent.activityNotFoundMessage(null);
-		assertThat(intent.activityNotFoundMessage().toString(), is(""));
-	}
-
-	@Test
-	public void testActivityNotFoundMessageDefault() {
-		final BaseIntent intent = new IntentImpl();
-		assertThat(intent.activityNotFoundMessage().toString(), is("No application found to handle this action"));
-	}
-
-	@Test
-	public void testTransitionsDefault() {
-		final BaseIntent intent = new IntentImpl();
+		// Assert:
+		assertThat(intent.dialogTitle(), is((CharSequence) "Choose"));
 		assertThat(intent.enterTransition(), is(0));
 		assertThat(intent.exitTransition(), is(0));
+		assertThat(intent.activityNotFoundMessage(), is((CharSequence) "No application found to handle this action"));
 	}
 
-	@Test
-	public void testEnterTransition() {
+	@Test public void testDialogTitle() {
+		// Arrange:
+		final BaseIntent intent = new IntentImpl();
+		// Act:
+		intent.dialogTitle("Choose provider");
+		// Assert:
+		assertThat(intent.dialogTitle(), is((CharSequence) "Choose provider"));
+	}
+
+	@Test public void testDialogTitleWithNullValue() {
+		// Arrange:
+		final BaseIntent intent = new IntentImpl();
+		// Act:
+		intent.dialogTitle(null);
+		// Assert:
+		assertThat(intent.dialogTitle(), is((CharSequence) ""));
+	}
+
+	@Test public void testActivityNotFoundMessage() {
+		// Arrange:
+		final BaseIntent intent = new IntentImpl();
+		// Act:
+		intent.activityNotFoundMessage("No activity found to support launched request");
+		// Assert:
+		assertThat(intent.activityNotFoundMessage(), is((CharSequence) "No activity found to support launched request"));
+	}
+
+	@Test public void testActivityNotFoundMessageWithNullValue() {
+		// Arrange:
+		final BaseIntent intent = new IntentImpl();
+		// Act:
+		intent.activityNotFoundMessage(null);
+		// Assert:
+		assertThat(intent.activityNotFoundMessage(), is((CharSequence) ""));
+	}
+
+	@Test public void testEnterTransition() {
+		// Arrange:
 		final BaseIntent intent = new IntentImpl();
 		final int animationResource = android.R.anim.fade_in;
+		// Act:
 		intent.enterTransition(animationResource);
+		// Assert:
 		assertThat(intent.enterTransition(), is(animationResource));
 	}
 
-	@Test
-	public void testExitTransition() {
+	@Test public void testExitTransition() {
+		// Arrange:
 		final BaseIntent intent = new IntentImpl();
 		final int animationResource = android.R.anim.fade_in;
+		// Act:
 		intent.exitTransition(animationResource);
+		// Assert:
 		assertThat(intent.exitTransition(), is(animationResource));
 	}
 
-	@Test
-	public void testTransitions() {
+	@Test public void testTransitions() {
+		// Arrange:
 		final BaseIntent intent = new IntentImpl();
 		final int enterAnimationResource = android.R.anim.fade_in;
 		final int exitAnimationResource = android.R.anim.fade_out;
+		// Act:
 		intent.transitions(enterAnimationResource, exitAnimationResource);
+		// Assert:
 		assertThat(intent.enterTransition(), is(enterAnimationResource));
 		assertThat(intent.exitTransition(), is(exitAnimationResource));
 	}
 
-	@Test
-	public void testTransitionsWithZeroAnimRes() {
+	@Test public void testTransitionsWithZeroAnimRes() {
+		// Arrange:
 		final BaseIntent intent = new IntentImpl();
+		// Act:
 		intent.transitions(0, 0);
+		// Assert:
 		assertThat(intent.enterTransition(), is(0));
 		assertThat(intent.exitTransition(), is(0));
 	}
 
-	@Test
-	public void testTransitionsWithNegativeAnimRes() {
+	@Test public void testTransitionsWithCombinedAnimRes() {
+		// Arrange:
 		final BaseIntent intent = new IntentImpl();
-		intent.transitions(-1, -1);
+		// Act + Assert:
+		intent.transitions(0, android.R.anim.fade_out);
 		assertThat(intent.enterTransition(), is(0));
+		assertThat(intent.exitTransition(), is(android.R.anim.fade_out));
+		intent.transitions(android.R.anim.fade_in, 0);
+		assertThat(intent.enterTransition(), is(android.R.anim.fade_in));
 		assertThat(intent.exitTransition(), is(0));
 	}
 
-	@Test
-	public void testTransitionsWithCombinedAnimRes() {
-		final BaseIntent intent = new IntentImpl();
-		intent.transitions(0, -1);
-		assertThat(intent.enterTransition(), is(0));
-		assertThat(intent.exitTransition(), is(0));
-		intent.transitions(-1, 0);
-		assertThat(intent.enterTransition(), is(0));
-		assertThat(intent.exitTransition(), is(0));
-	}
-
-	@Test
-	public void testNotifyActivityNotFound() {
+	@Test public void testNotifyActivityNotFound() {
+		// Arrange:
 		final Activity activity = Robolectric.buildActivity(TestActivity.class).create().start().resume().get();
+		// Act:
 		new IntentImpl().notifyActivityNotFound(activity);
 	}
 
-	@Test
-	public void testStartWithUnavailableActivity() {
+	@Test public void testStartWithUnavailableActivity() {
+		// Arrange:
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		when(mockStarter.getContext()).thenReturn(mApplication);
-		new BaseIntent() {
+		when(mockStarter.getContext()).thenReturn(application);
+		final BaseIntent intent = new BaseIntent() {
 
-			@NonNull
-			@Override
-			protected Intent onBuild(@NonNull Context context) {
+			@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
 				return new Intent();
 			}
-		}.startWith(mockStarter);
+		};
+		// Act:
+		intent.startWith(mockStarter);
+		// Assert:
 		verify(mockStarter, times(0)).startIntent(any(Intent.class));
 		verify(mockStarter, times(0)).overridePendingTransition(anyInt(), anyInt());
 	}
 
-	@Test
-	public void testOnStartWithEnterTransition() {
+	@Test public void testOnStartWithEnterTransition() {
+		// Arrange:
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.enterTransition(android.R.anim.fade_in);
-		final Intent intent = baseIntent.build(mApplication);
+		final Intent intent = baseIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
+		// Act:
 		baseIntent.onStartWith(mockStarter, intent);
-		verify(mockStarter, times(1)).startIntent(intent);
-		verify(mockStarter, times(1)).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
+		// Assert:
+		verify(mockStarter).startIntent(intent);
+		verify(mockStarter).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
 	}
 
-	@Test
-	public void testOnStartWithExitTransition() {
+	@Test public void testOnStartWithExitTransition() {
+		// Arrange:
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.exitTransition(android.R.anim.fade_out);
-		final Intent intent = baseIntent.build(mApplication);
+		final Intent intent = baseIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
+		// Act:
 		baseIntent.onStartWith(mockStarter, intent);
-		verify(mockStarter, times(1)).startIntent(intent);
-		verify(mockStarter, times(1)).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
+		// Assert:
+		verify(mockStarter).startIntent(intent);
+		verify(mockStarter).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
 	}
 
-	@Test
-	public void testOnStartWithBothTransitions() {
+	@Test public void testOnStartWithBothTransitions() {
+		// Arrange:
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.transitions(android.R.anim.fade_in, android.R.anim.fade_out);
-		final Intent intent = baseIntent.build(mApplication);
+		final Intent intent = baseIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
+		// Act:
 		baseIntent.onStartWith(mockStarter, intent);
-		verify(mockStarter, times(1)).startIntent(intent);
-		verify(mockStarter, times(1)).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
+		// Assert:
+		verify(mockStarter).startIntent(intent);
+		verify(mockStarter).overridePendingTransition(baseIntent.enterTransition(), baseIntent.exitTransition());
 	}
 
 	static final class IntentImpl extends BaseIntent<IntentImpl> {
 
-		@NonNull
-		@Override
-		protected Intent onBuild(@NonNull Context context) {
+		@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
 			return new Intent(Intent.ACTION_VIEW).putExtra(Intent.EXTRA_TEXT, "Content");
 		}
 	}

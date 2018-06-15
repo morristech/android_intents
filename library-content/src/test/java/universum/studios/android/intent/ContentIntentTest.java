@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -52,8 +52,10 @@ import static universum.studios.android.intent.ContentTests.assertThatBuildThrow
  */
 public final class ContentIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testCreateContentFileTimeStamp() {
+	@Test public void testCreateContentFileTimeStamp() {
+		// Act:
+
+		// Assert:
 		assertThat(
 				ContentIntent.createContentFileTimeStamp(),
 				is(new SimpleDateFormat(ContentIntent.CONTENT_FILE_TIME_STAMP_FORMAT, Locale.getDefault()).format(new Date()))
@@ -67,198 +69,226 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		assertEquals("cat.1", ContentIntent.appendDefaultFileSuffixIfNotPresented("cat.1", ".jpg"));
 	}
 
-	@Test
-	public void testHandlersDefault() {
-		assertThat(new ContentIntentImpl().handlers(), is(Collections.EMPTY_LIST));
+	@Test public void testInstantiation() {
+		// Act:
+		final ContentIntent intent = new ContentIntentImpl();
+		// Assert:
+		assertThat(intent.handlers(), is(Collections.EMPTY_LIST));
+		assertThat(intent.uri(), is(nullValue()));
+		assertThat(intent.dataType(), is(nullValue()));
 	}
 
-	@Test
 	@SuppressWarnings("unchecked")
-	public void testWithHandlers() {
+	@Test public void testWithHandlers() {
+		// Arrange:
+		final ContentIntent.ContentHandler handlerFirst = new ContentIntent.ContentHandler("TestHandler#1", new Intent());
+		final ContentIntent.ContentHandler handlerSecond = new ContentIntent.ContentHandler("TestHandler#2", new Intent());
 		final ContentIntent intent = new ContentIntentImpl();
-		intent.withHandlers(
-				new ContentIntent.ContentHandler("TestHandler1", new Intent()),
-				new ContentIntent.ContentHandler("TestHandler2", new Intent())
-		);
+		// Act:
+		intent.withHandlers(handlerFirst, handlerSecond);
+		// Assert:
 		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(2));
-		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
-		assertThat(handlers.get(1).name().toString(), is("TestHandler2"));
+		assertThat(handlers.get(0), is(handlerFirst));
+		assertThat(handlers.get(1), is(handlerSecond));
 	}
 
-	@Test
 	@SuppressWarnings("unchecked")
-	public void testWithHandlersMultiple() {
+	@Test public void testWithHandlersMultiple() {
+		// Arrange:
+		final ContentIntent.ContentHandler handlerFirst = new ContentIntent.ContentHandler("TestHandler#1", new Intent());
+		final ContentIntent.ContentHandler handlerSecond = new ContentIntent.ContentHandler("TestHandler#2", new Intent());
+		final ContentIntent.ContentHandler handlerThird = new ContentIntent.ContentHandler("TestHandler#3", new Intent());
+		final ContentIntent.ContentHandler handlerFourth = new ContentIntent.ContentHandler("TestHandler#4", new Intent());
 		final ContentIntent intent = new ContentIntentImpl();
-		intent.withHandlers(
-				new ContentIntent.ContentHandler("TestHandler1", new Intent()),
-				new ContentIntent.ContentHandler("TestHandler2", new Intent())
-		);
-		intent.withHandlers(
-				new ContentIntent.ContentHandler("TestHandler3", new Intent()),
-				new ContentIntent.ContentHandler("TestHandler4", new Intent())
-		);
+		// Act:
+		intent.withHandlers(handlerFirst, handlerSecond);
+		intent.withHandlers(handlerThird, handlerFourth);
+		// Assert:
 		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(4));
-		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
-		assertThat(handlers.get(1).name().toString(), is("TestHandler2"));
-		assertThat(handlers.get(2).name().toString(), is("TestHandler3"));
-		assertThat(handlers.get(3).name().toString(), is("TestHandler4"));
+		assertThat(handlers.get(0), is(handlerFirst));
+		assertThat(handlers.get(1), is(handlerSecond));
+		assertThat(handlers.get(2), is(handlerThird));
+		assertThat(handlers.get(3), is(handlerFourth));
 	}
 
-	@Test
-	public void testWithEmptyHandlers() {
+	@Test public void testWithEmptyHandlers() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
+		// Act:
 		intent.withHandlers(new ArrayList<ContentIntent.ContentHandler>(0));
+		// Assert:
 		assertThat(intent.handlers(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testWithNullHandlers() {
+	@Test public void testWithNullHandlers() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.withHandlers(new ArrayList<ContentIntent.ContentHandler>(0));
+		// Act:
 		intent.withHandlers((List<ContentIntent.ContentHandler>) null);
+		// Assert:
 		assertThat(intent.handlers(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
 	@SuppressWarnings("unchecked")
-	public void testWithHandler() {
+	@Test public void testWithHandler() {
+		// Arrange:
+		final ContentIntent.ContentHandler handlerFirst = new ContentIntent.ContentHandler("TestHandler#1", new Intent());
+		final ContentIntent.ContentHandler handlerSecond = new ContentIntent.ContentHandler("TestHandler#2", new Intent());
 		final ContentIntent intent = new ContentIntentImpl();
-		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
-		intent.withHandler(new ContentIntent.ContentHandler("TestHandler2", new Intent()));
+		// Act:
+		intent.withHandler(handlerFirst);
+		intent.withHandler(handlerSecond);
+		// Assert:
 		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(2));
-		assertThat(handlers.get(0).name().toString(), is("TestHandler1"));
-		assertThat(handlers.get(1).name().toString(), is("TestHandler2"));
+		assertThat(handlers.get(0), is(handlerFirst));
+		assertThat(handlers.get(1), is(handlerSecond));
 	}
 
-	@Test
-	public void testUriDefault() {
-		assertThat(new ContentIntentImpl().uri(), is(nullValue()));
-	}
-
-	@Test
-	public void testInputFile() {
+	@Test public void testInputFile() {
+		// Arrange:
+		final File inputFile = new File("input.tmp");
 		final ContentIntent intent = new ContentIntentImpl();
-		intent.input(new File("TestFile"));
+		// Act:
+		intent.input(inputFile);
+		// Assert:
 		final Uri input = intent.uri();
 		assertThat(input, is(not(nullValue())));
-		assertThat(input, is(Uri.fromFile(new File("TestFile"))));
+		assertThat(input, is(Uri.fromFile(inputFile)));
 	}
 
-	@Test
-	public void testInputNullFile() {
+	@Test public void testInputNullFile() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
+		// Act:
 		intent.input((File) null);
+		// Assert:
 		assertThat(intent.uri(), is(nullValue()));
 	}
 
-	@Test
-	public void testInputUri() {
+	@Test public void testInputUri() {
+		// Arrange:
+		final Uri inputUri = Uri.parse("content://android/data/images/lion.jpg");
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.dataType(MimeType.IMAGE_JPEG);
-		intent.input(Uri.parse("content://android/data/images/lion.jpg"));
+		// Act:
+		intent.input(inputUri);
+		// Assert:
 		final Uri input = intent.uri();
 		assertThat(input, is(not(nullValue())));
-		assertThat(input, is(Uri.parse("content://android/data/images/lion.jpg")));
+		assertThat(input, is(inputUri));
 		// Data type is null as we did not specify it after the input.
 		assertThat(intent.dataType(), is(nullValue()));
 	}
 
-	@Test
-	public void testInputNullUri() {
+	@Test public void testInputNullUri() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
+		// Act:
 		intent.input((Uri) null);
+		// Assert:
 		assertThat(intent.uri(), is(nullValue()));
 	}
 
-	@Test
-	public void testOutputFile() {
+	@Test public void testOutputFile() {
+		// Arrange:
+		final File outputFile = new File("output.tmp");
 		final ContentIntent intent = new ContentIntentImpl();
-		intent.output(new File("TestFile"));
+		// Act:
+		intent.output(outputFile);
+		// Assert:
 		final Uri output = intent.uri();
 		assertThat(output, is(not(nullValue())));
-		assertThat(output, is(Uri.fromFile(new File("TestFile"))));
+		assertThat(output, is(Uri.fromFile(outputFile)));
 	}
 
-	@Test
-	public void testOutputNullFile() {
+	@Test public void testOutputNullFile() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
+		// Act:
 		intent.output((File) null);
+		// Assert:
 		assertThat(intent.uri(), is(nullValue()));
 	}
 
-	@Test
-	public void testOutputUri() {
+	@Test public void testOutputUri() {
+		// Arrange:
+		final Uri outputUri = Uri.parse("content://android/data/images/lion.jpg");
 		final ContentIntent intent = new ContentIntentImpl();
-		intent.output(Uri.parse("content://android/data/images/lion.jpg"));
+		// Act:
+		intent.output(outputUri);
+		// Assert:
 		final Uri output = intent.uri();
 		assertThat(output, is(not(nullValue())));
-		assertThat(output, is(Uri.parse("content://android/data/images/lion.jpg")));
+		assertThat(output, is(output));
 		assertThat(intent.dataType(), is(nullValue()));
 	}
 
-	@Test
-	public void testOutputNullUri() {
+	@Test public void testOutputNullUri() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
+		// Act:
 		intent.output((Uri) null);
+		// Assert:
 		assertThat(intent.uri(), is(nullValue()));
 	}
 
-	@Test
-	public void testDataTypeDefault() {
-		assertThat(new ContentIntentImpl().dataType(), is(nullValue()));
-	}
-
-	@Test
-	public void testDataType() {
+	@Test public void testDataType() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
+		// Act:
 		intent.dataType(MimeType.AUDIO_MP3);
+		// Assert:
 		assertThat(intent.dataType(), is(MimeType.AUDIO_MP3));
 	}
 
-	@Test
-	public void testBuildWithInputUri() {
+	@Test public void testBuildWithInputUri() {
+		// Arrange:
 		final ContentIntent contentIntent = new ContentIntentImpl();
 		contentIntent.input(Uri.parse("content://android/data/images/lion.jpg"));
 		contentIntent.dataType(MimeType.IMAGE_JPEG);
-		final Intent intent = contentIntent.build(mApplication);
+		// Act:
+		final Intent intent = contentIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("content://android/data/images/lion.jpg")));
 		assertThat(intent.getType(), is(MimeType.IMAGE_JPEG));
 	}
 
-	@Test
-	public void testBuildWithOutputUri() {
+	@Test public void testBuildWithOutputUri() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.output(Uri.parse("content://android/data/images/lion.jpg"));
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				intent,
 				"No input Uri specified."
 		);
 	}
 
-	@Test
-	public void testBuildWithoutUri() {
+	@Test public void testBuildWithoutUri() {
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				new ContentIntentImpl(),
 				"No input Uri specified."
 		);
 	}
 
-	@Test
-	public void testBuildWithoutDataType() {
+	@Test public void testBuildWithoutDataType() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.input(Uri.parse("content://android/data/images/lion.jpg"));
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				intent,
 				"No MIME type specified for input Uri."
 		);
@@ -266,36 +296,41 @@ public final class ContentIntentTest extends RobolectricTestCase {
 
 	@Test(expected = IllegalStateException.class)
 	public void testBuildWithHandlers() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
-		intent.build(mApplication);
+		// Act:
+		intent.build(application);
 	}
 
-	@Test
-	public void testStartWithHandlers() throws Throwable {
+	@Test public void testStartWithHandlers() {
+		// Arrange:
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		when(mockStarter.getContext()).thenReturn(mApplication);
+		when(mockStarter.getContext()).thenReturn(application);
+		// Act:
 		intent.startWith(mockStarter);
+		// Assert:
 		verify(mockStarter, times(0)).startIntent(any(Intent.class));
 	}
 
-	@Test
-	public void testOnStartWith() {
+	@Test public void testOnStartWith() {
+		// Arrange:
 		final ContentIntent contentIntent = new ContentIntentImpl();
 		contentIntent.input(Uri.EMPTY);
 		contentIntent.dataType(MimeType.TEXT_HTML);
-		final Intent intent = contentIntent.build(mApplication);
+		final Intent intent = contentIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
+		// Act:
 		contentIntent.onStartWith(mockStarter, intent);
-		verify(mockStarter, times(1)).startIntent(any(Intent.class));
+		// Assert:
+		verify(mockStarter).startIntent(any(Intent.class));
 	}
 
 	static final class ContentIntentImpl extends ContentIntent<ContentIntentImpl> {
 
-		@Override
-		public ContentIntentImpl withDefaultHandlers(@NonNull Context context) {
+		@Override public ContentIntentImpl withDefaultHandlers(@NonNull final Context context) {
 			return this;
 		}
 	}

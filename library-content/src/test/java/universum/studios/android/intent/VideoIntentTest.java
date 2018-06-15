@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -30,8 +30,8 @@ import java.util.List;
 
 import universum.studios.android.test.local.RobolectricTestCase;
 
-import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
@@ -41,51 +41,69 @@ import static org.hamcrest.core.IsNull.nullValue;
  */
 public final class VideoIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testCreateGalleryIntent() {
+	@Test public void testCreateGalleryIntent() {
+		// Act:
 		final Intent intent = VideoIntent.createGalleryIntent();
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_GET_CONTENT));
 		assertThat(intent.getType(), is(MimeType.VIDEO));
 	}
 
-	@Test
-	public void testCreateCameraIntent() {
+	@Test public void testCreateCameraIntent() {
+		// Act:
 		final Intent intent = VideoIntent.createCameraIntent();
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
 		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
 
-	@Test
-	public void testCreateCameraIntentWithOutputFile() {
-		final Intent intent = VideoIntent.createCameraIntent(new File("content://android/data/video", "camera-video.mp4"));
+	@Test public void testCreateCameraIntentWithOutputFile() {
+		// Arrange:
+		final File outputFile = new File("content://android/data/video", "camera-video.mp4");
+		// Act:
+		final Intent intent = VideoIntent.createCameraIntent(outputFile);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
-		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("content://android/data/video", "camera-video.mp4"))));
+		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(outputFile)));
 	}
 
-	@Test
-	public void testCreateCameraIntentWithNullOutputFile() {
+	@Test public void testCreateCameraIntentWithNullOutputFile() {
+		// Act:
 		final Intent intent = VideoIntent.createCameraIntent((File) null);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
 		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
 
-	@Test
-	public void testCreateCameraIntentWithOutputUri() {
-		final Intent intent = VideoIntent.createCameraIntent(Uri.parse("content://android/data/video/camera-video.mp4"));
+	@Test public void testCreateCameraIntentWithOutputUri() {
+		// Arrange:
+		final Uri outputUri = Uri.parse("content://android/data/video/camera-video.mp4");
+		// Act:
+		final Intent intent = VideoIntent.createCameraIntent(outputUri);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
-		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.parse("content://android/data/video/camera-video.mp4")));
+		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(outputUri));
 	}
 
-	@Test
-	public void testWithDefaultHandlers() {
+	@Test public void testInstantiation() {
+		// Act:
 		final VideoIntent intent = new VideoIntent();
-		assertEquals(Collections.EMPTY_LIST, intent.handlers());
-		intent.withDefaultHandlers(mApplication);
+		// Assert:
+		assertThat(intent.handlers(), is(Collections.EMPTY_LIST));
+		assertThat(intent.dataType(), is(nullValue()));
+	}
+
+	@Test public void testWithDefaultHandlers() {
+		// Arrange:
+		final VideoIntent intent = new VideoIntent();
+		// Act:
+		intent.withDefaultHandlers(application);
+		// Assert:
 		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
 		assertThat(handlers, is(not(nullValue())));
 		assertThat(handlers.size(), is(2));
@@ -97,52 +115,62 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		assertThat(cameraHandler.requestCode(), is(VideoIntent.REQUEST_CODE_CAMERA));
 	}
 
-	@Test
-	public void testInput() {
+	@Test public void testInput() {
+		// Arrange:
 		final VideoIntent intent = new VideoIntent();
-		assertThat(intent.dataType(), is(nullValue()));
-		intent.input(new File("file.tmp"));
+		// Act:
+		intent.input(new File("input.tmp"));
+		// Assert:
 		assertThat(intent.dataType(), is(MimeType.VIDEO));
 	}
 
-	@Test
-	public void testInputWithNullValue() {
+	@Test public void testInputWithNullValue() {
+		// Arrange:
 		final VideoIntent intent = new VideoIntent();
-		intent.input(new File("file.tmp"));
-		assertThat(intent.dataType(), is(not(nullValue())));
+		intent.input(new File("input.tmp"));
+		assertThat(intent.dataType(), is(notNullValue()));
+		// Act:
 		intent.input((Uri) null);
+		// Assert:
 		assertThat(intent.uri(), is(nullValue()));
 		assertThat(intent.dataType(), is(nullValue()));
 	}
 
-	@Test
-	public void testOutputBeforeWithDefaultHandlers() {
+	@Test public void testOutputBeforeWithDefaultHandlers() {
+		// Arrange:
+		final File outputFile = new File("output.tmp");
 		final VideoIntent intent = new VideoIntent();
-		intent.output(new File("file.tmp"));
-		intent.withDefaultHandlers(mApplication);
+		// Act:
+		intent.output(outputFile);
+		intent.withDefaultHandlers(application);
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
-		assertThat(cameraHandler.intent().<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("file.tmp"))));
+		assertThat(cameraHandler.intent().<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(outputFile)));
 	}
 
-	@Test
-	public void testOutputAfterWithDefaultHandlers() {
+	@Test public void testOutputAfterWithDefaultHandlers() {
+		// Arrange:
+		final File outputFile = new File("output.tmp");
 		final VideoIntent intent = new VideoIntent();
-		intent.withDefaultHandlers(mApplication);
+		intent.withDefaultHandlers(application);
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		final Intent cameraIntent = cameraHandler.intent();
 		assertThat(cameraIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
-		intent.output(new File("file.tmp"));
-		assertThat(cameraIntent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(new File("file.tmp"))));
+		// Act:
+		intent.output(outputFile);
+		// Assert:
+		assertThat(cameraIntent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(outputFile)));
 	}
 
-	@Test
-	public void testNullOutputAfterWithDefaultHandlers() {
+	@Test public void testNullOutputAfterWithDefaultHandlers() {
+		// Arrange:
 		final VideoIntent intent = new VideoIntent();
-		intent.withDefaultHandlers(mApplication);
-		intent.output(new File("file.tmp"));
+		intent.withDefaultHandlers(application);
+		intent.output(new File("output.tmp"));
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		final Intent cameraIntent = cameraHandler.intent();
+		// Act:
 		intent.output((Uri) null);
+		// Assert:
 		assertThat(cameraIntent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
 }

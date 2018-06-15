@@ -1,20 +1,20 @@
 /*
- * =================================================================================================
- *                             Copyright (C) 2016 Universum Studios
- * =================================================================================================
- *         Licensed under the Apache License, Version 2.0 or later (further "License" only).
+ * *************************************************************************************************
+ *                                 Copyright 2016 Universum Studios
+ * *************************************************************************************************
+ *                  Licensed under the Apache License, Version 2.0 (the "License")
  * -------------------------------------------------------------------------------------------------
- * You may use this file only in compliance with the License. More details and copy of this License
- * you may obtain at
+ * You may not use this file except in compliance with the License. You may obtain a copy of the
+ * License at
  *
- * 		http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * You can redistribute, modify or publish any part of the code written within this file but as it
- * is described in the License, the software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES or CONDITIONS OF ANY KIND.
+ * Unless required by applicable law or agreed to in writing, software distributed under the License
+ * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
+ * or implied.
  *
  * See the License for the specific language governing permissions and limitations under the License.
- * =================================================================================================
+ * *************************************************************************************************
  */
 package universum.studios.android.intent;
 
@@ -35,7 +35,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static universum.studios.android.intent.ContactTests.assertThatBuildThrowsExceptionWithMessage;
 
@@ -44,21 +43,29 @@ import static universum.studios.android.intent.ContactTests.assertThatBuildThrow
  */
 public final class EmailIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testUriScheme() {
+	@Test public void testUriScheme() {
+		// Assert:
 		assertThat(EmailIntent.URI_SCHEME, is("mailto"));
 	}
 
-	@Test
-	public void testAddressesDefault() {
-		assertThat(new EmailIntent().addresses(), is(Collections.EMPTY_LIST));
+	@Test public void testInstantiation() {
+		// Act:
+		final EmailIntent intent = new EmailIntent();
+		// Assert:
+		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.ccAddresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
+		assertThat(intent.subject(), is((CharSequence) ""));
+		assertThat(intent.message(), is((CharSequence) ""));
 	}
 
-	@Test
-	public void testToSingle() {
+	@Test public void testToSingle() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.to("test1@android.com");
 		intent.to("test2@android.com");
+		// Assert:
 		final List<String> emailAddresses = intent.addresses();
 		assertThat(emailAddresses.size(), is(2));
 		assertThat(emailAddresses.get(0), is("test1@android.com"));
@@ -67,11 +74,13 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testToMultiple() {
+	@Test public void testToMultiple() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.to("test1@android.com", "test2@android.com");
 		intent.to("test3@android.com", "test4@android.com");
+		// Assert:
 		final List<String> emailAddresses = intent.addresses();
 		assertThat(emailAddresses.size(), is(4));
 		assertThat(emailAddresses.get(0), is("test1@android.com"));
@@ -80,38 +89,41 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(emailAddresses.get(3), is("test4@android.com"));
 	}
 
-	@Test
-	public void testToWithEmptyList() {
+	@Test public void testToWithEmptyList() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.to(new ArrayList<String>(0));
+		// Assert:
 		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testToWithNullList() {
+	@Test public void testToWithNullList() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.to("test1@android.com", "test2@android.com");
 		intent.to((List<String>) null);
+		// Assert:
 		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testToWithWrongAddress() {
+	@Test public void testToWithWrongAddress() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.to("test@android");
+		// Assert:
 		assertThat(intent.addresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testCcAddressesDefault() {
-		assertThat(new EmailIntent().ccAddresses(), is(Collections.EMPTY_LIST));
-	}
-
-	@Test
-	public void testCcSingle() {
+	@Test public void testCcSingle() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.cc("test1.cc@android.com");
 		intent.cc("test2.cc@android.com");
+		// Assert:
 		final List<String> ccEmailAddresses = intent.ccAddresses();
 		assertThat(ccEmailAddresses.size(), is(2));
 		assertThat(ccEmailAddresses.get(0), is("test1.cc@android.com"));
@@ -120,11 +132,13 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testCcMultiple() {
+	@Test public void testCcMultiple() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.cc("test.cc1@android.com", "test.cc2@android.com");
 		intent.cc("test.cc3@android.com", "test.cc4@android.com");
+		// Assert:
 		final List<String> ccEmailAddresses = intent.ccAddresses();
 		assertThat(ccEmailAddresses.size(), is(4));
 		assertThat(ccEmailAddresses.get(0), is("test.cc1@android.com"));
@@ -133,31 +147,32 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(ccEmailAddresses.get(3), is("test.cc4@android.com"));
 	}
 
-	@Test
-	public void testCcWithEmptyList() {
+	@Test public void testCcWithEmptyList() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.cc(new ArrayList<String>(0));
+		// Assert:
 		assertThat(intent.ccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testCcWithNullList() {
+	@Test public void testCcWithNullList() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.cc("test.cc1@android.com", "test.cc2@android.com");
 		intent.cc((List<String>) null);
+		// Assert:
 		assertThat(intent.ccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testBccAddressesDefault() {
-		assertThat(new EmailIntent().bccAddresses(), is(Collections.EMPTY_LIST));
-	}
-
-	@Test
-	public void testBccSingle() {
+	@Test public void testBccSingle() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.bcc("test1.bcc@android.com");
 		intent.bcc("test2.bcc@android.com");
+		// Assert:
 		final List<String> bccEmailAddresses = intent.bccAddresses();
 		assertThat(bccEmailAddresses.size(), is(2));
 		assertThat(bccEmailAddresses.get(0), is("test1.bcc@android.com"));
@@ -166,11 +181,13 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(intent.ccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testBccMultiple() {
+	@Test public void testBccMultiple() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.bcc("test.bcc1@android.com", "test.bcc2@android.com");
 		intent.bcc("test.bcc3@android.com", "test.bcc4@android.com");
+		// Assert:
 		final List<String> bccEmailAddresses = intent.bccAddresses();
 		assertThat(bccEmailAddresses.size(), is(4));
 		assertThat(bccEmailAddresses.get(0), is("test.bcc1@android.com"));
@@ -179,56 +196,52 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(bccEmailAddresses.get(3), is("test.bcc4@android.com"));
 	}
 
-	@Test
-	public void testBccWithEmptyList() {
+	@Test public void testBccWithEmptyList() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.bcc(new ArrayList<String>(0));
+		// Assert:
 		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testBccWithNullList() {
+	@Test public void testBccWithNullList() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.bcc("test.bcc1@android.com", "test.bcc2@android.com");
 		intent.bcc((List<String>) null);
+		// Assert:
 		assertThat(intent.bccAddresses(), is(Collections.EMPTY_LIST));
 	}
 
-	@Test
-	public void testSubjectDefault() {
+	@Test public void testSubject() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
-		assertThat(intent.subject(), is(not(nullValue())));
-		assertThat(intent.subject().length(), is(0));
-	}
-
-	@Test
-	public void testSubject() {
-		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.subject("Email subject");
+		// Assert:
 		assertThat(intent.subject().toString(), is("Email subject"));
 	}
 
-	@Test
-	public void testMessageDefault() {
+	@Test public void testMessage() {
+		// Arrange:
 		final EmailIntent intent = new EmailIntent();
-		assertThat(intent.message(), is(not(nullValue())));
-		assertThat(intent.message().length(), is(0));
-	}
-
-	@Test
-	public void testMessage() {
-		final EmailIntent intent = new EmailIntent();
+		// Act:
 		intent.message("Email message.");
+		// Assert:
 		assertThat(intent.message().toString(), is("Email message."));
 	}
 
-	@Test
-	public void testBuild() {
+	@Test public void testBuild() {
+		// Arrange:
 		final EmailIntent emailIntent = new EmailIntent();
 		emailIntent.to("test@android.com");
 		emailIntent.subject("Email subject");
 		emailIntent.message("Email message.");
-		final Intent intent = emailIntent.build(mApplication);
+		// Act:
+		final Intent intent = emailIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_SENDTO));
 		assertThat(
@@ -243,12 +256,14 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(intent.getCharSequenceExtra(Intent.EXTRA_TEXT).toString(), is("Email message."));
 	}
 
-	@Test
-	public void testBuildWithCcAddresses() {
+	@Test public void testBuildWithCcAddresses() {
+		// Arrange:
 		final EmailIntent emailIntent = new EmailIntent();
 		emailIntent.to("test@android.com");
 		emailIntent.cc("test.cc1@android.com", "test.cc2@android.com");
-		final Intent intent = emailIntent.build(mApplication);
+		// Act:
+		final Intent intent = emailIntent.build(application);
+		// Assert:
 		final String[] ccAddresses = intent.getStringArrayExtra(Intent.EXTRA_CC);
 		assertThat(ccAddresses, is(not(nullValue())));
 		assertThat(ccAddresses.length, is(2));
@@ -257,12 +272,14 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(intent.getStringArrayExtra(Intent.EXTRA_BCC), is(nullValue()));
 	}
 
-	@Test
-	public void testBuildWithBccAddresses() {
+	@Test public void testBuildWithBccAddresses() {
+		// Arrange:
 		final EmailIntent emailIntent = new EmailIntent();
 		emailIntent.to("test@android.com");
 		emailIntent.bcc("test.bcc@android.com");
-		final Intent intent = emailIntent.build(mApplication);
+		// Act:
+		final Intent intent = emailIntent.build(application);
+		// Assert:
 		final String[] bccAddresses = intent.getStringArrayExtra(Intent.EXTRA_BCC);
 		assertThat(bccAddresses, is(not(nullValue())));
 		assertThat(bccAddresses.length, is(1));
@@ -270,21 +287,22 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		assertThat(intent.getStringArrayExtra(Intent.EXTRA_CC), is(nullValue()));
 	}
 
-	@Test
-	public void testBuildWithoutAddresses() {
+	@Test public void testBuildWithoutAddresses() {
 		assertThatBuildThrowsExceptionWithMessage(
-				mApplication,
+				application,
 				new EmailIntent(),
 				"No e-mail address/-es specified."
 		);
 	}
 
-	@Test
 	@SuppressWarnings("ConstantConditions")
-	public void testCreateUriForSingleAddress() {
+	@Test public void testCreateUriForSingleAddress() {
+		// Arrange:
 		final List<String> addresses = new ArrayList<>(1);
 		addresses.add("test@android.com");
+		// Act:
 		final Uri uri = EmailIntent.createUri(addresses);
+		// Assert:
 		assertThat(uri, is(not(nullValue())));
 		assertThat(uri.getScheme(), is(EmailIntent.URI_SCHEME));
 		assertThat(
@@ -297,13 +315,15 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
 	@SuppressWarnings("ConstantConditions")
-	public void testCreateUriForMultipleAddresses() {
+	@Test public void testCreateUriForMultipleAddresses() {
+		// Arrange:
 		final List<String> addresses = new ArrayList<>(2);
 		addresses.add("test1@android.com");
 		addresses.add("test2@android.com");
+		// Act:
 		final Uri uri = EmailIntent.createUri(addresses);
+		// Assert:
 		assertThat(uri, is(not(nullValue())));
 		assertThat(uri.getScheme(), is("mailto"));
 		assertThat(
@@ -316,18 +336,20 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testCreateUriForEmptyAddresses() {
+	@Test public void testCreateUriForEmptyAddresses() {
+		// Act + Assert:
 		assertThat(EmailIntent.createUri(new ArrayList<String>(0)), is(nullValue()));
 	}
 
-	@Test
-	public void testOnStartWith() {
+	@Test public void testOnStartWith() {
+		// Arrange:
 		final EmailIntent emailIntent = new EmailIntent();
 		emailIntent.to("test1@android.com");
-		final Intent intent = emailIntent.build(mApplication);
+		final Intent intent = emailIntent.build(application);
 		final IntentStarter mockIntentStarter = mock(IntentStarter.class);
+		// Act:
 		emailIntent.onStartWith(mockIntentStarter, intent);
-		verify(mockIntentStarter, times(1)).startIntent(any(Intent.class));
+		// Assert:
+		verify(mockIntentStarter).startIntent(any(Intent.class));
 	}
 }
