@@ -33,7 +33,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static universum.studios.android.intent.CoreTests.assertThatBuildThrowsExceptionWithMessage;
 
@@ -42,74 +41,73 @@ import static universum.studios.android.intent.CoreTests.assertThatBuildThrowsEx
  */
 public final class SimpleIntentTest extends RobolectricTestCase {
 
-	@Test
-	public void testActivityClassDefault() {
-		assertThat(new SimpleIntent().activityClass(), is(nullValue()));
+	@Test public void testInstantiation() {
+		// Act:
+		final SimpleIntent intent = new SimpleIntent();
+		// Assert:
+		assertThat(intent.activityClass(), is(nullValue()));
+		assertThat(intent.action(), is(""));
+		assertThat(intent.flags(), is(0));
+		assertThat(intent.requestCode(), is(-1));
 	}
 
-	@Test
-	public void testActivityClass() {
+	@Test public void testActivityClass() {
+		// Arrange:
 		final SimpleIntent intent = new SimpleIntent();
+		// Act:
 		intent.activityClass(TestActivity.class);
+		// Assert:
 		assertEquals(TestActivity.class, intent.activityClass());
 	}
 
-	@Test
-	public void testActionDefault() {
-		assertEquals("", new SimpleIntent().action());
-	}
-
-	@Test
-	public void testAction() {
+	@Test public void testAction() {
+		// Arrange:
 		final SimpleIntent intent = new SimpleIntent();
+		// Act:
 		intent.action(Intent.ACTION_DIAL);
-		assertEquals(Intent.ACTION_DIAL, intent.action());
+		// Assert:
+		assertThat(intent.action(), is(Intent.ACTION_DIAL));
 	}
 
-	@Test
-	public void testFlagsDefault() {
-		assertEquals(0, new SimpleIntent().flags());
-	}
-
-	@Test
-	public void testFlags() {
+	@Test public void testFlags() {
+		// Arrange:
 		final SimpleIntent intent = new SimpleIntent();
+		// Act:
 		intent.flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-		assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK, intent.flags());
+		// Assert:
+		assertThat(intent.flags(), is(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 	}
 
-	@Test
-	public void testFlag() {
+	@Test public void testFlag() {
+		// Arrange:
 		final SimpleIntent intent = new SimpleIntent();
+		// Act:
 		intent.flags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
 		intent.flag(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		assertEquals(Intent.FLAG_ACTIVITY_CLEAR_TASK |
-						Intent.FLAG_ACTIVITY_NEW_TASK |
-						Intent.FLAG_ACTIVITY_NO_ANIMATION,
-				intent.flags()
-		);
+		// Assert:
+		assertThat(intent.flags(), is(Intent.FLAG_ACTIVITY_CLEAR_TASK |
+				Intent.FLAG_ACTIVITY_NEW_TASK |
+				Intent.FLAG_ACTIVITY_NO_ANIMATION));
 	}
 
-	@Test
-	public void testRequestCodeDefault() {
-		assertEquals(-1, new SimpleIntent().requestCode());
-	}
-
-	@Test
-	public void testRequestCode() {
+	@Test public void testRequestCode() {
+		// Arrange:
 		final SimpleIntent intent = new SimpleIntent();
+		// Act + Assert:
 		intent.requestCode(1234);
-		assertEquals(1234, intent.requestCode());
+		assertThat(intent.requestCode(), is(1234));
 		intent.requestCode(-1);
-		assertEquals(-1, intent.requestCode());
+		assertThat(intent.requestCode(), is(-1));
 	}
 
-	@Test
 	@SuppressWarnings("ConstantConditions")
-	public void testBuildWithActivityClass() {
+	@Test public void testBuildWithActivityClass() {
+		// Arrange:
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.activityClass(TestActivity.class);
+		// Act:
 		final Intent intent = simpleIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		final ComponentName componentName = intent.getComponent();
 		assertThat(componentName, is(not(nullValue())));
@@ -117,14 +115,16 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		assertThat(componentName.getPackageName(), is(application.getPackageName()));
 	}
 
-	@Test
 	@SuppressWarnings("ConstantConditions")
-	public void testBuildWithActivityClassAndFlags() {
+	@Test public void testBuildWithActivityClassAndFlags() {
+		// Arrange:
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.activityClass(TestActivity.class);
 		simpleIntent.flag(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 		simpleIntent.flag(Intent.FLAG_ACTIVITY_NEW_TASK);
+		// Act:
 		final Intent intent = simpleIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getFlags(), is(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
 		final ComponentName componentName = intent.getComponent();
@@ -133,19 +133,20 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		assertThat(componentName.getPackageName(), is(application.getPackageName()));
 	}
 
-	@Test
-	public void testBuildWithAction() {
+	@Test public void testBuildWithAction() {
+		// Arrange:
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.action(Intent.ACTION_SEARCH);
 		simpleIntent.flags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		// Act:
 		final Intent intent = simpleIntent.build(application);
+		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_SEARCH));
 		assertThat(intent.getFlags(), is(Intent.FLAG_ACTIVITY_CLEAR_TOP));
 	}
 
-	@Test
-	public void testBuildWithoutParams() {
+	@Test public void testBuildWithoutParams() {
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				new SimpleIntent(),
@@ -153,11 +154,12 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
 	@SuppressWarnings("ConstantConditions")
-	public void testBuildWithInvalidActivityClass() {
+	@Test public void testBuildWithInvalidActivityClass() {
+		// Arrange:
 		final SimpleIntent intent = new SimpleIntent();
 		intent.activityClass(null);
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				intent,
@@ -165,11 +167,12 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
 	@SuppressWarnings("ConstantConditions")
-	public void testBuildWithInvalidAction() {
+	@Test public void testBuildWithInvalidAction() {
+		// Arrange:
 		final SimpleIntent intent = new SimpleIntent();
 		intent.action(null);
+		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
 				application,
 				intent,
@@ -177,24 +180,26 @@ public final class SimpleIntentTest extends RobolectricTestCase {
 		);
 	}
 
-	@Test
-	public void testOnStartWith() {
+	@Test public void testOnStartWith() {
+		// Arrange:
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.activityClass(TestActivity.class);
 		final Intent intent = simpleIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
+		// Act + Assert:
 		assertThat(simpleIntent.onStartWith(mockStarter, intent), is(true));
-		verify(mockStarter, times(1)).startIntent(intent);
+		verify(mockStarter).startIntent(intent);
 	}
 
-	@Test
-	public void testOnStartWithForResult() {
+	@Test public void testOnStartWithForResult() {
+		// Arrange:
 		final SimpleIntent simpleIntent = new SimpleIntent();
 		simpleIntent.activityClass(TestActivity.class);
 		simpleIntent.requestCode(1000);
 		final Intent intent = simpleIntent.build(application);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
+		// Act + Assert:
 		assertThat(simpleIntent.onStartWith(mockStarter, intent), is(true));
-		verify(mockStarter, times(1)).startIntentForResult(intent, 1000);
+		verify(mockStarter).startIntentForResult(intent, 1000);
 	}
 }

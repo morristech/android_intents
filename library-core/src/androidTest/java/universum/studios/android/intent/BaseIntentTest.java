@@ -40,44 +40,39 @@ import static org.mockito.Mockito.when;
  */
 public final class BaseIntentTest extends InstrumentedTestCase {
 
-	@Test
-	public void testIsActivityForIntentAvailable() {
-		assertThat(
-				BaseIntent.isActivityForIntentAvailable(
-						context,
-						new Intent(Intent.ACTION_MAIN)
-								.addCategory(Intent.CATEGORY_LAUNCHER)
-								.setClassName("com.android.mms", "com.android.mms.ui.ConversationList")
-				),
-				is(true)
+	@Test public void testIsActivityForIntentAvailable() {
+		// Act:
+		final boolean available = BaseIntent.isActivityForIntentAvailable(
+				context,
+				new Intent(Intent.ACTION_MAIN)
+						.addCategory(Intent.CATEGORY_LAUNCHER)
+						.setClassName("com.android.mms", "com.android.mms.ui.ConversationList")
 		);
+		// Assert:
+		assertThat(available, is(true));
 	}
 
-	@Test
-	public void testIsActivityForIntentAvailableWithEmptyIntent() {
-		assertThat(
-				BaseIntent.isActivityForIntentAvailable(
-						context,
-						new Intent()
-				),
-				is(false)
-		);
+	@Test public void testIsActivityForIntentAvailableWithEmptyIntent() {
+		// Act:
+		final boolean available = BaseIntent.isActivityForIntentAvailable(context, new Intent());
+		// Assert:
+		assertThat(available, is(false));
 	}
 
-	@Test
-	public void testStartWith() {
+	@Test public void testStartWith() {
+		// Arrange:
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		when(mockStarter.getContext()).thenReturn(context);
+		// Act:
 		new IntentImpl().startWith(mockStarter);
-		verify(mockStarter, times(1)).startIntent(any(Intent.class));
+		// Assert:
+		verify(mockStarter).startIntent(any(Intent.class));
 		verify(mockStarter, times(0)).overridePendingTransition(anyInt(), anyInt());
 	}
 
 	static final class IntentImpl extends BaseIntent<IntentImpl> {
 
-		@NonNull
-		@Override
-		protected Intent onBuild(@NonNull Context context) {
+		@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
 			return new Intent(Intent.ACTION_VIEW).putExtra(Intent.EXTRA_TEXT, "Content");
 		}
 	}

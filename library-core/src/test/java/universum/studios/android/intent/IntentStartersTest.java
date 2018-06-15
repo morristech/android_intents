@@ -45,7 +45,6 @@ import static org.hamcrest.core.IsNot.not;
 import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -55,172 +54,223 @@ public final class IntentStartersTest extends RobolectricTestCase {
     
 	@Test(expected = IllegalAccessException.class)
 	public void testInstantiation() throws Exception {
+		// Act:
 		IntentStarters.class.newInstance();
 	}
 
 	@Test(expected = InvocationTargetException.class)
 	public void testInstantiationWithAccessibleConstructor() throws Exception {
+		// Arrange:
 		final Constructor<IntentStarters> constructor = IntentStarters.class.getDeclaredConstructor();
 		constructor.setAccessible(true);
+		// Act:
 		constructor.newInstance();
 	}
 
-    @Test
-	public void testActivityStarter() {
-	    final Activity activity = Robolectric.buildActivity(TestActivity.class).create().get();
-		final IntentStarter starter = IntentStarters.activityStarter(activity);
+    @Test public void testActivityStarter() {
+	    // Arrange:
+		final Activity activity = Robolectric.buildActivity(TestActivity.class).create().get();
+	    // Act:
+	    final IntentStarter starter = IntentStarters.activityStarter(activity);
+	    // Assert:
 	    assertThat(starter, is(not(nullValue())));
 	    assertThat(starter.getContext(), is((Context) activity));
 	}
 
-	@Test
-	public void testActivityStarterStartIntent() {
+	@Test public void testActivityStarterStartIntent() {
+		// Arrange:
 		final Activity mockActivity = mock(Activity.class);
 		final Intent intent = new Intent();
-		IntentStarters.activityStarter(mockActivity).startIntent(intent);
-		verify(mockActivity, times(1)).startActivity(intent);
+		final IntentStarter starter = IntentStarters.activityStarter(mockActivity);
+		// Act:
+		starter.startIntent(intent);
+		// Assert:
+		verify(mockActivity).startActivity(intent);
 	}
 
-	@Test
 	@Config(sdk = Build.VERSION_CODES.JELLY_BEAN)
-	public void testActivityStarterStartIntentWithOptions() {
+	@Test public void testActivityStarterStartIntentWithOptions() {
+		// Arrange:
 		final Activity mockActivity = mock(Activity.class);
 		final Intent intent = new Intent();
-		IntentStarters.activityStarter(mockActivity).startIntent(intent, Bundle.EMPTY);
-		verify(mockActivity, times(1)).startActivity(intent, Bundle.EMPTY);
+		final IntentStarter starter = IntentStarters.activityStarter(mockActivity);
+		// Act:
+		starter.startIntent(intent, Bundle.EMPTY);
+		// Assert:
+		verify(mockActivity).startActivity(intent, Bundle.EMPTY);
 	}
 
-	@Test
-	public void testActivityStarterStartIntentForResult() {
+	@Test public void testActivityStarterStartIntentForResult() {
+		// Arrange:
 		final Activity mockActivity = mock(Activity.class);
 		final Intent intent = new Intent();
-		IntentStarters.activityStarter(mockActivity).startIntentForResult(intent, 1000);
-		verify(mockActivity, times(1)).startActivityForResult(intent, 1000);
+		final IntentStarter starter = IntentStarters.activityStarter(mockActivity);
+		// Act:
+		starter.startIntentForResult(intent, 1000);
+		// Assert:
+		verify(mockActivity).startActivityForResult(intent, 1000);
 	}
 
-	@Test
 	@Config(sdk = Build.VERSION_CODES.JELLY_BEAN)
-	public void testActivityStarterStartIntentForResultWithOptions() {
+	@Test public void testActivityStarterStartIntentForResultWithOptions() {
+		// Arrange:
 		final Activity mockActivity = mock(Activity.class);
 		final Intent intent = new Intent();
-		IntentStarters.activityStarter(mockActivity).startIntentForResult(intent, 1000, Bundle.EMPTY);
-		verify(mockActivity, times(1)).startActivityForResult(intent, 1000, Bundle.EMPTY);
+		final IntentStarter starter = IntentStarters.activityStarter(mockActivity);
+		// Act:
+		starter.startIntentForResult(intent, 1000, Bundle.EMPTY);
+		// Assert:
+		verify(mockActivity).startActivityForResult(intent, 1000, Bundle.EMPTY);
 	}
 
-	@Test
-	public void testActivityStarterOverridePendingTransition() {
+	@Test public void testActivityStarterOverridePendingTransition() {
+		// Arrange:
 		final Activity mockActivity = mock(Activity.class);
-		IntentStarters.activityStarter(mockActivity).overridePendingTransition(
+		final IntentStarter starter = IntentStarters.activityStarter(mockActivity);
+		// Act:
+		starter.overridePendingTransition(
 				android.R.anim.fade_in,
 				android.R.anim.fade_out
 		);
 	}
 
-	@Test
-	public void testFragmentStarter() throws IllegalStateException {
+	@Test public void testFragmentStarter() throws IllegalStateException {
+		// Arrange:
 		final Fragment fragment = Robolectric.buildFragment(TestFragment.class, TestActivity.class).create(TestActivity.CONTENT_VIEW_ID, null).get();
+		// Act:
 		final IntentStarter starter = IntentStarters.fragmentStarter(fragment);
+		// Assert:
 		assertThat(starter, is(not(nullValue())));
 		assertThat(starter.getContext(), instanceOf(TestActivity.class));
 	}
 
-	@Test
-	public void testFragmentStarterStartIntent() {
+	@Test public void testFragmentStarterStartIntent() {
+		// Arrange:
 		final Fragment mockFragment = mock(Fragment.class);
 		final Intent intent = new Intent();
-		IntentStarters.fragmentStarter(mockFragment).startIntent(intent);
-		verify(mockFragment, times(1)).startActivity(intent);
+		final IntentStarter starter = IntentStarters.fragmentStarter(mockFragment);
+		// Act:
+		starter.startIntent(intent);
+		// Assert:
+		verify(mockFragment).startActivity(intent);
 	}
 
-	@Test
 	@Config(sdk = Build.VERSION_CODES.JELLY_BEAN)
-	public void testFragmentStarterStartIntentWithOptions() {
+	@Test public void testFragmentStarterStartIntentWithOptions() {
+		// Arrange:
 		final Fragment mockFragment = mock(Fragment.class);
 		final Intent intent = new Intent();
-		IntentStarters.fragmentStarter(mockFragment).startIntent(intent, Bundle.EMPTY);
-		verify(mockFragment, times(1)).startActivity(intent, Bundle.EMPTY);
+		final IntentStarter starter = IntentStarters.fragmentStarter(mockFragment);
+		// Act:
+		starter.startIntent(intent, Bundle.EMPTY);
+		// Assert:
+		verify(mockFragment).startActivity(intent, Bundle.EMPTY);
 	}
 
-	@Test
-	public void testFragmentStarterStartIntentForResult() {
+	@Test public void testFragmentStarterStartIntentForResult() {
+		// Arrange:
 		final Fragment mockFragment = mock(Fragment.class);
 		final Intent intent = new Intent();
-		IntentStarters.fragmentStarter(mockFragment).startIntentForResult(intent, 1000);
-		verify(mockFragment, times(1)).startActivityForResult(intent, 1000);
+		final IntentStarter starter = IntentStarters.fragmentStarter(mockFragment);
+		// Act:
+		starter.startIntentForResult(intent, 1000);
+		// Assert:
+		verify(mockFragment).startActivityForResult(intent, 1000);
 	}
 
-	@Test
 	@Config(sdk = Build.VERSION_CODES.JELLY_BEAN)
-	public void testFragmentStarterStartIntentForResultWithOptions() {
+	@Test public void testFragmentStarterStartIntentForResultWithOptions() {
+		// Arrange:
 		final Fragment mockFragment = mock(Fragment.class);
 		final Intent intent = new Intent();
-		IntentStarters.fragmentStarter(mockFragment).startIntentForResult(intent, 1000, Bundle.EMPTY);
-		verify(mockFragment, times(1)).startActivityForResult(intent, 1000, Bundle.EMPTY);
+		final IntentStarter starter = IntentStarters.fragmentStarter(mockFragment);
+		// Act:
+		starter.startIntentForResult(intent, 1000, Bundle.EMPTY);
+		// Assert:
+		verify(mockFragment).startActivityForResult(intent, 1000, Bundle.EMPTY);
 	}
 
-	@Test
-	public void testFragmentStarterOverridePendingTransition() throws IllegalStateException {
+	@Test public void testFragmentStarterOverridePendingTransition() throws IllegalStateException {
+		// Arrange:
 		final Fragment fragment = Robolectric.buildFragment(TestFragment.class, TestActivity.class).create(TestActivity.CONTENT_VIEW_ID, null).get();
-		IntentStarters.fragmentStarter(fragment).overridePendingTransition(
+		final IntentStarter starter = IntentStarters.fragmentStarter(fragment);
+		// Act:
+		starter.overridePendingTransition(
 				android.R.anim.fade_in,
 				android.R.anim.fade_out
 		);
 	}
 
-	@Test
-	public void testSupportFragmentStarter() throws IllegalStateException {
+	@Test public void testSupportFragmentStarter() throws IllegalStateException {
+		// Arrange:
 		final FragmentActivity activity = Robolectric.buildActivity(TestCompatActivity.class).create().start().resume().get();
 		final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		final android.support.v4.app.Fragment fragment = new TestCompatFragment();
 		fragmentManager.beginTransaction().add(fragment, null).commitAllowingStateLoss();
 		fragmentManager.executePendingTransactions();
+		// Act:
 		final IntentStarter starter = IntentStarters.supportFragmentStarter(fragment);
+		// Assert:
 		assertThat(starter, is(not(nullValue())));
 		assertThat(starter.getContext(), is((Context) activity));
 		fragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss();
 		fragmentManager.executePendingTransactions();
 	}
 
-	@Test
-	public void testSupportFragmentStarterStartIntent() {
+	@Test public void testSupportFragmentStarterStartIntent() {
+		// Arrange:
 		final android.support.v4.app.Fragment mockFragment = mock(android.support.v4.app.Fragment.class);
 		final Intent intent = new Intent();
-		IntentStarters.supportFragmentStarter(mockFragment).startIntent(intent);
-		verify(mockFragment, times(1)).startActivity(intent);
+		final IntentStarter starter = IntentStarters.supportFragmentStarter(mockFragment);
+		// Act:
+		starter.startIntent(intent);
+		// Assert:
+		verify(mockFragment).startActivity(intent);
 	}
 
-	@Test
-	public void testSupportFragmentStarterStartIntentWithOptions() {
+	@Test public void testSupportFragmentStarterStartIntentWithOptions() {
+		// Arrange:
 		final android.support.v4.app.Fragment mockFragment = mock(android.support.v4.app.Fragment.class);
 		final Intent intent = new Intent();
-		IntentStarters.supportFragmentStarter(mockFragment).startIntent(intent, Bundle.EMPTY);
-		verify(mockFragment, times(1)).startActivity(intent, Bundle.EMPTY);
+		final IntentStarter starter = IntentStarters.supportFragmentStarter(mockFragment);
+		// Act:
+		starter.startIntent(intent, Bundle.EMPTY);
+		// Assert:
+		verify(mockFragment).startActivity(intent, Bundle.EMPTY);
 	}
 
-	@Test
-	public void testSupportFragmentStarterStartIntentForResult() {
+	@Test public void testSupportFragmentStarterStartIntentForResult() {
+		// Arrange:
 		final android.support.v4.app.Fragment mockFragment = mock(android.support.v4.app.Fragment.class);
 		final Intent intent = new Intent();
-		IntentStarters.supportFragmentStarter(mockFragment).startIntentForResult(intent, 1000);
-		verify(mockFragment, times(1)).startActivityForResult(intent, 1000);
+		final IntentStarter starter = IntentStarters.supportFragmentStarter(mockFragment);
+		// Act:
+		starter.startIntentForResult(intent, 1000);
+		// Assert:
+		verify(mockFragment).startActivityForResult(intent, 1000);
 	}
 
-	@Test
-	public void testSupportFragmentStarterStartIntentForResultWithOptions() {
+	@Test public void testSupportFragmentStarterStartIntentForResultWithOptions() {
+		// Arrange:
 		final android.support.v4.app.Fragment mockFragment = mock(android.support.v4.app.Fragment.class);
 		final Intent intent = new Intent();
-		IntentStarters.supportFragmentStarter(mockFragment).startIntentForResult(intent, 1000, Bundle.EMPTY);
-		verify(mockFragment, times(1)).startActivityForResult(intent, 1000, Bundle.EMPTY);
+		final IntentStarter starter = IntentStarters.supportFragmentStarter(mockFragment);
+		// Act:
+		starter.startIntentForResult(intent, 1000, Bundle.EMPTY);
+		// Assert:
+		verify(mockFragment).startActivityForResult(intent, 1000, Bundle.EMPTY);
 	}
 
-	@Test
-	public void testSupportFragmentStarterOverridePendingTransition() throws IllegalStateException {
+	@Test public void testSupportFragmentStarterOverridePendingTransition() throws IllegalStateException {
+		// Arrange:
 		final FragmentActivity activity = Robolectric.buildActivity(TestCompatActivity.class).create().start().resume().get();
 		final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
 		final android.support.v4.app.Fragment fragment = new TestCompatFragment();
 		fragmentManager.beginTransaction().add(fragment, null).commitAllowingStateLoss();
 		fragmentManager.executePendingTransactions();
-		IntentStarters.supportFragmentStarter(fragment).overridePendingTransition(
+		final IntentStarter starter = IntentStarters.supportFragmentStarter(fragment);
+		// Act:
+		starter.overridePendingTransition(
 				android.R.anim.fade_in,
 				android.R.anim.fade_out
 		);

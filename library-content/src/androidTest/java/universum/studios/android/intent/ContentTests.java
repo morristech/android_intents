@@ -18,7 +18,6 @@
  */
 package universum.studios.android.intent;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
 
 import org.hamcrest.Description;
@@ -41,24 +40,6 @@ final class ContentTests {
 	@NonNull static Matcher<File> hasRelativePath(@NonNull final String path) {
 		return new FileHasRelativePath(TestUtils.STORAGE_BASE_PATH + path);
 	}
-
-	static void assertThatBuildThrowsExceptionWithMessage(@NonNull Context context, @NonNull BaseIntent intent, @NonNull String exceptionMessage) {
-		try {
-			intent.build(context);
-		} catch (IllegalArgumentException e) {
-			final String message = "Cannot build " + intent.getClass().getSimpleName() + ". " + exceptionMessage;
-			final String eMessage = e.getMessage();
-			if (!eMessage.contentEquals(message)) {
-				throw new AssertionError(
-						"Expected exception with message <" + message + "> but message was <" + eMessage + ">"
-				);
-			}
-			return;
-		}
-		final String intentName = intent.getClass().getSimpleName();
-		throw new AssertionError("No exception has been thrown while building intent(" + intentName + ").");
-	}
-
 
 	private static final class FileHasPath extends TypeSafeMatcher<File> {
 

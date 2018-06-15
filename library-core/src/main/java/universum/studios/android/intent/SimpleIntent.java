@@ -75,32 +75,32 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	/**
 	 * Resolved type of the intent depends on the received parameters.
 	 */
-	private int mType;
+	private int type;
 
 	/**
 	 * Intent action.
 	 */
-	private String mAction;
+	private String action;
 
 	/**
 	 * Class of activity to launch from intent.
 	 */
-	private Class<? extends Activity> mActivityClass;
+	private Class<? extends Activity> activityClass;
 
 	/**
 	 * Set of intent flags.
 	 */
-	private int mFlags;
+	private int flags;
 
 	/**
 	 * Intent request code, for case, when this intent should be started via {@link IntentStarter#startIntentForResult(Intent, int)}.
 	 */
-	private int mRequestCode = -1;
+	private int requestCode = -1;
 
 	/**
 	 * Flag indicating whether this intent should be started for result or not.
 	 */
-	private boolean mForResult;
+	private boolean forResult;
 
 	/*
 	 * Constructors ================================================================================
@@ -117,11 +117,12 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @param activityClass Class of the desired activity that should be launched. May be {@code null}
 	 *                      to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #activityClass()
 	 */
 	public SimpleIntent activityClass(@NonNull final Class<? extends Activity> activityClass) {
-		this.mActivityClass = activityClass;
-		this.mType = TYPE_ACTIVITY;
+		this.activityClass = activityClass;
+		this.type = TYPE_ACTIVITY;
 		return this;
 	}
 
@@ -129,11 +130,11 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * Returns the class of activity that will be launched.
 	 *
 	 * @return The class of activity or {@code null} if no activity class has been specified yet.
+	 *
 	 * @see #activityClass(Class)
 	 */
-	@Nullable
-	public Class<? extends Activity> activityClass() {
-		return mActivityClass;
+	@Nullable public Class<? extends Activity> activityClass() {
+		return activityClass;
 	}
 
 	/**
@@ -145,11 +146,12 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 *
 	 * @param action The desired intent action. See {@link Intent} class for available actions.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #action()
 	 */
 	public SimpleIntent action(@NonNull final String action) {
-		this.mAction = action;
-		this.mType = TYPE_ACTION;
+		this.action = action;
+		this.type = TYPE_ACTION;
 		return this;
 	}
 
@@ -157,11 +159,11 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * Returns the intent action.
 	 *
 	 * @return Intent action. See {@link Intent} class for allowed actions.
+	 *
 	 * @see #action(String)
 	 */
-	@NonNull
-	public String action() {
-		return mAction == null ? "" : mAction;
+	@NonNull public String action() {
+		return action == null ? "" : action;
 	}
 
 	/**
@@ -171,10 +173,11 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @param flags The desired flags for Intent. Use {@code |} to set multiple flags, like:
 	 *              {@code Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NO_HISTORY}  .
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #flags()
 	 */
 	public SimpleIntent flags(@IntRange(from = 0, to = Integer.MAX_VALUE) final int flags) {
-		this.mFlags = flags;
+		this.flags = flags;
 		return this;
 	}
 
@@ -183,11 +186,12 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 *
 	 * @param flag The desired intent flag to append to the current ones.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #flags(int)
 	 * @see #flags()
 	 */
 	public SimpleIntent flag(@IntRange(from = 1, to = Integer.MAX_VALUE) final int flag) {
-		this.mFlags |= flag;
+		this.flags |= flag;
 		return this;
 	}
 
@@ -195,11 +199,11 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * Returns the intent flags.
 	 *
 	 * @return Intent flags or {@code 0} if no flags has been specified yet.
+	 *
 	 * @see #flags(int)
 	 */
-	@IntRange(from = 0, to = Integer.MAX_VALUE)
-	public int flags() {
-		return mFlags;
+	@IntRange(from = 0, to = Integer.MAX_VALUE) public int flags() {
+		return flags;
 	}
 
 	/**
@@ -210,11 +214,12 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * @param requestCode The desired request code to start this intent for result. May be negative
 	 *                    number to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #requestCode()
 	 */
 	public SimpleIntent requestCode(final int requestCode) {
-		this.mRequestCode = requestCode;
-		this.mForResult = mRequestCode >= 0;
+		this.requestCode = requestCode;
+		this.forResult = this.requestCode >= 0;
 		return this;
 	}
 
@@ -222,25 +227,25 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 	 * Returns the request code used to start this intent for result.
 	 *
 	 * @return Intent request code.
+	 *
 	 * @see #requestCode(int)
 	 */
 	public int requestCode() {
-		return mRequestCode;
+		return requestCode;
 	}
 
 	/**
 	 */
-	@Override
-	protected void ensureCanBuildOrThrow() {
+	@Override protected void ensureCanBuildOrThrow() {
 		super.ensureCanBuildOrThrow();
-		switch (mType) {
+		switch (type) {
 			case TYPE_ACTIVITY:
-				if (mActivityClass == null) {
+				if (activityClass == null) {
 					throw cannotBuildIntentException("No activity class specified.");
 				}
 				break;
 			case TYPE_ACTION:
-				if (mAction == null) {
+				if (action == null) {
 					throw cannotBuildIntentException("No action specified.");
 				}
 				break;
@@ -251,24 +256,23 @@ public class SimpleIntent extends BaseIntent<SimpleIntent> {
 
 	/**
 	 */
-	@NonNull
-	@Override
-	protected Intent onBuild(@NonNull final Context context) {
-		switch (mType) {
+	@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
+		switch (type) {
 			case TYPE_ACTION:
-				return new Intent(mAction).setFlags(mFlags);
+				return new Intent(action).setFlags(flags);
 			default:
-				return new Intent(context, mActivityClass).setFlags(mFlags);
+				return new Intent(context, activityClass).setFlags(flags);
 		}
 	}
 
 	/**
 	 */
-	@Override
-	@SuppressWarnings("ResourceType")
-	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
-		if (mForResult) starter.startIntentForResult(intent, mRequestCode);
-		else starter.startIntent(intent);
+	@Override protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
+		if (forResult) {
+			starter.startIntentForResult(intent, requestCode);
+		} else {
+			starter.startIntent(intent);
+		}
 		return true;
 	}
 

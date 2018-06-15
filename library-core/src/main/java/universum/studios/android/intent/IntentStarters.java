@@ -85,8 +85,7 @@ public final class IntentStarters {
 	 * @param activity The activity for which to create intent starter.
 	 * @return IntentStarter ready to start the desired intent via {@link BaseIntent#startWith(IntentStarter)}.
 	 */
-	@NonNull
-	public static IntentStarter activityStarter(@NonNull final Activity activity) {
+	@NonNull public static IntentStarter activityStarter(@NonNull final Activity activity) {
 		return new ActivityStarter(activity);
 	}
 
@@ -135,49 +134,42 @@ public final class IntentStarters {
 
 		/**
 		 */
-		@NonNull
-		@Override
-		public Context getContext() {
+		@Override @NonNull public Context getContext() {
 			return activity;
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntent(@NonNull final Intent intent) {
-			activity.startActivity(intent);
+		@Override public void startIntent(@NonNull final Intent intent) {
+			this.activity.startActivity(intent);
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
+		@Override public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-				activity.startActivity(intent, options);
+				this.activity.startActivity(intent, options);
 			}
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
-			activity.startActivityForResult(intent, requestCode);
+		@Override public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
+			this.activity.startActivityForResult(intent, requestCode);
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
+		@Override public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-				activity.startActivityForResult(intent, requestCode, options);
+				this.activity.startActivityForResult(intent, requestCode, options);
 			}
 		}
 
 		/**
 		 */
-		@Override
-		public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
-			activity.overridePendingTransition(enterAnimRes, exitAnimRes);
+		@Override public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
+			this.activity.overridePendingTransition(enterAnimRes, exitAnimRes);
 		}
 	}
 
@@ -202,49 +194,42 @@ public final class IntentStarters {
 
 		/**
 		 */
-		@NonNull
-		@Override
-		public Context getContext() {
+		@Override @NonNull public Context getContext() {
 			return fragment.getActivity();
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntent(@NonNull final Intent intent) {
-			fragment.startActivity(intent);
+		@Override public void startIntent(@NonNull final Intent intent) {
+			this.fragment.startActivity(intent);
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
+		@Override public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-				fragment.startActivity(intent, options);
+				this.fragment.startActivity(intent, options);
 			}
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
-			fragment.startActivityForResult(intent, requestCode);
+		@Override public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
+			this.fragment.startActivityForResult(intent, requestCode);
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
+		@Override public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-				fragment.startActivityForResult(intent, requestCode, options);
+				this.fragment.startActivityForResult(intent, requestCode, options);
 			}
 		}
 
 		/**
 		 */
-		@Override
-		public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
-			fragment.getActivity().overridePendingTransition(enterAnimRes, exitAnimRes);
+		@Override public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
+			this.fragment.getActivity().overridePendingTransition(enterAnimRes, exitAnimRes);
 		}
 	}
 
@@ -270,45 +255,38 @@ public final class IntentStarters {
 
 		/**
 		 */
-		@NonNull
-		@Override
-		public Context getContext() {
-			return fragment.getActivity();
+		@Override @NonNull public Context getContext() {
+			return fragment.requireActivity();
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntent(@NonNull final Intent intent) {
-			fragment.startActivity(intent);
+		@Override public void startIntent(@NonNull final Intent intent) {
+			this.fragment.startActivity(intent);
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
-			fragment.startActivity(intent, options);
+		@Override public void startIntent(@NonNull final Intent intent, @Nullable final Bundle options) {
+			this.fragment.startActivity(intent, options);
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
-			fragment.startActivityForResult(intent, requestCode);
+		@Override public void startIntentForResult(@NonNull final Intent intent, final int requestCode) {
+			this.fragment.startActivityForResult(intent, requestCode);
 		}
 
 		/**
 		 */
-		@Override
-		public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
-			fragment.startActivityForResult(intent, requestCode, options);
+		@Override public void startIntentForResult(@NonNull final Intent intent, final int requestCode, @Nullable final Bundle options) {
+			this.fragment.startActivityForResult(intent, requestCode, options);
 		}
 
 		/**
 		 */
-		@Override
-		public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
-			fragment.getActivity().overridePendingTransition(enterAnimRes, exitAnimRes);
+		@Override public void overridePendingTransition(@AnimRes final int enterAnimRes, @AnimRes final int exitAnimRes) {
+			this.fragment.requireActivity().overridePendingTransition(enterAnimRes, exitAnimRes);
 		}
 	}
 }

@@ -271,7 +271,7 @@ public class ShareIntent extends BaseIntent<ShareIntent> {
 	/**
 	 */
 	@Override protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
-		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));
+		return super.onStartWith(starter, Intent.createChooser(intent, dialogTitle));
 	}
 
 	/*

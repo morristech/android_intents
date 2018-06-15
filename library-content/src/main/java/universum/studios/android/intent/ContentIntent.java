@@ -380,7 +380,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 			providerNames[i] = handlers.get(i).name;
 		}
 		final AlertDialog.Builder builder = new AlertDialog.Builder(starter.getContext());
-		builder.setTitle(mDialogTitle);
+		builder.setTitle(dialogTitle);
 		builder.setItems(providerNames, new DialogInterface.OnClickListener() {
 
 			/**
@@ -427,7 +427,7 @@ public abstract class ContentIntent<I extends ContentIntent<I>> extends BaseInte
 	/**
 	 */
 	@Override protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
-		return super.onStartWith(starter, Intent.createChooser(intent, mDialogTitle));
+		return super.onStartWith(starter, Intent.createChooser(intent, dialogTitle));
 	}
 
 	/*

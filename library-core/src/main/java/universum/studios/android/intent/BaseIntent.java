@@ -87,22 +87,27 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	/**
 	 * Title text for the activity chooser dialog.
 	 */
-	CharSequence mDialogTitle = "Choose";
+	CharSequence dialogTitle = "Choose";
 
 	/**
 	 * Message text for the toast, in case, when there is no activity to process requested intent.
 	 */
-	private CharSequence mActivityNotFoundMessage = "No application found to handle this action";
+	private CharSequence activityNotFoundMessage = "No application found to handle this action";
 
 	/**
-	 * Window transition resource id.
+	 * WWindow enter transition resource id.
 	 */
-	private int mEnterTransition, mExitTransition;
+	private int enterTransition;
+
+	/**
+	 * WWindow exit transition resource id.
+	 */
+	private int exitTransition;
 
 	/**
 	 * Flag indicating whether to apply window transition or not.
 	 */
-	private boolean mApplyTransitions;
+	private boolean applyTransitions;
 
 	/*
 	 * Constructors ================================================================================
@@ -119,11 +124,12 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *
 	 * @param title The desired dialog title text. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #dialogTitle()
 	 */
 	@SuppressWarnings("unchecked")
 	public I dialogTitle(@Nullable final CharSequence title) {
-		this.mDialogTitle = title;
+		this.dialogTitle = title;
 		return (I) this;
 	}
 
@@ -132,9 +138,8 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *
 	 * @return Title text.
 	 */
-	@NonNull
-	public CharSequence dialogTitle() {
-		return mDialogTitle == null ? "" : mDialogTitle;
+	@NonNull public CharSequence dialogTitle() {
+		return dialogTitle == null ? "" : dialogTitle;
 	}
 
 	/**
@@ -143,11 +148,12 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *
 	 * @param message The desired message text. May be {@code null} to clear the current one.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #activityNotFoundMessage()
 	 */
 	@SuppressWarnings("unchecked")
 	public I activityNotFoundMessage(@Nullable final CharSequence message) {
-		this.mActivityNotFoundMessage = message;
+		this.activityNotFoundMessage = message;
 		return (I) this;
 	}
 
@@ -156,11 +162,11 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * activity for the started intent.
 	 *
 	 * @return Message text.
+	 *
 	 * @see #activityNotFoundMessage(CharSequence)
 	 */
-	@NonNull
-	public CharSequence activityNotFoundMessage() {
-		return mActivityNotFoundMessage == null ? "" : mActivityNotFoundMessage;
+	@NonNull public CharSequence activityNotFoundMessage() {
+		return activityNotFoundMessage == null ? "" : activityNotFoundMessage;
 	}
 
 	/**
@@ -171,21 +177,22 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *
 	 * @param transition Resource id of the desired window transition (animation).
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #enterTransition()
 	 */
 	public I enterTransition(@AnimRes final int transition) {
-		return transitions(transition, mExitTransition);
+		return transitions(transition, exitTransition);
 	}
 
 	/**
 	 * Returns the window enter transition used to override window's pending transition.
 	 *
 	 * @return Resource id of the enter transition or {@code 0} if there was no transition specified.
+	 *
 	 * @see #enterTransition(int)
 	 */
-	@AnimRes
-	public int enterTransition() {
-		return mEnterTransition;
+	@AnimRes public int enterTransition() {
+		return enterTransition;
 	}
 
 	/**
@@ -196,21 +203,22 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 *
 	 * @param transition Resource id of the desired window transition (animation).
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #exitTransition()
 	 */
 	public I exitTransition(@AnimRes final int transition) {
-		return transitions(mEnterTransition, transition);
+		return transitions(enterTransition, transition);
 	}
 
 	/**
 	 * Returns the window exit transition used to override window's pending transition.
 	 *
 	 * @return Resource id of the enter transition or {@code 0} if there was no transition specified.
+	 *
 	 * @see #exitTransition(int)
 	 */
-	@AnimRes
-	public int exitTransition() {
-		return mExitTransition;
+	@AnimRes public int exitTransition() {
+		return exitTransition;
 	}
 
 	/**
@@ -218,16 +226,19 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * when starting this intent.
 	 *
 	 * @param enterTransition Resource id of the desired window enter transition (animation).
+	 *                        May be {@code 0} to not play any enter animation.
 	 * @param exitTransition  Resource id of the desired window exit transition (animation).
+	 *                        May be {@code 0} to not play any enter animation.
 	 * @return This intent builder to allow methods chaining.
+	 *
 	 * @see #enterTransition(int)
 	 * @see #exitTransition(int)
 	 */
 	@SuppressWarnings("unchecked")
 	public I transitions(@AnimRes final int enterTransition, @AnimRes final int exitTransition) {
-		this.mEnterTransition = Math.max(0, enterTransition);
-		this.mExitTransition = Math.max(0, exitTransition);
-		this.mApplyTransitions = enterTransition >= 0 || exitTransition >= 0;
+		this.enterTransition = enterTransition;
+		this.exitTransition = exitTransition;
+		this.applyTransitions = enterTransition != 0 || exitTransition != 0;
 		return (I) this;
 	}
 
@@ -257,8 +268,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @throws IllegalArgumentException If this builder does not have all required data to build the
 	 *                                  requested intent.
 	 */
-	@NonNull
-	public Intent build(@NonNull final Context context) {
+	@NonNull public Intent build(@NonNull final Context context) {
 		ensureCanBuildOrThrow();
 		return onBuild(context);
 	}
@@ -281,8 +291,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * @param context Context obtained from the {@link IntentStarter}.
 	 * @return Intent instance with current data.
 	 */
-	@NonNull
-	protected abstract Intent onBuild(@NonNull Context context);
+	@NonNull protected abstract Intent onBuild(@NonNull Context context);
 
 	/**
 	 * Checks whether there is any activity that can handle the specified <var>intent</var> available
@@ -294,9 +303,7 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * which means that there is no activity currently installed on the current Android device that
 	 * could handle that intent.
 	 */
-	@CheckResult
-	@SuppressWarnings("ConstantConditions")
-	public static boolean isActivityForIntentAvailable(@NonNull final Context context, @NonNull final Intent intent) {
+	@CheckResult public static boolean isActivityForIntentAvailable(@NonNull final Context context, @NonNull final Intent intent) {
 		return intent.resolveActivity(context.getPackageManager()) != null;
 	}
 
@@ -322,8 +329,8 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 */
 	protected boolean onStartWith(@NonNull final IntentStarter starter, @NonNull final Intent intent) {
 		starter.startIntent(intent);
-		if (mApplyTransitions) {
-			starter.overridePendingTransition(mEnterTransition, mExitTransition);
+		if (applyTransitions) {
+			starter.overridePendingTransition(enterTransition, exitTransition);
 		}
 		return true;
 	}
@@ -335,10 +342,11 @@ public abstract class BaseIntent<I extends BaseIntent> {
 	 * if any.
 	 *
 	 * @param context The context obtained from the {@link IntentStarter}.
+	 *
 	 * @see #activityNotFoundMessage(CharSequence)
 	 */
 	protected void notifyActivityNotFound(@NonNull final Context context) {
-		Toast.makeText(context, mActivityNotFoundMessage, Toast.LENGTH_LONG).show();
+		Toast.makeText(context, activityNotFoundMessage, Toast.LENGTH_LONG).show();
 	}
 
 	/*
