@@ -21,7 +21,6 @@ package universum.studios.android.intent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
 
 import org.junit.Test;
 
@@ -33,13 +32,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static junit.framework.Assert.assertEquals;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -254,7 +254,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		contentIntent.input(Uri.parse("content://android/data/images/lion.jpg"));
 		contentIntent.dataType(MimeType.IMAGE_JPEG);
 		// Act:
-		final Intent intent = contentIntent.build(application);
+		final Intent intent = contentIntent.build(context);
 		// Assert:
 		assertThat(intent, is(not(nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
@@ -268,7 +268,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		intent.output(Uri.parse("content://android/data/images/lion.jpg"));
 		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				intent,
 				"No input Uri specified."
 		);
@@ -276,7 +276,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 
 	@Test public void testBuildWithoutUri() {
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				new ContentIntentImpl(),
 				"No input Uri specified."
 		);
@@ -288,7 +288,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		intent.input(Uri.parse("content://android/data/images/lion.jpg"));
 		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				intent,
 				"No MIME type specified for input Uri."
 		);
@@ -300,7 +300,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
 		// Act:
-		intent.build(application);
+		intent.build(context);
 	}
 
 	@Test public void testStartWithHandlers() {
@@ -308,7 +308,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		final ContentIntent intent = new ContentIntentImpl();
 		intent.withHandler(new ContentIntent.ContentHandler("TestHandler1", new Intent()));
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		when(mockStarter.getContext()).thenReturn(application);
+		when(mockStarter.getContext()).thenReturn(context);
 		// Act:
 		intent.startWith(mockStarter);
 		// Assert:
@@ -320,7 +320,7 @@ public final class ContentIntentTest extends RobolectricTestCase {
 		final ContentIntent contentIntent = new ContentIntentImpl();
 		contentIntent.input(Uri.EMPTY);
 		contentIntent.dataType(MimeType.TEXT_HTML);
-		final Intent intent = contentIntent.build(application);
+		final Intent intent = contentIntent.build(context);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		// Act:
 		contentIntent.onStartWith(mockStarter, intent);

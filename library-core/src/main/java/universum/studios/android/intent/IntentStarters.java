@@ -24,9 +24,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.AnimRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.AnimRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Factory that may be used to create instances of {@link IntentStarter} for a desired intent context.
@@ -35,7 +36,7 @@ import android.support.annotation.Nullable;
  * <ul>
  * <li>{@link #activityStarter(Activity)}</li>
  * <li>{@link #fragmentStarter(Fragment)}</li>
- * <li>{@link #supportFragmentStarter(android.support.v4.app.Fragment)}</li>
+ * <li>{@link #supportFragmentStarter(androidx.fragment.app.Fragment)}</li>
  * </ul>
  *
  * @author Martin Albedinsky
@@ -105,7 +106,7 @@ public final class IntentStarters {
 	 * @param fragment The fragment for which to create intent starter.
 	 * @return IntentStarter ready to start the desired intent via {@link BaseIntent#startWith(IntentStarter)}.
 	 */
-	public static IntentStarter supportFragmentStarter(@NonNull final android.support.v4.app.Fragment fragment) {
+	public static IntentStarter supportFragmentStarter(@NonNull final androidx.fragment.app.Fragment fragment) {
 		return new SupportFragmentStarter(fragment);
 	}
 
@@ -234,7 +235,7 @@ public final class IntentStarters {
 	}
 
 	/**
-	 *  A {@link IntentStarter} implementation for support {@link android.support.v4.app.Fragment Fragment}
+	 *  A {@link IntentStarter} implementation for support {@link androidx.fragment.app.Fragment Fragment}
 	 *  context.
 	 */
 	private static final class SupportFragmentStarter implements IntentStarter {
@@ -242,14 +243,14 @@ public final class IntentStarters {
 		/**
 		 * The fragment to which to delegate intent starting.
 		 */
-		private final android.support.v4.app.Fragment fragment;
+		private final androidx.fragment.app.Fragment fragment;
 
 		/**
 		 * Creates a new FragmentStarter for the given <var>fragment</var>.
 		 *
 		 * @param fragment The fragment to which to delegate intent starting.
 		 */
-		SupportFragmentStarter(final android.support.v4.app.Fragment fragment) {
+		SupportFragmentStarter(final androidx.fragment.app.Fragment fragment) {
 			this.fragment = fragment;
 		}
 

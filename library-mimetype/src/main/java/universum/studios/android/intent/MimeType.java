@@ -18,10 +18,10 @@
  */
 package universum.studios.android.intent;
 
-import android.support.annotation.StringDef;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.StringDef;
 
 /**
  * This class contains the most commonly used <b>MIME</b> types for a content distributed on devices

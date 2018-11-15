@@ -19,7 +19,8 @@
 package universum.studios.android.intent;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import androidx.annotation.NonNull;
 
 /**
  * @author Martin Albedinsky

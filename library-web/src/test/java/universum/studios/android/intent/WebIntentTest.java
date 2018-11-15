@@ -27,10 +27,9 @@ import org.junit.Test;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 import static universum.studios.android.intent.WebTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
@@ -59,7 +58,7 @@ public final class WebIntentTest extends RobolectricTestCase {
 		// Act:
 		final WebIntent intent = new WebIntent();
 		// Assert:
-		assertThat(intent.url(), is(not(nullValue())));
+		assertThat(intent.url(), is(notNullValue()));
 		assertThat(intent.url().length(), is(0));
 	}
 
@@ -95,7 +94,7 @@ public final class WebIntentTest extends RobolectricTestCase {
 		final WebIntent webIntent = new WebIntent();
 		webIntent.url("inbox.google.com");
 		// Act:
-		final Intent intent = webIntent.build(application);
+		final Intent intent = webIntent.build(context);
 		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
@@ -104,7 +103,7 @@ public final class WebIntentTest extends RobolectricTestCase {
 
 	@Test public void testBuildWithoutUrl() {
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				new WebIntent(),
 				"No or invalid URL specified."
 		);

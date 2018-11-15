@@ -29,9 +29,9 @@ import java.util.List;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -82,7 +82,7 @@ public final class ShareIntentTest extends RobolectricTestCase {
 		intent.uris(uriFirst, uriSecond);
 		// Assert:
 		final List<Uri> uris = intent.uris();
-		assertThat(uris, is(not(nullValue())));
+		assertThat(uris, is(notNullValue()));
 		assertThat(uris.size(), is(2));
 		assertThat(uris.get(0), is(uriFirst));
 		assertThat(uris.get(1), is(uriSecond));
@@ -110,7 +110,7 @@ public final class ShareIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final ShareIntent shareIntent = new ShareIntent().content("Text to share.");
 		// Act:
-		final Intent intent = shareIntent.build(application);
+		final Intent intent = shareIntent.build(context);
 		// Assert:
 		assertThat(intent.getAction(), is(Intent.ACTION_SEND));
 		assertThat(intent.getData(), is(nullValue()));
@@ -123,7 +123,7 @@ public final class ShareIntentTest extends RobolectricTestCase {
 		shareIntent.uri(Uri.parse("content://android/data/images/lion.png"));
 		shareIntent.title("Beautiful Lion");
 		// Act:
-		final Intent intent = shareIntent.build(application);
+		final Intent intent = shareIntent.build(context);
 		// Assert:
 		assertThat(intent.getAction(), is(Intent.ACTION_SEND));
 		assertThat(intent.getCharSequenceExtra(Intent.EXTRA_TITLE).toString(), is("Beautiful Lion"));
@@ -138,13 +138,13 @@ public final class ShareIntentTest extends RobolectricTestCase {
 		final ShareIntent shareIntent = new ShareIntent();
 		shareIntent.uris(uriFirst, uriSecond);
 		// Act:
-		final Intent intent = shareIntent.build(application);
+		final Intent intent = shareIntent.build(context);
 		// Assert:
 		assertThat(intent.getAction(), is(Intent.ACTION_SEND_MULTIPLE));
 		assertThat(intent.getCharSequenceExtra(Intent.EXTRA_TITLE), is(nullValue()));
 		assertThat(intent.getCharSequenceExtra(Intent.EXTRA_TEXT), is(nullValue()));
 		final List<Uri> uris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-		assertThat(uris, is(not(nullValue())));
+		assertThat(uris, is(notNullValue()));
 		assertThat(uris.size(), is(2));
 		assertThat(uris.get(0), is(uriFirst));
 		assertThat(uris.get(1), is(uriSecond));
@@ -152,7 +152,7 @@ public final class ShareIntentTest extends RobolectricTestCase {
 
 	@Test public void testBuildWithoutContent() {
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				new ShareIntent(),
 				"No content to share specified."
 		);
@@ -165,7 +165,7 @@ public final class ShareIntentTest extends RobolectricTestCase {
 		intent.mimeType("");
 		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				intent,
 				"No content's MIME type specified."
 		);
@@ -175,7 +175,7 @@ public final class ShareIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final ShareIntent shareIntent = new ShareIntent();
 		shareIntent.content("Text to share.");
-		final Intent intent = shareIntent.build(application);
+		final Intent intent = shareIntent.build(context);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		// Act:
 		shareIntent.onStartWith(mockStarter, intent);

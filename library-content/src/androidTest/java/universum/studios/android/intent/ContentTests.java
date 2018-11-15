@@ -18,14 +18,13 @@
  */
 package universum.studios.android.intent;
 
-import android.support.annotation.NonNull;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 import java.io.File;
 
+import androidx.annotation.NonNull;
 import universum.studios.android.test.instrumented.TestUtils;
 
 /**

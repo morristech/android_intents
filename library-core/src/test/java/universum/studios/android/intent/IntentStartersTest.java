@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 
 import org.junit.Test;
 import org.robolectric.Robolectric;
@@ -33,16 +32,16 @@ import org.robolectric.annotation.Config;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import androidx.fragment.app.FragmentActivity;
 import universum.studios.android.test.local.RobolectricTestCase;
 import universum.studios.android.test.local.TestActivity;
 import universum.studios.android.test.local.TestCompatActivity;
 import universum.studios.android.test.local.TestCompatFragment;
 import universum.studios.android.test.local.TestFragment;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.Matchers.is;
-import static org.hamcrest.core.IsInstanceOf.instanceOf;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -73,7 +72,7 @@ public final class IntentStartersTest extends RobolectricTestCase {
 	    // Act:
 	    final IntentStarter starter = IntentStarters.activityStarter(activity);
 	    // Assert:
-	    assertThat(starter, is(not(nullValue())));
+	    assertThat(starter, is(notNullValue()));
 	    assertThat(starter.getContext(), is((Context) activity));
 	}
 
@@ -140,7 +139,7 @@ public final class IntentStartersTest extends RobolectricTestCase {
 		// Act:
 		final IntentStarter starter = IntentStarters.fragmentStarter(fragment);
 		// Assert:
-		assertThat(starter, is(not(nullValue())));
+		assertThat(starter, is(notNullValue()));
 		assertThat(starter.getContext(), instanceOf(TestActivity.class));
 	}
 
@@ -204,14 +203,14 @@ public final class IntentStartersTest extends RobolectricTestCase {
 	@Test public void testSupportFragmentStarter() throws IllegalStateException {
 		// Arrange:
 		final FragmentActivity activity = Robolectric.buildActivity(TestCompatActivity.class).create().start().resume().get();
-		final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-		final android.support.v4.app.Fragment fragment = new TestCompatFragment();
+		final androidx.fragment.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
+		final androidx.fragment.app.Fragment fragment = new TestCompatFragment();
 		fragmentManager.beginTransaction().add(fragment, null).commitAllowingStateLoss();
 		fragmentManager.executePendingTransactions();
 		// Act:
 		final IntentStarter starter = IntentStarters.supportFragmentStarter(fragment);
 		// Assert:
-		assertThat(starter, is(not(nullValue())));
+		assertThat(starter, is(notNullValue()));
 		assertThat(starter.getContext(), is((Context) activity));
 		fragmentManager.beginTransaction().remove(fragment).commitAllowingStateLoss();
 		fragmentManager.executePendingTransactions();
@@ -219,7 +218,7 @@ public final class IntentStartersTest extends RobolectricTestCase {
 
 	@Test public void testSupportFragmentStarterStartIntent() {
 		// Arrange:
-		final android.support.v4.app.Fragment mockFragment = mock(android.support.v4.app.Fragment.class);
+		final androidx.fragment.app.Fragment mockFragment = mock(androidx.fragment.app.Fragment.class);
 		final Intent intent = new Intent();
 		final IntentStarter starter = IntentStarters.supportFragmentStarter(mockFragment);
 		// Act:
@@ -230,7 +229,7 @@ public final class IntentStartersTest extends RobolectricTestCase {
 
 	@Test public void testSupportFragmentStarterStartIntentWithOptions() {
 		// Arrange:
-		final android.support.v4.app.Fragment mockFragment = mock(android.support.v4.app.Fragment.class);
+		final androidx.fragment.app.Fragment mockFragment = mock(androidx.fragment.app.Fragment.class);
 		final Intent intent = new Intent();
 		final IntentStarter starter = IntentStarters.supportFragmentStarter(mockFragment);
 		// Act:
@@ -241,7 +240,7 @@ public final class IntentStartersTest extends RobolectricTestCase {
 
 	@Test public void testSupportFragmentStarterStartIntentForResult() {
 		// Arrange:
-		final android.support.v4.app.Fragment mockFragment = mock(android.support.v4.app.Fragment.class);
+		final androidx.fragment.app.Fragment mockFragment = mock(androidx.fragment.app.Fragment.class);
 		final Intent intent = new Intent();
 		final IntentStarter starter = IntentStarters.supportFragmentStarter(mockFragment);
 		// Act:
@@ -252,7 +251,7 @@ public final class IntentStartersTest extends RobolectricTestCase {
 
 	@Test public void testSupportFragmentStarterStartIntentForResultWithOptions() {
 		// Arrange:
-		final android.support.v4.app.Fragment mockFragment = mock(android.support.v4.app.Fragment.class);
+		final androidx.fragment.app.Fragment mockFragment = mock(androidx.fragment.app.Fragment.class);
 		final Intent intent = new Intent();
 		final IntentStarter starter = IntentStarters.supportFragmentStarter(mockFragment);
 		// Act:
@@ -264,8 +263,8 @@ public final class IntentStartersTest extends RobolectricTestCase {
 	@Test public void testSupportFragmentStarterOverridePendingTransition() throws IllegalStateException {
 		// Arrange:
 		final FragmentActivity activity = Robolectric.buildActivity(TestCompatActivity.class).create().start().resume().get();
-		final android.support.v4.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
-		final android.support.v4.app.Fragment fragment = new TestCompatFragment();
+		final androidx.fragment.app.FragmentManager fragmentManager = activity.getSupportFragmentManager();
+		final androidx.fragment.app.Fragment fragment = new TestCompatFragment();
 		fragmentManager.beginTransaction().add(fragment, null).commitAllowingStateLoss();
 		fragmentManager.executePendingTransactions();
 		final IntentStarter starter = IntentStarters.supportFragmentStarter(fragment);
