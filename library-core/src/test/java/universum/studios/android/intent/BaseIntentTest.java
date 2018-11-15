@@ -21,11 +21,11 @@ package universum.studios.android.intent;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 
 import org.junit.Test;
 import org.robolectric.Robolectric;
 
+import androidx.annotation.NonNull;
 import universum.studios.android.test.local.RobolectricTestCase;
 import universum.studios.android.test.local.TestActivity;
 
@@ -153,7 +153,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 	@Test public void testStartWithUnavailableActivity() {
 		// Arrange:
 		final IntentStarter mockStarter = mock(IntentStarter.class);
-		when(mockStarter.getContext()).thenReturn(application);
+		when(mockStarter.getContext()).thenReturn(context);
 		final BaseIntent intent = new BaseIntent() {
 
 			@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
@@ -171,7 +171,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.enterTransition(android.R.anim.fade_in);
-		final Intent intent = baseIntent.build(application);
+		final Intent intent = baseIntent.build(context);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		// Act:
 		baseIntent.onStartWith(mockStarter, intent);
@@ -184,7 +184,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.exitTransition(android.R.anim.fade_out);
-		final Intent intent = baseIntent.build(application);
+		final Intent intent = baseIntent.build(context);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		// Act:
 		baseIntent.onStartWith(mockStarter, intent);
@@ -197,7 +197,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final BaseIntent baseIntent = new IntentImpl();
 		baseIntent.transitions(android.R.anim.fade_in, android.R.anim.fade_out);
-		final Intent intent = baseIntent.build(application);
+		final Intent intent = baseIntent.build(context);
 		final IntentStarter mockStarter = mock(IntentStarter.class);
 		// Act:
 		baseIntent.onStartWith(mockStarter, intent);

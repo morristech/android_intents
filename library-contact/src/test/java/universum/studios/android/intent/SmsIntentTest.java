@@ -26,9 +26,8 @@ import org.junit.Test;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
 import static universum.studios.android.intent.ContactTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
@@ -81,9 +80,9 @@ public final class SmsIntentTest extends RobolectricTestCase {
 		final SmsIntent smsIntent = new SmsIntent();
 		smsIntent.phoneNumber("02644569874");
 		// Act:
-		final Intent intent = smsIntent.build(application);
+		final Intent intent = smsIntent.build(context);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("sms:02644569874")));
 	}
@@ -94,9 +93,9 @@ public final class SmsIntentTest extends RobolectricTestCase {
 		smsIntent.phoneNumber("02644569874");
 		smsIntent.body("Sms body content.");
 		// Act:
-		final Intent intent = smsIntent.build(application);
+		final Intent intent = smsIntent.build(context);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse("sms:02644569874")));
 		assertThat(intent.getStringExtra("sms_body"), is("Sms body content."));
@@ -104,7 +103,7 @@ public final class SmsIntentTest extends RobolectricTestCase {
 
 	@Test public void testBuildWithoutNumber() {
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				new SmsIntent(),
 				"No phone number specified."
 		);

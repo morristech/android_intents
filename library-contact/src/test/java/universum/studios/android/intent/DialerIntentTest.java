@@ -26,9 +26,8 @@ import org.junit.Test;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
 import static universum.studios.android.intent.ContactTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
@@ -62,16 +61,16 @@ public final class DialerIntentTest extends RobolectricTestCase {
 		final DialerIntent dialerIntent = new DialerIntent();
 		dialerIntent.phoneNumber("02644569874");
 		// Act:
-		final Intent intent = dialerIntent.build(application);
+		final Intent intent = dialerIntent.build(context);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_DIAL));
 		assertThat(intent.getData(), is(Uri.parse("tel:02644569874")));
 	}
 
 	@Test public void testBuildWithoutNumber() {
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				new DialerIntent(),
 				"No phone number specified."
 		);

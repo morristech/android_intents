@@ -30,9 +30,9 @@ import universum.studios.android.test.local.RobolectricTestCase;
 
 import static junit.framework.Assert.assertTrue;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 import static universum.studios.android.intent.CalendarTests.assertThatBuildThrowsExceptionWithMessage;
 
 /**
@@ -147,7 +147,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		final long time = currentTime - 1000 * 60 * 60 * 24;
 		calendarIntent.time(time);
 		// Act:
-		final Intent intent = calendarIntent.build(application);
+		final Intent intent = calendarIntent.build(context);
 		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getData(), is(Uri.parse("content://" + CalendarContract.AUTHORITY + "/time/" + Long.toString(time))));
@@ -160,7 +160,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		intent.time(-1000);
 		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				intent,
 				"Specified invalid time(-1000) where to open calendar for view. Must be none-negative time value."
 		);
@@ -181,7 +181,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 				.beginTime(beginTime).endTime(endTime)
 				.availability(CalendarIntent.AVAILABILITY_FREE);
 		// Act:
-		final Intent intent = calendarIntent.build(application);
+		final Intent intent = calendarIntent.build(context);
 		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getLongExtra(CalendarContract.EXTRA_EVENT_BEGIN_TIME, -1), is(beginTime));
@@ -199,7 +199,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		intent.beginTime(-1);
 		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				intent,
 				"Specified invalid begin time(-1). Must be none-negative time value."
 		);
@@ -212,7 +212,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		intent.endTime(-5);
 		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				intent,
 				"Specified invalid end time(-5). Must be none-negative time value."
 		);
@@ -225,7 +225,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		intent.endTime(0);
 		try {
 			// Act:
-			intent.build(application);
+			intent.build(context);
 		} catch (IllegalArgumentException e) {
 			// Assert:
 			final String message = "Cannot build " + intent.getClass().getSimpleName() + ". Specified end time(0) is before/at begin";
@@ -248,7 +248,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		calendarIntent.eventId(123);
 		calendarIntent.title("New event title");
 		// Act:
-		final Intent intent = calendarIntent.build(application);
+		final Intent intent = calendarIntent.build(context);
 		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_EDIT));
@@ -262,7 +262,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		calendarIntent.type(CalendarIntent.TYPE_EDIT_EVENT);
 		calendarIntent.eventId(123);
 		// Act:
-		final Intent intent = calendarIntent.build(application);
+		final Intent intent = calendarIntent.build(context);
 		// Assert:
 		assertThat(intent, is(not(CoreMatchers.nullValue())));
 		assertThat(intent.getAction(), is(Intent.ACTION_EDIT));
@@ -276,7 +276,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		intent.eventId(-123);
 		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				intent,
 				"Specified invalid event id(-123)."
 		);
@@ -288,9 +288,9 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		calendarIntent.type(CalendarIntent.TYPE_VIEW_EVENT);
 		calendarIntent.eventId(123);
 		// Act:
-		final Intent intent = calendarIntent.build(application);
+		final Intent intent = calendarIntent.build(context);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, 123)));
 	}
@@ -302,7 +302,7 @@ public final class CalendarIntentTest extends RobolectricTestCase {
 		intent.eventId(-123);
 		// Act + Assert:
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				intent,
 				"Specified invalid event id(-123)."
 		);

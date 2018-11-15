@@ -26,9 +26,8 @@ import org.junit.Test;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
 
 /**
  * @author Martin Albedinsky
@@ -56,9 +55,9 @@ public final class PlayIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final PlayIntent playIntent = new PlayIntent().applicationId("com.android.inbox");
 		// Act:
-		final Intent intent = playIntent.build(application);
+		final Intent intent = playIntent.build(context);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
 		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + "com.android.inbox")));
 	}
@@ -67,10 +66,10 @@ public final class PlayIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final PlayIntent playIntent = new PlayIntent();
 		// Act:
-		final Intent intent = playIntent.build(application);
+		final Intent intent = playIntent.build(context);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_VIEW));
-		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + application.getPackageName())));
+		assertThat(intent.getData(), is(Uri.parse(PlayIntent.VIEW_URL_BASE + context.getPackageName())));
 	}
 }

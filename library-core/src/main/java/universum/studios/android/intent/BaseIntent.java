@@ -21,11 +21,12 @@ package universum.studios.android.intent;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.AnimRes;
-import android.support.annotation.CheckResult;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.widget.Toast;
+
+import androidx.annotation.AnimRes;
+import androidx.annotation.CheckResult;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * A BaseIntent specifies base API for intent builders. Some Android intents require a lots of data

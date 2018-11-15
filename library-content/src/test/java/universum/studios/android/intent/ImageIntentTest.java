@@ -31,9 +31,9 @@ import java.util.List;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 
 /**
  * @author Martin Albedinsky
@@ -45,7 +45,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = ImageIntent.createGalleryIntent();
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_GET_CONTENT));
 		assertThat(intent.getType(), is(MimeType.IMAGE));
 	}
@@ -54,7 +54,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = ImageIntent.createCameraIntent();
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_IMAGE_CAPTURE));
 		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
@@ -65,7 +65,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = ImageIntent.createCameraIntent(outputFile);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_IMAGE_CAPTURE));
 		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(outputFile)));
 	}
@@ -74,7 +74,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = ImageIntent.createCameraIntent((File) null);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_IMAGE_CAPTURE));
 		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
@@ -85,7 +85,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		// Act:
 		// Assert:
 		final Intent intent = ImageIntent.createCameraIntent(outputUri);
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_IMAGE_CAPTURE));
 		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(outputUri));
 	}
@@ -102,10 +102,10 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final ImageIntent intent = new ImageIntent();
 		// Act:
-		intent.withDefaultHandlers(application);
+		intent.withDefaultHandlers(context);
 		// Assert:
 		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
-		assertThat(handlers, is(not(nullValue())));
+		assertThat(handlers, is(notNullValue()));
 		assertThat(handlers.size(), is(2));
 		final ContentIntent.ContentHandler galleryHandler = handlers.get(0);
 		assertThat(galleryHandler.name().toString(), is("Gallery"));
@@ -128,7 +128,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final ImageIntent intent = new ImageIntent();
 		intent.input(new File("input.tmp"));
-		assertThat(intent.dataType(), is(not(nullValue())));
+		assertThat(intent.dataType(), is(notNullValue()));
 		// Act:
 		intent.input((Uri) null);
 		// Asse rt:
@@ -142,7 +142,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		final ImageIntent intent = new ImageIntent();
 		// Act:
 		intent.output(outputFile);
-		intent.withDefaultHandlers(application);
+		intent.withDefaultHandlers(context);
 		// Assert:
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		assertThat(cameraHandler.intent().<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(outputFile)));
@@ -152,7 +152,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final File outputFile = new File("output.tmp");
 		final ImageIntent intent = new ImageIntent();
-		intent.withDefaultHandlers(application);
+		intent.withDefaultHandlers(context);
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		final Intent cameraIntent = cameraHandler.intent();
 		assertThat(cameraIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
@@ -165,7 +165,7 @@ public final class ImageIntentTest extends RobolectricTestCase {
 	@Test public void testNullOutputAfterWithDefaultHandlers() {
 		// Arrange:
 		final ImageIntent intent = new ImageIntent();
-		intent.withDefaultHandlers(application);
+		intent.withDefaultHandlers(context);
 		intent.output(new File("output.tmp"));
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		final Intent cameraIntent = cameraHandler.intent();

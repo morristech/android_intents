@@ -20,10 +20,10 @@ package universum.studios.android.intent;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
 
 import org.junit.Test;
 
+import androidx.annotation.NonNull;
 import universum.studios.android.test.instrumented.InstrumentedTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
