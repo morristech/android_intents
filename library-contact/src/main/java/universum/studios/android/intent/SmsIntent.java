@@ -21,9 +21,10 @@ package universum.studios.android.intent;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * A {@link BaseIntent} builder implementation providing API for building and starting of intents

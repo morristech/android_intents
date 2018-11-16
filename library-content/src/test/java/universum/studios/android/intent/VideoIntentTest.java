@@ -32,9 +32,8 @@ import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
-import static org.hamcrest.core.IsNull.nullValue;
 
 /**
  * @author Martin Albedinsky
@@ -45,7 +44,7 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = VideoIntent.createGalleryIntent();
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_GET_CONTENT));
 		assertThat(intent.getType(), is(MimeType.VIDEO));
 	}
@@ -54,7 +53,7 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = VideoIntent.createCameraIntent();
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
 		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
@@ -65,7 +64,7 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = VideoIntent.createCameraIntent(outputFile);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
 		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(outputFile)));
 	}
@@ -74,7 +73,7 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = VideoIntent.createCameraIntent((File) null);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
 		assertThat(intent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
 	}
@@ -85,7 +84,7 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		// Act:
 		final Intent intent = VideoIntent.createCameraIntent(outputUri);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(MediaStore.ACTION_VIDEO_CAPTURE));
 		assertThat(intent.<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(outputUri));
 	}
@@ -102,10 +101,10 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final VideoIntent intent = new VideoIntent();
 		// Act:
-		intent.withDefaultHandlers(application);
+		intent.withDefaultHandlers(context);
 		// Assert:
 		final List<ContentIntent.ContentHandler> handlers = intent.handlers();
-		assertThat(handlers, is(not(nullValue())));
+		assertThat(handlers, is(notNullValue()));
 		assertThat(handlers.size(), is(2));
 		final ContentIntent.ContentHandler galleryHandler = handlers.get(0);
 		assertThat(galleryHandler.name().toString(), is("Gallery"));
@@ -142,7 +141,7 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		final VideoIntent intent = new VideoIntent();
 		// Act:
 		intent.output(outputFile);
-		intent.withDefaultHandlers(application);
+		intent.withDefaultHandlers(context);
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		assertThat(cameraHandler.intent().<Uri>getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(Uri.fromFile(outputFile)));
 	}
@@ -151,7 +150,7 @@ public final class VideoIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final File outputFile = new File("output.tmp");
 		final VideoIntent intent = new VideoIntent();
-		intent.withDefaultHandlers(application);
+		intent.withDefaultHandlers(context);
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		final Intent cameraIntent = cameraHandler.intent();
 		assertThat(cameraIntent.getParcelableExtra(MediaStore.EXTRA_OUTPUT), is(nullValue()));
@@ -164,7 +163,7 @@ public final class VideoIntentTest extends RobolectricTestCase {
 	@Test public void testNullOutputAfterWithDefaultHandlers() {
 		// Arrange:
 		final VideoIntent intent = new VideoIntent();
-		intent.withDefaultHandlers(application);
+		intent.withDefaultHandlers(context);
 		intent.output(new File("output.tmp"));
 		final ContentIntent.ContentHandler cameraHandler = intent.handlers().get(1);
 		final Intent cameraIntent = cameraHandler.intent();

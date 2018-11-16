@@ -30,9 +30,9 @@ import java.util.List;
 import universum.studios.android.test.local.RobolectricTestCase;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.core.IsNot.not;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -240,9 +240,9 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		emailIntent.subject("Email subject");
 		emailIntent.message("Email message.");
 		// Act:
-		final Intent intent = emailIntent.build(application);
+		final Intent intent = emailIntent.build(context);
 		// Assert:
-		assertThat(intent, is(not(nullValue())));
+		assertThat(intent, is(notNullValue()));
 		assertThat(intent.getAction(), is(Intent.ACTION_SENDTO));
 		assertThat(
 				intent.getData(),
@@ -262,10 +262,10 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		emailIntent.to("test@android.com");
 		emailIntent.cc("test.cc1@android.com", "test.cc2@android.com");
 		// Act:
-		final Intent intent = emailIntent.build(application);
+		final Intent intent = emailIntent.build(context);
 		// Assert:
 		final String[] ccAddresses = intent.getStringArrayExtra(Intent.EXTRA_CC);
-		assertThat(ccAddresses, is(not(nullValue())));
+		assertThat(ccAddresses, is(notNullValue()));
 		assertThat(ccAddresses.length, is(2));
 		assertThat(ccAddresses[0], is("test.cc1@android.com"));
 		assertThat(ccAddresses[1], is("test.cc2@android.com"));
@@ -278,10 +278,10 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		emailIntent.to("test@android.com");
 		emailIntent.bcc("test.bcc@android.com");
 		// Act:
-		final Intent intent = emailIntent.build(application);
+		final Intent intent = emailIntent.build(context);
 		// Assert:
 		final String[] bccAddresses = intent.getStringArrayExtra(Intent.EXTRA_BCC);
-		assertThat(bccAddresses, is(not(nullValue())));
+		assertThat(bccAddresses, is(notNullValue()));
 		assertThat(bccAddresses.length, is(1));
 		assertThat(bccAddresses[0], is("test.bcc@android.com"));
 		assertThat(intent.getStringArrayExtra(Intent.EXTRA_CC), is(nullValue()));
@@ -289,7 +289,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 
 	@Test public void testBuildWithoutAddresses() {
 		assertThatBuildThrowsExceptionWithMessage(
-				application,
+				context,
 				new EmailIntent(),
 				"No e-mail address/-es specified."
 		);
@@ -303,7 +303,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		// Act:
 		final Uri uri = EmailIntent.createUri(addresses);
 		// Assert:
-		assertThat(uri, is(not(nullValue())));
+		assertThat(uri, is(notNullValue()));
 		assertThat(uri.getScheme(), is(EmailIntent.URI_SCHEME));
 		assertThat(
 				uri,
@@ -324,7 +324,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		// Act:
 		final Uri uri = EmailIntent.createUri(addresses);
 		// Assert:
-		assertThat(uri, is(not(nullValue())));
+		assertThat(uri, is(notNullValue()));
 		assertThat(uri.getScheme(), is("mailto"));
 		assertThat(
 				uri,
@@ -345,7 +345,7 @@ public final class EmailIntentTest extends RobolectricTestCase {
 		// Arrange:
 		final EmailIntent emailIntent = new EmailIntent();
 		emailIntent.to("test1@android.com");
-		final Intent intent = emailIntent.build(application);
+		final Intent intent = emailIntent.build(context);
 		final IntentStarter mockIntentStarter = mock(IntentStarter.class);
 		// Act:
 		emailIntent.onStartWith(mockIntentStarter, intent);

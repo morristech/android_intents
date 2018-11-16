@@ -23,14 +23,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.provider.CalendarContract;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import androidx.annotation.IntDef;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * A {@link BaseIntent} builder implementation providing API for building and starting of intents

@@ -1,1 +1,1 @@
-# No rules are required.
+# No rules required.
