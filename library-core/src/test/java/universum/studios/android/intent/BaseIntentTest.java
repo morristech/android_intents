@@ -157,7 +157,7 @@ public final class BaseIntentTest extends RobolectricTestCase {
 		final BaseIntent intent = new BaseIntent() {
 
 			@Override @NonNull protected Intent onBuild(@NonNull final Context context) {
-				return new Intent();
+				return new Intent("ACTION.Test");
 			}
 		};
 		// Act:
